@@ -1,2 +1,3 @@
 hi git
 this is new test
+我就试试中文
