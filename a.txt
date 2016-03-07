@@ -29,3 +29,8 @@ revert //还原
 Gitkraken //Gitkraken测试
 
 amend // 修改
+remote //远程
+origin  //起源
+
+pull //拉
+push //推
