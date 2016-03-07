@@ -10,8 +10,8 @@ sync //同步
 commit to master  //提交到主文件
 
 code //代码
-lssues //专辑 版本
-Pull Requests //引入请
+issues //问题
+Pull Requests //引入请求【合并请求】
 Pulse //活动周期
 graphs //统计图表
 Settings //设置
