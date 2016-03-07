@@ -18,3 +18,8 @@ Settings //设置
 collaborators //合作者
 Default branch //默认分支
 Deploy keys //部署钥匙
+
+commits //提交的
+branch //分子
+releases // 发布
+contributor //贡献者
