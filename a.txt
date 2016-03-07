@@ -1,3 +1,10 @@
 hi git
 this is new test
 我就试试中文
+Test 2
+当个使用文档吧~
+summary //概要
+Description //描述
+compare //比较
+sync //同步
+commit to master  //提交到主文件
