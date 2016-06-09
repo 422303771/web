@@ -167,3 +167,12 @@ git获取帮助方法，<verb>为命令名。
 > 退出编辑器时，Git 会丢掉注释行，用你输入提交附带信息生成一次提交。  
 
 也可以使用`$ git commit -m "[注释]" `，在[注释]中添加内容。
+
+**例子：**
+
+		$ git commit -m "Story 182: Fix benchmarks for speed"  
+		[master 463dc4f] Story 182: Fix benchmarks for speed  
+ 		2 files changed, 2 insertions(+)  
+ 		create mode 100644 README  
+
+[master 463dc4f] 为文件保存的分支，与SHA-1的校验码。
