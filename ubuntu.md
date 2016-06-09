@@ -2,8 +2,7 @@
 ## 下载镜像包
 [Ubuntu下载地址](http://www.ubuntu.com/download/desktop)
 ## VMware与实体机安装
-* 实体机需要使用[*win32 disk imager*](https://sourceforge.net/projects/win32diskimager/files/Archive/)
-写入U盘
+* 实体机需要使用[*win32 disk imager*](https://sourceforge.net/projects/win32diskimager/files/Archive/)写入U盘
 * 基本安装   
 
 >	设定用户名与系统时间  
@@ -12,7 +11,7 @@
 
 
 |username|password|  
-|-------:|:------:|  
+|:------:|:------:|  
 |new     |0       |  
 |root    |0       |
 
