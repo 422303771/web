@@ -2,6 +2,11 @@
 
 [git官方文档](https://git-scm.com/book/en/v2)
 
+git GUI乱码修正  
+>`$ git config --global gui.encoding utf-8`  
+
+参考文档[地址](https://segmentfault.com/a/1190000000578037)
+
 ## 1. git安装与设定  
 
 >安装好git后，需要对个git进行设定。  
