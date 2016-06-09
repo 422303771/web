@@ -5,8 +5,8 @@
 * 实体机需要使用[*win32 disk imager*](https://sourceforge.net/projects/win32diskimager/files/Archive/)
 写入U盘
 * 基本安装  
->设定用户名与系统时间  
->分区：*一般* 一个~/分区，一个swap交互分区。  
+>	设定用户名与系统时间  
+>	分区：*一般* 一个~/分区，一个swap交互分区。  
 |username|password|  
 |***|***|  
 |new     |0       |  
@@ -84,21 +84,21 @@
 > 安装新力得  
 >
 >`$ sudo apt-get install synaptic`   
-
+****
 >安装gdebi  
 >
 > `$ sudo apt-get install gdebi`  
-
+*****
 >安装chromium  
 >
 >`$ sudo apt-get install chromium-browser`  
-
+****
 >安装sublime text 3  
 >  
 >`$ sudo add-apt-repository ppa:webupd8team/sublime-text-3`  
 >`$ sudo apt-get update`  
 >`$ sudo apt-get install sublime-text-installer`  
-
+****
 		
 > 安装与配置zsh与oh-my-zsh  
 >  
@@ -126,7 +126,7 @@
 >>`$ sudo reboot`   
 >
 >[参考文档](http://www.jianshu.com/p/546effd99c35)
-
+****
 
 >安装ravefinity风格  
 >
@@ -134,7 +134,7 @@
 >`$ sudo apt-get update`    
 >`$ sudo apt-get install vibrancy-colors`     
 >`$ sudo apt-get install ambiance-flat-colors radiance-flat-colors`    
-
+*****
 >安装my weather  
 >
 >>`$ sudo add-apt-repository ppa:atareao/atareao`   
@@ -146,11 +146,11 @@
 >>`$ sudo apt-get remove my-weather-indicator`   
 >>`$ sudo apt-get install ppa-purge` // *源管理器*   
 >>`$ sudo ppa-purge ppa:atareao/atareao`  
-
+*****
 
 >安装网易云音乐  
 >去[官方网站](http://music.163.com/#/download)下载  
-
+*****
 >安装dropbox  
 >去[官方网站](https://www.dropbox.com/install?os=lnx)下载  
 >
@@ -165,3 +165,4 @@
 >>3. 编译  
 >>`cd ./nautilus-dropbox-1.4.0; ./configure; make; make install;`  
 
+*****
