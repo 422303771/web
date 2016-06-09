@@ -25,15 +25,17 @@
 >删除	  
 >
 >	`$ sudo ./vmware-tools-distrib/bin/vmware-uninstall-tools.pl`  
-\
+
 ***********
+
 >安装shadowsocks  
 >
 >`$ sudo add-apt-repository ppa:hzwhuang/ss-qt5`  
 >`$ sudo apt-get update`  
 >`$ sudo apt-get install shadowsocks-qt5`  
-\
+
 ********
+
 >安装privoxy //代理工具  
 >`$ sudo apt-get install privoxy`  
 > 
@@ -58,21 +60,29 @@
 >>在/etc/profile加   
 >>`export http_proxy="127.0.0.1:8118"`  
 >>`export https_proxy="127.0.0.1:8118"`  
+
 *****
+
 >安装google拼音  
 >
 >`$ sudo add-apt-repository ppa:fcitx-team/nightly`  
 >`$ sudo apt-get update`  
 >`$ sudo apt-get install fcitx fcitx-googlepinyin`  
+
 ****
+
 >安装 unity-tweak-tool  
 >
 >`$ sudo apt-get install unity-tweal-tool`  
+
 ****
+
 >删除火狐  
 >  
 > ``$ sudo apt-get remove firefox``  
+
 ****
+
 > 删除libreoffice  
 > 
 > `$ sudo apt-get remove --purge libreoffice*`   
@@ -84,20 +94,27 @@
 > 安装新力得  
 >
 >`$ sudo apt-get install synaptic`   
+
 ****
+
 >安装gdebi  
 >
 > `$ sudo apt-get install gdebi`  
+
 *****
+
 >安装chromium  
 >
 >`$ sudo apt-get install chromium-browser`  
+
 ****
+
 >安装sublime text 3  
 >  
 >`$ sudo add-apt-repository ppa:webupd8team/sublime-text-3`  
 >`$ sudo apt-get update`  
 >`$ sudo apt-get install sublime-text-installer`  
+
 ****
 		
 > 安装与配置zsh与oh-my-zsh  
@@ -126,6 +143,7 @@
 >>`$ sudo reboot`   
 >
 >[参考文档](http://www.jianshu.com/p/546effd99c35)
+
 ****
 
 >安装ravefinity风格  
@@ -134,7 +152,9 @@
 >`$ sudo apt-get update`    
 >`$ sudo apt-get install vibrancy-colors`     
 >`$ sudo apt-get install ambiance-flat-colors radiance-flat-colors`    
+
 *****
+
 >安装my weather  
 >
 >>`$ sudo add-apt-repository ppa:atareao/atareao`   
@@ -146,11 +166,14 @@
 >>`$ sudo apt-get remove my-weather-indicator`   
 >>`$ sudo apt-get install ppa-purge` // *源管理器*   
 >>`$ sudo ppa-purge ppa:atareao/atareao`  
+
 *****
 
 >安装网易云音乐  
 >去[官方网站](http://music.163.com/#/download)下载  
+
 *****
+
 >安装dropbox  
 >去[官方网站](https://www.dropbox.com/install?os=lnx)下载  
 >
