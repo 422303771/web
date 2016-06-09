@@ -7,7 +7,7 @@
 * 基本安装  
 >设定用户名与系统时间  
 >分区：*一般* 一个~/分区，一个swap交互分区。  
->
+>  
 |username|password|  
 |--------|--------|  
 |new     |0       |
@@ -49,9 +49,10 @@
 >>`$ sudo /etc/init.d/privoxy restart`  
 >
 >>设置终端环境  
->>`$ export http_proxy="127.0.0.1:8118"`  
+>>`$ export http_proxy="127.0.0.1:8118"`	
 >>`$ export https_proxy="127.0.0.1:8118"`  
->---
+
+> ---
 >>在/etc/rc.local添加开机启动sud  
 >>`$ sudo /etc/init.d/privoxy start`  
 > 
