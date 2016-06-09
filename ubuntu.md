@@ -10,10 +10,10 @@
 
 
 
-|username|password|  
-|:------:|:------:|  
-|new     |0       |  
-|root    |0       |
+>|username|password|  
+>|:------:|:------:|  
+>|new     |0       |  
+>|root    |0       |
 
 
 ## 安装之后
