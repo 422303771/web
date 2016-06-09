@@ -39,7 +39,9 @@
 
 >安装privoxy //代理工具  
 >`$ sudo apt-get install privoxy`  
->  
+
+># 
+
 >>配置文件地址/etc/privoxy/config   
 >>
 >>在4.1 listen-address 改端口  
@@ -47,10 +49,13 @@
 >>
 >>在5.2加  
 >>`forward-socks5 / 127.0.0.1:7070 .`  
->  
+
+>#   
+
 >>重启privoxy   
 >>`$ sudo /etc/init.d/privoxy restart`  
->  
+
+>#   
 
 >>设置终端环境  
 >>`$ export http_proxy="127.0.0.1:8118"`	
@@ -58,12 +63,14 @@
 
 >>在/etc/rc.local添加开机启动sud  
 >>`$ sudo /etc/init.d/privoxy start`  
-> 
+
+>#  
+
 >>在/etc/profile加   
 >>`export http_proxy="127.0.0.1:8118"`  
 >>`export https_proxy="127.0.0.1:8118"`  
 
-*****
+----
 
 >安装google拼音  
 >
