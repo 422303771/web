@@ -61,6 +61,8 @@
 >>`$ export http_proxy="127.0.0.1:8118"`	
 >>`$ export https_proxy="127.0.0.1:8118"`  
 
+># 
+
 >>在/etc/rc.local添加开机启动sud  
 >>`$ sudo /etc/init.d/privoxy start`  
 
@@ -131,25 +133,25 @@
 
 ># 
 
->>1. ubuntu中默认安装了哪些shell   
+>>1\. ubuntu中默认安装了哪些shell   
 >>`$ cat /etc/shells # /etc/shells: valid login shells/bin/sh/bin/dash/bin/bash/bin/rbash`  
 >>（有sh、dash、bash和rbash）  
 
 ># 
 
->>2. 当前正在运行的是那个版本的shell   
+>>2\. 当前正在运行的是那个版本的shell   
 >>`$ echo $SHELL/bin/bash`   
 
 ># 
 
->>3. 正式安装zsh、git和wget   
+>>3\. 正式安装zsh、git和wget   
 >>获取并自动按照oh-my-zsh：    
 >>`$ sudo apt-get install zsh git wget`    
 >>`$ wget --no-check-certificate https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | sh`    
 
 >#  
 
->>4. 替换bash为zsh：  
+>>4\. 替换bash为zsh：  
 >>`$ chsh -s /bin/zsh`  
 
 ># 
@@ -202,17 +204,17 @@
 
 ># 
 
->>1. 下载源代码  
+>>1\. 下载源代码  
 >>[下载文件](https://www.dropbox.com/download?dl=packages/nautilus-dropbox-1.4.0.tar.bz2)  
 
 ># 
 
->>2. 提取 tarball   
+>>2\. 提取 tarball   
 >>`tar xjf ./nautilus-dropbox-1.4.0.tar.bz2`  
 
 ># 
 
->>3. 编译  
+>>3\. 编译  
 >>`cd ./nautilus-dropbox-1.4.0; ./configure; make; make install;`  
 
 *****
