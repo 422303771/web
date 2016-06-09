@@ -9,7 +9,7 @@
 >分区：*一般* 一个~/分区，一个swap交互分区。  
 |username|password|  
 |***|***|  
-|new     |0       |
+|new     |0       |  
 |root    |0       |
 
 
@@ -25,13 +25,13 @@
 >删除	  
 >
 >	`$ sudo ./vmware-tools-distrib/bin/vmware-uninstall-tools.pl`
-***********
+\***********
 >安装shadowsocks  
 >
 >`$ sudo add-apt-repository ppa:hzwhuang/ss-qt5`  
 >`$ sudo apt-get update`  
 >`$ sudo apt-get install shadowsocks-qt5`  
-
+\********
 >安装privoxy //代理工具  
 >`$ sudo apt-get install privoxy`  
 > 
