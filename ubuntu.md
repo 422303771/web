@@ -179,11 +179,14 @@
 >
 >>或者 源代码安装  
 >
+>
 >>1. 下载源代码  
 >>[下载文件](https://www.dropbox.com/download?dl=packages/nautilus-dropbox-1.4.0.tar.bz2)  
 >
+>
 >>2. 提取 tarball   
 >>`tar xjf ./nautilus-dropbox-1.4.0.tar.bz2`  
+>
 >
 >>3. 编译  
 >>`cd ./nautilus-dropbox-1.4.0; ./configure; make; make install;`  
