@@ -51,7 +51,7 @@
 >>设置终端环境  
 >>`$ export http_proxy="127.0.0.1:8118"`  
 >>`$ export https_proxy="127.0.0.1:8118"`  
->
+>---
 >>在/etc/rc.local添加开机启动sud  
 >>`$ sudo /etc/init.d/privoxy start`  
 > 
