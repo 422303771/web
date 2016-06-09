@@ -44,17 +44,17 @@
 >>
 >>在5.2加  
 >>`forward-socks5 / 127.0.0.1:7070 .`  
->#
+>
 >>重启privoxy   
 >>`$ sudo /etc/init.d/privoxy restart`  
->#
+>
 >>设置终端环境  
 >>`$ export http_proxy="127.0.0.1:8118"`  
 >>`$ export https_proxy="127.0.0.1:8118"`  
->#
+>
 >>在/etc/rc.local添加开机启动sud  
 >>`$ sudo /etc/init.d/privoxy start`  
-> #
+> 
 >>在/etc/profile加   
 >>`export http_proxy="127.0.0.1:8118"`  
 >>`export https_proxy="127.0.0.1:8118"`  
@@ -110,20 +110,20 @@
 >>`$ cat /etc/shells # /etc/shells: valid login shells/bin/sh/bin/dash/bin/bash/bin/rbash`  
 >>
 >>（有sh、dash、bash和rbash）  
->#	
+>	
 >>2.当前正在运行的是那个版本的shell   
 >> 
 >>`$ echo $SHELL/bin/bash`   
->#
+>
 >>3.正式安装zsh、git和wget   
 >>获取并自动按照oh-my-zsh：    
 >>
 >>`$ sudo apt-get install zsh git wget`    
 >>`$ wget --no-check-certificate https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | sh`    
->#
+>
 >>4.替换bash为zsh：  
 >>`$ chsh -s /bin/zsh`  
->#
+>
 >>5.最后重启：  
 >>  
 >>`$ sudo reboot`   
@@ -143,7 +143,7 @@
 >>`$ sudo add-apt-repository ppa:atareao/atareao`   
 >>`$ sudo apt-get update`   
 >>`$ sudo apt-get install my-weather-indicator`   
-># 
+>
 >>删除   
 >>
 >>`$ sudo apt-get remove my-weather-indicator`   
