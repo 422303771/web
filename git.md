@@ -295,8 +295,47 @@ git获取帮助方法，<verb>为命令名。
 ### 2.4 撤消操作
 
 > `$ git commit --amend` 提交遗漏的文件  
+>
 > **例子：**
 >
 >		$ git commit -m 'initial commit'  
 >		$ git add forgotten_file  
 >		$ git commit --amend  
+> *说明：最终只有一个提交 - 第二次提交将代替第一次提交的结果。*
+
+#### 2.4.1 取消暂存的文件
+
+> `$ git reset HEAD [文件名]` 取消暂存的文件  
+>
+> **例子：**
+>
+>		$ git add *
+>		$ git status
+>		On branch master
+>		Changes to be committed:
+>  			(use "git reset HEAD <file>..." to unstage)
+>
+>   		 renamed:    README.md -> README
+>   		 modified:   CONTRIBUTING.md
+>
+> *说明：不小心将文件添加多了，要将多余文件移除暂存区*	
+>
+>		$ git reset HEAD CONTRIBUTING.md  
+>		Unstaged changes after reset:  
+>		M	CONTRIBUTING.md
+>		$ git status
+>		On branch master
+>		Changes to be committed:
+>		  (use "git reset HEAD <file>..." to unstage)
+>
+>	  		  renamed:    README.md -> README
+>
+>		Changes not staged for commit:
+>		  (use "git add <file>..." to update what will be committed)
+>		  (use "git checkout -- <file>..." to discard changes in working directory)
+>
+>	    modified:   CONTRIBUTING.md
+> *说明：已经将多余文件移除暂存区*
+
+#### 2.4.2 撤消对文件的修改
+
