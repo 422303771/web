@@ -479,3 +479,28 @@ Git 使用两种主要类型的标签：轻量标签（lightweight）与附注�
 > *如果在这之后又进行了一次提交，version2 分支会因为改动向前移动了，那么 version2 分支就会和 v2.0.0 标签稍微有些不同，这时就应该当心了。*
 
 ---
+
+### 2.7 Git 别名 
+
+> 通过`git config`设置命令的别名。
+>
+> **参考**
+>
+>		$ git config --global alias.co checkout
+>		$ git config --global alias.br branch
+>		$ git config --global alias.ci commit
+>		$ git config --global alias.st status
+>
+>**其他例子**
+>
+>`$ git config --global alias.unstage 'reset HEAD --'`   
+>
+>等于运行
+>
+> `$ git unstage fileA`   
+> `$ git reset HEAD -- fileA`
+>
+> 通常添加`$ git config --global alias.last 'log -1 HEAD'`,轻松地看到最后一次提交.  
+> 随后可以直接使用`$ git last`
+
+----
