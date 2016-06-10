@@ -293,3 +293,10 @@ git获取帮助方法，<verb>为命令名。
 
 
 ### 2.4 撤消操作
+
+> `$ git commit --amend` 提交遗漏的文件  
+> **例子：**
+>
+>		$ git commit -m 'initial commit'  
+>		$ git add forgotten_file  
+>		$ git commit --amend  
