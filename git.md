@@ -46,6 +46,9 @@ git获取帮助方法，<verb>为命令名。
 >		$ git <verb> --help
 >		$ man git-<verb>
 
+
+----
+
 ## 2. Git基础
 
 ### 2.1 初始化
@@ -58,6 +61,9 @@ git获取帮助方法，<verb>为命令名。
 
 >		$ git clone [url]
 >		$ git clone [url] [name]
+
+
+---
 
 ### 2.2 更新到仓库
 
@@ -217,6 +223,9 @@ git获取帮助方法，<verb>为命令名。
 >    	renamed:    README.md -> README  
 > 上方为重命名操作  
 
+
+---
+
 ### 2.3 查看提交历史
 
 #### 2.3.1 查看提交历史
@@ -291,5 +300,182 @@ git获取帮助方法，<verb>为命令名。
 >|--grep|仅显示含指定关键字的提交|  
 >|-S|仅显示添加或移除了某个关键字的提交|  
 
+---
 
 ### 2.4 撤消操作
+
+> `$ git commit --amend` 提交遗漏的文件  
+>
+> **例子：**
+>
+>		$ git commit -m 'initial commit'  
+>		$ git add forgotten_file  
+>		$ git commit --amend  
+> *说明：最终只有一个提交 - 第二次提交将代替第一次提交的结果。*
+
+#### 2.4.1 取消暂存的文件
+
+> `$ git reset HEAD [文件名]` 取消暂存的文件  
+>
+> **例子：**
+>
+>		$ git add *
+>		$ git status
+>		On branch master
+>		Changes to be committed:
+>  			(use "git reset HEAD <file>..." to unstage)
+>
+>   		 renamed:    README.md -> README
+>   		 modified:   CONTRIBUTING.md
+>
+> *说明：不小心将文件添加多了，要将多余文件移除暂存区*	
+>
+>		$ git reset HEAD CONTRIBUTING.md  
+>		Unstaged changes after reset:  
+>		M	CONTRIBUTING.md
+>		$ git status
+>		On branch master
+>		Changes to be committed:
+>		  (use "git reset HEAD <file>..." to unstage)
+>
+>	  		  renamed:    README.md -> README
+>
+>		Changes not staged for commit:
+>		  (use "git add <file>..." to update what will be committed)
+>		  (use "git checkout -- <file>..." to discard changes in working directory)
+>
+>	    modified:   CONTRIBUTING.md
+> *说明：已经将多余文件移除暂存区*
+
+#### 2.4.2 撤消对文件的修改
+
+> `$ git checkout -- [文件名]` 撤销到上次提交。  
+
+---
+
+### 2.5 远程仓库的使用
+
+#### 2.5.1 查看远程仓库
+
+> `$ git remote `命令，列出远程服务器的简写。  
+>
+> `$ git remote -v` 列出远程仓库的简写与对应的URL地址。
+
+
+#### 2.5.2 添加远程仓库
+
+> ` git remote add [shortname] [url]`[shortname] 为仓库名简写 ，[url]为仓库地址。  
+>
+> `$ git fetch [仓库简写]`拉取仓库信息  
+
+#### 2.5.3 从远程仓库中抓取与拉取
+
+> `$ git fetch [仓库简写]`访问远程仓库，从中拉取所有还没有的数据  
+>
+> 如果使用`clone`命令克隆一个仓库，命令会自动添加远程仓库并默认仓库简写为`origin`。  
+> `git fetch origin` 会抓取克隆（或上一次抓取）后新推送的所有工作。  
+> `git fetch origin` 不会合并或修改当前工作，需要手动合并。
+>
+> `git pull` 命令来自动的抓取然后合并远程分支到当前分支。  
+> *注意：需要一个分支设置为跟踪一个远程分支*
+
+#### 2.5.4 推送到远程仓库
+
+> `git push [仓库简写] [分支名称]` 推送分支
+>
+> 推送时要确保分支为最新的，之后才可以推送
+
+#### 2.5.5 查看远程仓库
+
+> `$ git remote show [仓库简写]`  命令会列出远程仓库的 URL 与跟踪分支的信息。
+
+#### 2.5.6 远程仓库的移除与重命名
+
+> `git remote rename [旧名字] [新名字]` 重命名远程仓库
+>
+> `git remote rm [仓库简写]`删除远程仓库  
+
+---
+
+### 2.6 打标签 
+
+#### 2.6.1 列出标签
+
+> `$ git tag` 列出标签
+> `$ git tag -l 'v1.8.5*'`显示特定版本的标签
+
+#### 2.6.2 创建标签
+Git 使用两种主要类型的标签：轻量标签（lightweight）与附注标签（annotated）  
+
+> **附注标签**  
+>
+> `$ git tag -a v1.4 -m 'my version 1.4'`  
+>
+> 在运行`git tag`时加`-a`
+>
+> `-m`指定一条储存在标签中的信息
+>
+> 使用 `git show` 命令可以看到标签信息与对应的提交信息
+>
+>**例子：**
+>
+>		$ git tag -a v1.4 -m 'my version 1.4'
+>		$ git tag
+>		v0.1
+>		v1.3
+>		v1.4
+>
+> 创建带信息的标签  
+>
+>		$ git show v1.4
+>		tag v1.4
+>		Tagger: Ben Straub <ben@straub.cc>
+>		Date:   Sat May 3 20:19:12 2014 -0700
+>
+>		my version 1.4
+>
+>		commit ca82a6dff817ec66f44342007202690a93763949
+>		Author: Scott Chacon <schacon@gee-mail.com>
+>		Date:   Mon Mar 17 21:52:11 2008 -0700
+>
+>    		changed the version number
+>
+> 查看带信息的标签
+
+---
+
+> **轻量标签**
+>
+> `$ git tag [v1.4-lw]`  [ ]中为轻量化标签,不储存额外的信息  
+>
+> `$ git show [v1.4-lw]` 显示[ ]标签信息
+> 
+
+---
+
+#### 2.6.3 后期打标签
+
+> 先查看记录   
+>
+> `$ git log --pretty=oneline`
+> 
+> `$ git tag -a [v1.2] [9fceb02]` 打标签时，加入部分校验码。[ ]中为标签与校验码。
+
+#### 2.6.4 共享标签
+
+> 需要使用命令推送  
+>
+> `$ git push [origin] [v1.5]`  [v1.5]中为标签, [origin]为仓库简写
+>
+> 如果推送多个
+> `$ git push [origin] --tags` [origin]为仓库简写
+
+#### 2.6.5 检出标签
+
+> 使工作目录与仓库中特定的标签版本完全一样  
+>  
+> `$ git checkout -b [version2] [v2.0.0]` [version2]为分支名称， [v2.0.0]为标签名称。  
+>
+> *如果在这之后又进行了一次提交，version2 分支会因为改动向前移动了，那么 version2 分支就会和 v2.0.0 标签稍微有些不同，这时就应该当心了。*
+
+---
