@@ -10,10 +10,17 @@
 
 
 
+<<<<<<< HEAD
 |username|password|  
 |:------:|:------:|  
 |new     |0       |  
 |root    |0       |
+=======
+>|username|password|  
+>|:------:|:------:|  
+>|new     |0       |  
+>|root    |0       |
+>>>>>>> web/master
 
 
 ## 安装之后
