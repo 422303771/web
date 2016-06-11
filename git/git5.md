@@ -40,11 +40,44 @@
 
 ## 5.2 向一个项目贡献 
 
+> 决定贡献的因素  
+> 1. 活跃贡献者的数量
+> 2. 项目的使用流程
+> 3. 用户的提交权限
+
 ### 5.2.1 提交准则
+
+>**提交信息的快速说明** 在 Git 源代码中的 `Documentation/SubmittingPatches` 文件中阅读 [地址](https://github.com/git/git/blob/master/Documentation/SubmittingPatches)
+>
+>在提交前，运行 git diff --check，它将会找到可能的空白错误并将它们为你列出来。 
+> 
+>接着，让每一个提交独立，每一个问题独立。
+>
+>最后，提交信息要简介。
+>
 
 ### 5.2.2 私有小型团队
 
+>这里的`私有`指的是闭源。
+>
+>通常在一个特性分支工作一会儿，当它准备好整合时合并回你的 master 分支。 当想要共享工作时，将其合并回你自己的 master 分支，如果有改动的话然后抓取并合并 origin/master，最终推送到服务器上的 master 分支。
+>
+>**通常顺序像这样:**
+>
+>![](https://git-scm.com/book/en/v2/book/05-distributed-git/images/small-team-flow.png)
+>
+
 ### 5.2.3 私有管理团队
+
+>
+>许多团队切换到 Git 是因为这一允许多个团队并行工作、并在之后合并不同工作的能力。 团队中更小一些的子小组可以通过远程分支协作而不必影响或妨碍整个团队的能力是 Git 的一个巨大优势。 在这儿看到的工作流程顺序类似这样:
+>
+>![](https://git-scm.com/book/en/v2/book/05-distributed-git/images/managed-team-flow.png)
+>
+>
+>
+>
+
 
 ### 5.2.4 派生的公开项目
 
