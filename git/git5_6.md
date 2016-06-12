@@ -588,17 +588,26 @@ GitHub 是最大的 Git 版本库托管商
 
 ## 6.2 对项目做出贡献
 
+查看用户[文档](https://git-scm.com/book/zh/v2/GitHub-%E5%AF%B9%E9%A1%B9%E7%9B%AE%E5%81%9A%E5%87%BA%E8%B4%A1%E7%8C%AE)
 
 ----
 
 ## 6.3 维护项目
 
+查看用户[文档](https://git-scm.com/book/zh/v2/GitHub-%E7%BB%B4%E6%8A%A4%E9%A1%B9%E7%9B%AE)
 
 ----
 
 ## 6.4 管理组织
 
 
+查看用户[文档](https://git-scm.com/book/zh/v2/GitHub-%E7%AE%A1%E7%90%86%E7%BB%84%E7%BB%87)
+
 -----
 
 ## 6.5 脚本 GitHub
+
+
+
+查看用户[文档](https://git-scm.com/book/zh/v2/GitHub-%E8%84%9A%E6%9C%AC-GitHub)
+
