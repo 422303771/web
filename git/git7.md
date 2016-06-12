@@ -123,9 +123,155 @@ Git后台保持一个引用日志，记录HEAD和分支指向历史。
 		
 ## 7.2 交互式暂存
 
+运行`git add`时，使用`-i`或者`--interactive`,进入交互式终端模式。
+
+	$ git add -i
+	           staged     unstaged path
+	  1:    unchanged        +0/-1 TODO
+	  2:    unchanged        +1/-1 index.html
+	  3:    unchanged        +5/-1 lib/simplegit.rb
+	
+	*** Commands ***
+	  1: status     2: update      3: revert     4: add untracked
+	  5: patch      6: diff        7: quit       8: help
+	What now>
+
 ### 7.2.1 暂存与取消暂存文件
 
+在 ` What now> ` 键入`2`或`u`，脚本将提升想要暂存那个文件。
+
+	What now> 2
+	           staged     unstaged path
+	  1:    unchanged        +0/-1 TODO
+	  2:    unchanged        +1/-1 index.html
+	  3:    unchanged        +5/-1 lib/simplegit.rb
+	Update>>
+
+要暂存TODO与index.html文件，可以输入数字：
+
+	Update>> 1,2
+	           staged     unstaged path
+	* 1:    unchanged        +0/-1 TODO
+	* 2:    unchanged        +1/-1 index.html
+	  3:    unchanged        +5/-1 lib/simplegit.rb
+	Update>>
+	
+有`*`的文件将会被暂存。如果在`update>>`后直接按回车，Git会暂存之前选择的文件：
+
+	Update>>
+	updated 2 paths
+	
+	*** Commands ***
+	  1: status     2: update      3: revert     4: add untracked
+	  5: patch      6: diff        7: quit       8: help
+	What now> 1
+	           staged     unstaged path
+	  1:        +0/-1      nothing TODO
+	  2:        +1/-1      nothing index.html
+	  3:    unchanged        +5/-1 lib/simplegit.rb
+
+TODO与index.html文件已经被暂存，simplegit，rb文件还未被暂存。要取消时TODO，使用`3`或`r`：
+
+	*** Commands ***
+	  1: status     2: update      3: revert     4: add untracked
+	  5: patch      6: diff        7: quit       8: help
+	What now> 3
+	           staged     unstaged path
+	  1:        +0/-1      nothing TODO
+	  2:        +1/-1      nothing index.html
+	  3:    unchanged        +5/-1 lib/simplegit.rb
+	Revert>> 1
+	           staged     unstaged path
+	* 1:        +0/-1      nothing TODO
+	  2:        +1/-1      nothing index.html
+	  3:    unchanged        +5/-1 lib/simplegit.rb
+	Revert>> [enter]
+	reverted one path
+
+查看状态，已经取消暂存TODO文件：
+	
+	*** Commands ***
+	  1: status     2: update      3: revert     4: add untracked
+	  5: patch      6: diff        7: quit       8: help
+	What now> 1
+	           staged     unstaged path
+	  1:    unchanged        +0/-1 TODO
+	  2:        +1/-1      nothing index.html
+	  3:    unchanged        +5/-1 lib/simplegit.rb
+		
+想要查看暂存区内容的区别，可以使用`6`或`d`。会显示暂存列表，可以从中选择想要查看的文件，与`git diff --cached`非常相似。
+
+	*** Commands ***
+	  1: status     2: update      3: revert     4: add untracked
+	  5: patch      6: diff        7: quit       8: help
+	What now> 6
+	           staged     unstaged path
+	  1:        +1/-1      nothing index.html
+	Review diff>> 1
+	diff --git a/index.html b/index.html
+	index 4d07108..4335f49 100644
+	--- a/index.html
+	+++ b/index.html
+	@@ -16,7 +16,7 @@ Date Finder
+	
+	 <p id="out">...</p>
+	
+	-<div id="footer">contact : support@github.com</div>
+	+<div id="footer">contact : email.support@github.com</div>
+	
+	 <script type="text/javascript">
+	
 ### 7.2.2 暂存补丁
+
+git可以暂存文件的特定部分。simplegit.rb 文件中做了两处修改，但只想要暂存其中的一个而不是另一个。
+
+在交互模式下，输入`5`或`p`，git会询问要暂存那些文件，然后，对已选择文件的每一个部分，它都会一个个地显示文件区别并询问你是否想要暂存它们：
+
+	diff --git a/lib/simplegit.rb b/lib/simplegit.rb
+	index dd5ecc4..57399e0 100644
+	--- a/lib/simplegit.rb
+	+++ b/lib/simplegit.rb
+	@@ -22,7 +22,7 @@ class SimpleGit
+	   end
+	
+	   def log(treeish = 'master')
+	-    command("git log -n 25 #{treeish}")
+	+    command("git log -n 30 #{treeish}")
+	   end
+	
+	   def blame(path)
+	Stage this hunk [y,n,a,d,/,j,J,g,e,?]?
+
+这时有很多选项。 输入 ? 显示所有可以使用的命令列表：
+
+	Stage this hunk [y,n,a,d,/,j,J,g,e,?]? ?
+	y - stage this hunk
+	n - do not stage this hunk
+	a - stage this and all the remaining hunks in the file
+	d - do not stage this hunk nor any of the remaining hunks in the file
+	g - select a hunk to go to
+	/ - search for a hunk matching the given regex
+	j - leave this hunk undecided, see next undecided hunk
+	J - leave this hunk undecided, see next hunk
+	k - leave this hunk undecided, see previous undecided hunk
+	K - leave this hunk undecided, see previous hunk
+	s - split the current hunk into smaller hunks
+	e - manually edit the current hunk
+	? - print help
+
+通常情况下可以输入 `y` 或 `n` 来选择是否要暂存每一个区块，当然，暂存特定文件中的所有部分或为之后的选择跳过一个区块也是非常有用的。 如果你只暂存文件的一部分，状态输出可能会像下面这样：
+
+	What now> 1
+	           staged     unstaged path
+	  1:    unchanged        +0/-1 TODO
+	  2:        +1/-1      nothing index.html
+	  3:        +1/-1        +4/-0 lib/simplegit.rb
+
+最后执行`git commit`保存修改。
+
+使用`git add -p`或`git add --patch`也能启动脚本。
+
+*测试时，似乎是有 bug*
 
 ## 7.3 储藏与清理
 
