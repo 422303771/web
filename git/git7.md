@@ -4,24 +4,123 @@ Git技能点进级
 
 ## 7.1 选择修订版本
 
+Git允许通过几种方法来指明提交
+
 ### 7.1.1 单个修订版本
+
+可以通过Git给出的SHA-1值来获取一次提交。当然有其他的方法。
 
 ### 7.1.2 简短的 SHA-1
 
+Git 只提交几个SHA-1开头编码就可以指定文件，编码要大于4位。
+
+**例如：**
+
+	$ git show 1c002dd4b536e7479fe34593e72e6c6c1819e53b
+	$ git show 1c002dd4b536e7479f
+	$ git show 1c002d
+
+上方3条命令，都显示相同的内容。最后一条使用起来更加的方便。
+
+在使用`git log`后加上`--abbrev-commit`，输出结果就显示短SHA-1码，默认为7位，有时会自动增加字符数。
+
+**例子：**
+
+	$ git log --abbrev-commit --pretty=oneline
+	ca82a6d changed the version number
+	085bb3b removed unnecessary test code
+	a11bef0 first commit
+	
+在`$ git log --abbrev-commit --pretty=oneline`加上 `-[数字]`，则显示最后几次的提交。
+
+SHA-1发生冲突的可能性，非常小。
+
 ### 7.1.3 分支引用
+
+指明提交的最直接方法为指向分支。使用`git show `加SHA-1码，或者分支名。两者的作用是一样的。
+
+	
+	$ git show ca82a6dff817ec66f44342007202690a93763949
+	$ git show topic1
+
+上面的命令结果是一样的。
+
+`rev-parse`命令可以查询到分支的SHA-1。
+
+**例子：**
+	
+	$ git rev-parse topic1
+	ca82a6dff817ec66f44342007202690a93763949
+
 
 ### 7.1.4 引用日志
 
+Git后台保持一个引用日志，记录HEAD和分支指向历史。
+
+使用`git reflog`查看引用日志，后方加`@{n}`显示前5次的提交，`{n}`为数字。`{yesterday}`为显示昨天的提交。  
+
+当HEAD的位置变化时，Git就会记录。
+
+	$ git show HEAD@{5}
+	$ git show master@{yesterday}
+
+*引用日志记录的仅仅是本地操作的内容*
+	
 ### 7.1.5 祖先引用
+
+祖先引用是另一种指明一个提到方式。
+
+使用`git show HEAD~`查看上一次提交。`HEAD`可以换为第[n]提交的SHA-1码。
+
+当使用SHA-1码加[数字]时，使用`git show [d921970]^[2]`
+
+在`~ `后添加数字，代表第[n]次前的提交。`$ git show HEAD~[3]`
 
 ### 7.1.6 提交区间
 
 * 双点
 
+![](https://git-scm.com/book/en/v2/book/07-git-tools/images/double-dot.png)
+
+想要查看 experiment分支中有哪些提交没有合并到master分支中。
+
+可以使用`master..experiment`。
+
+**例子**
+
+	$ git log master..experiment
+	D
+	C
+
+想要查看远端分支
+
+	git log origin/master..HEAD
+
 * 多点
 
+查看`refA`或`refB`，但不被`refC`包含。下方的两个命令效果相同。
+
+	$ git log refA refB ^refC  
+	$ git log refA refB --not refC
+	
 * 三点
 
+查看被两者中的一个包含，但不是两者同时包含。
+
+	$ git log master...experiment
+	F
+	E
+	D
+	C
+
+使用`$ git log --left-right master...experiment`能显示提交处于哪一侧分支。
+
+	$ git log --left-right master...experiment
+	< F
+	< E
+	> D
+	> C
+		
 ## 7.2 交互式暂存
 
 ### 7.2.1 暂存与取消暂存文件
