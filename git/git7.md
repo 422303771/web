@@ -317,6 +317,10 @@ git可以暂存文件的特定部分。simplegit.rb 文件中做了两处修改�
 	#
 	#      modified:   lib/simplegit.rb
 	
+使用`git stash drop stash@{0}`删除储存，可以指定储存位置。
+
+使用`git stash pop`回到文件储存时的状态(最新的储存)，并从储存中删除。
+
 
 ### 7.3.2 创造性的储藏
 
