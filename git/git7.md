@@ -120,6 +120,10 @@ Git后台保持一个引用日志，记录HEAD和分支指向历史。
 	< E
 	> D
 	> C
+
+
+----
+
 		
 ## 7.2 交互式暂存
 
@@ -273,6 +277,9 @@ git可以暂存文件的特定部分。simplegit.rb 文件中做了两处修改�
 
 *测试时，似乎是有 bug*
 
+
+----
+
 ## 7.3 储藏与清理
 
 储蓄当前工作，而非提交，方便随时回来。
@@ -324,9 +331,83 @@ git可以暂存文件的特定部分。simplegit.rb 文件中做了两处修改�
 
 ### 7.3.2 创造性的储藏
 
+* `$ git stash --keep-index`
+
+	说明：不储存通过`git add`已经暂存的东西。
+	
+		$ git status -s
+		M  index.html
+		 M lib/simplegit.rb
+		
+		$ git stash --keep-index
+		Saved working directory and index state WIP on master: 1b65b17 added the index file
+		HEAD is now at 1b65b17 added the index file
+		
+		$ git status -s
+		M  index.html
+		
+* `$ git stash -u`与`$ git stash --include-untracked`
+
+	说明：储存全部没有添加过的文件。`git add`过的文件。基本上是储存全部未提交的文件。
+		
+		$ git status -s
+		M  index.html
+		 M lib/simplegit.rb
+		?? new-file.txt
+		
+		$ git stash -u
+		Saved working directory and index state WIP on master: 1b65b17 added the index file
+		HEAD is now at 1b65b17 added the index file
+		
+* `$ git stash --patch`
+
+	说明：不储藏所有修改过的任何文件，但是会交互式地提示哪些改动想要储藏、哪些改动需要保存在工作目录中。
+
+
 ### 7.3.3 从储藏创建一个分支
 
+将储存新建为一个分支。当修改储存的文件，在读取储存时，会出现错误。这时可以使用`$ git stash branch [新分支名]`，将储存的内容放到新分支上，随后自动删除储存。
+
+**例子：**
+
+	$ git stash branch testchanges
+	Switched to a new branch "testchanges"
+	# On branch testchanges
+	# Changes to be committed:
+	#   (use "git reset HEAD <file>..." to unstage)
+	#
+	#      modified:   index.html
+	#
+	# Changed but not updated:
+	#   (use "git add <file>..." to update what will be committed)
+	#
+	#      modified:   lib/simplegit.rb
+	#
+	Dropped refs/stash@{0} (f0dfc4d5dc332d1cee34a634182e168c4efc3359)
+	
 ### 7.3.4 清理工作目录
+
+`git clean ` 用来移除未被跟踪的文件
+
+另一个更安全的方法使用`git stash --all`移除全部，并存储起来。
+
+使用`git clean -f -d`移除工作目录中的未跟踪文件以及空的子目录。`-f`是强制的意思。
+
+使用`$ git clean -d -n`,将说明要移除什么。
+
+	$ git clean -d -n
+	Would remove test.o
+	Would remove tmp/
+
+默认`git clean`只移除没有忽略的未跟踪文件。在`.gitiignore`文件设置的被忽略文件，不会被删除。
+
+`$ git clean -n -d -x`移除文件包括忽略的文件。
+
+`-i`以交换模式运行`$ git clean`。
+
+
+---
+
 
 ## 7.4 签署工作
 
