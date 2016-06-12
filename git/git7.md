@@ -275,7 +275,46 @@ git可以暂存文件的特定部分。simplegit.rb 文件中做了两处修改�
 
 ## 7.3 储藏与清理
 
+储蓄当前工作，而非提交，方便随时回来。
+
+使用`git stash `命令。
+
 ### 7.3.1 储藏工作
+
+当想要切换分支，但是还不想提交之前的改动，运行`git stash` 或 `git stash save`，可以看到改动：
+
+	$ git stash
+	Saved working directory and index state \
+	  "WIP on master: 049d078 added the index file"
+	HEAD is now at 049d078 added the index file
+	(To restore them type "git stash apply")
+	
+在运行`git status`时可以看到工作目录是干净的，这时可以切换分支了。
+
+要查看储存的东西，可以使用`git stach list`:
+	
+	$ git stash list
+	stash@{0}: WIP on master: 049d078 added the index file
+	stash@{1}: WIP on master: c264051 Revert "added file_size"
+	stash@{2}: WIP on master: 21d80a5 added number to log
+
+当想要重新工作时，运行`git stach apply` 或者 `git stash apply stash@{2}`运行之前的储存。如果不指定`stash@{2}`,{2}可以为任意存储编号，git默认指定为最新的储存。
+
+当储存的文件被修改，但是因为储存(stash)前没有暂存(add)，想要重新暂存（add）。要使用`--index`选项运行`git stash apply`命令。
+
+	$ git stash apply --index
+	# On branch master
+	# Changes to be committed:
+	#   (use "git reset HEAD <file>..." to unstage)
+	#
+	#      modified:   index.html
+	#
+	# Changed but not updated:
+	#   (use "git add <file>..." to update what will be committed)
+	#
+	#      modified:   lib/simplegit.rb
+	
+
 
 ### 7.3.2 创造性的储藏
 
