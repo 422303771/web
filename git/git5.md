@@ -546,8 +546,43 @@ Git 中不存在随每次提交递增的“v123”之类的数字序列，如果
 
 # 6. GitHub
 
+GitHub 是最大的 Git 版本库托管商
+
 ## 6.1 账户的创建和配置
 
+注册GitHub，过程略，详细情况可以查看[文档](https://git-scm.com/book/zh/v2/GitHub-%E8%B4%A6%E6%88%B7%E7%9A%84%E5%88%9B%E5%BB%BA%E5%92%8C%E9%85%8D%E7%BD%AE)
+
+### SSH 访问
+
+在用户设置`Settings`中找到`SSH keys`。
+
+* 添加一个公钥
+
+复制`.pub`文件内的内容，到`key`区域，后点击`Add key`
+
+`Title` 没有什么意义，主要是方便识别`Key`。
+
+*参考图如下*
+
+![](https://git-scm.com/book/en/v2/book/06-github/images/ssh-keys.png)
+
+* 头像
+
+内容忽略，详情见[文档](https://git-scm.com/book/zh/v2/GitHub-%E8%B4%A6%E6%88%B7%E7%9A%84%E5%88%9B%E5%BB%BA%E5%92%8C%E9%85%8D%E7%BD%AE)
+
+* 邮件地址
+
+	对于使用多电子邮箱提交，需要添加多电子邮件。
+
+* 两步验证
+
+为了安全性，应当设置两步验证，简写为“2FA”。
+
+开启两步验证，GitHub会要求用两种不同的验证方式。
+
+在`Account settings`页中，`Two-factor Authentication`设置。
+
+可以选择使用APP生产辅助码（一种“基于时间的一次性密码”），还是要GitHub通过SMS发送辅助码。
 
 ----
 
