@@ -411,9 +411,31 @@ git可以暂存文件的特定部分。simplegit.rb 文件中做了两处修改�
 
 ## 7.4 签署工作
 
-检查文件是否可信
+检查文件是否来源可信
 
 ### 7.4.1 GPG 介绍
+
+开始签名之前，需要先配置GPG并安装个人密钥。
+
+如果没有就新创建一个
+
+`$ gpg --gen-key` 需要输入名字，电子邮件，注释，其他信息可以选择默认。
+
+使用`$ gpg --list-keys`来查生成的密钥。
+
+	$ gpg --list-keys
+	/c/Users/k/.gnupg/pubring.gpg
+	-----------------------------
+	pub   2048R/DCBD0501 2016-06-13
+	uid                  username (comment) <gmail@gmail.com>
+	sub   2048R/AE07F126 2016-06-13
+
+当拥有一个可以签署的私钥，通过下方命令来签署。
+
+`git config --global user.signingkey [DCBD0501]` [DCBD0501]为私钥编号。
+
+现在Git使用密钥来签署标签与提交。
+
 
 ### 7.4.2 签署标签
 
