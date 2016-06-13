@@ -227,3 +227,18 @@
 >>`cd ./nautilus-dropbox-1.4.0; ./configure; make; make install;`  
 
 *****
+
+安装Netgare WNDA3100v2 USB
+
+1. `$ lsusb` 显示设备列表。`$ iwconfig`不能找到网卡。
+
+2. `$ sudo apt-get install ndisgtk` 安装ndisgtk管理驱动工具。
+
+3. `$ sudo ndiswrapper -i bcmn43xx64.inf` 安装bcm4323驱动。
+
+4. `$ ndiswrapper -l`查看驱动是否安装成功。
+
+5. 加载驱动模块
+
+		$ sudo depmod -a
+		$ sudo modprobe ndiswrapper
