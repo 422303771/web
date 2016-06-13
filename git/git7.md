@@ -436,6 +436,9 @@ git可以暂存文件的特定部分。simplegit.rb 文件中做了两处修改�
 
 现在Git使用密钥来签署标签与提交。
 
+使用`$ gpg --armor --export [DCBD0501]`来查询密钥。
+
+从`-----BEGIN PGP PUBLIC KEY BLOCK-----`到   `-----END PGP PUBLIC KEY BLOCK-----`结束。添加到项目标记每个人的提交吧。
 
 ### 7.4.2 签署标签
 
