@@ -696,7 +696,21 @@ git可以暂存文件的特定部分。simplegit.rb 文件中做了两处修改�
 
 如果修改失败了可以使用`rm -fr "[项目目录下]/.git/rebase-merge"`清除失败记录。
 
+
 ### 7.6.3 重新排序提交
+
+
+使用 `$ git rebase -i [HEAD^2]` [HEAD^2]为后退步数。
+
+	pick f7f3f6d changed my name a bit
+	pick 310154e updated README formatting and added blame
+	pick a5f4a0d added cat-file
+
+将要删除行直接删除，如下。
+
+	pick 310154e updated README formatting and added blame
+	pick f7f3f6d changed my name a bit
+
 
 ### 7.6.4 压缩提交
 
