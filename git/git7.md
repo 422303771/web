@@ -690,9 +690,12 @@ git可以暂存文件的特定部分。simplegit.rb 文件中做了两处修改�
 
 在退出编辑文档。
 
-输入`git commit --amend` 修改刚刚确定需要修改的提交注释。
+输入`git commit --amend` 修改刚刚确定需改的提交注释。
 
 最后 `$ git rebase --continue` 执行变基。 
+
+
+df dfe f
 
 ### 7.6.3 重新排序提交
 
