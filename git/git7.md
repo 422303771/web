@@ -694,13 +694,7 @@ git可以暂存文件的特定部分。simplegit.rb 文件中做了两处修改�
 
 最后 `$ git rebase --continue` 执行变基。 
 
-
-df dfe f
-
-df df df 
-
-
-sdfd f
+如果修改失败了可以使用`rm -fr "[项目目录下]/.git/rebase-merge"`清除失败记录。
 
 ### 7.6.3 重新排序提交
 
