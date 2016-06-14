@@ -711,7 +711,7 @@ git可以暂存文件的特定部分。simplegit.rb 文件中做了两处修改�
 	pick 310154e updated README formatting and added blame
 	pick f7f3f6d changed my name a bit
 
-
+dfdf
 ### 7.6.4 压缩提交
 
 ### 7.6.5 拆分提交
