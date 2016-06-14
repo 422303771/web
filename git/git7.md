@@ -594,15 +594,74 @@ git可以暂存文件的特定部分。simplegit.rb 文件中做了两处修改�
 
 ## 7.5 搜索
 
+介绍用于查找函数或定义的两种工具。
+
 ### 7.5.1 Git Grep
+
+使用`git grep -n [关键词]`搜索目录中的关键词，并显示行号。`-n`表示输出行号。
+
+>**例子：**
+>		$ git grep -n git
+>		EADME.md:1:# github使用测试
+>		README.md:6:- [ ] git 文档笔记 进行中
+>		README.md:7:- [ ] git markdown 风格制作中
+>		README.md:9:- [ ] 如何将github日记用，研究中
+>		git/git1_2.md:1:# git使用说明
+>		git/git1_2.md:3:[git官方文档](https://git-scm.com/book/en/v2)
+>		git/git1_2.md:5:git GUI乱码修正
+
+如果使用`$ git grep --count [关键词]`仅显示那些文件包含关键词，每个文件有多少个匹配。
+
+**例子：**
+
+>		$ git grep --count git
+>		README.md:4
+>		git/git1_2.md:116
+>		git/git3.md:119
+>		git/git4.md:81
+>		git/git5_6.md:107
+>		git/git7.md:120
+>		git/git8_9.md:1
+>		git/github_more_key.md:12
+>		ubuntu.md:3
+		
+如果想看匹配的行是属于哪一个函数，使用`git grep -p [gmtime_r] [*.c]`[gmtime_r]为关键词，[*.c]为所属文件。
+
+多个词搜索使用`$ git grep -e ['#define'] --and -e [SORT_DIRENT]`,['#define'] 与[SORT_DIRENT]为搜索词。
 
 ### 7.5.2 Git 日志搜索 
 
+想要知道什么时候，添加或者引入，使用`git log -S[关键词] --oneline`
+
+> **例子：**
+>
+>		$ git log -Sbranch --oneline
+>		01dc744 GPG test
+>		f2bddb1 7.3阅读完成
+>		59d652f 7.3.1
+
+
+
 * 行日志搜索
 
+`$ git log -L :[关键词]:[文件名]`，展示代码中的一行或者一个函数的历史。
+
+关于命令的表达方法：下方的两种方法完全一样。
+
+	$ git log -L :git_deflate_bound:zlib.c
+	
+	$ git log -L '/unsigned long git_deflate_bound/',/^}/:zlib.c
+	
 ## 7.6 重写历史
 
+修改提交历史如愿的展示。
+
 ### 7.6.1 修改最后一次提交
+
+通常进行的是修改提交信息，或者修改你添加，修改和移除文件的暂存(add)
+
+`$ git commit --amend`修改最后一次的提交信息。进入文本编辑器修改。
+
 
 ### 7.6.2 修改多个提交信息
 
