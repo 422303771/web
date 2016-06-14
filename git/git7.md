@@ -711,16 +711,25 @@ git可以暂存文件的特定部分。simplegit.rb 文件中做了两处修改�
 	pick 310154e updated README formatting and added blame
 	pick f7f3f6d changed my name a bit
 
-dfdf
-
-
-dfd fd 
-
-dfdf 
-
 ### 7.6.4 压缩提交
 
+将多个提交压缩为一个提交。
+
+使用 `$ git rebase -i [HEAD^2]` [HEAD^2]为后退步数。
+
+在文本文档中将`pick`改为`squash`。
+
+说明：如果要将三个提价压缩为一个，见下面的例子。对于多条提交同样适用。`pick`为最后的提交。
+
+	pick f7f3f6d changed my name a bit
+	squash 310154e updated README formatting and added blame
+	squash a5f4a0d added cat-file
+
+保存后，三次提交压缩为一次提交。
+
 ### 7.6.5 拆分提交
+
+
 
 ### 7.6.6 核武器级选项：filter-branch
 
