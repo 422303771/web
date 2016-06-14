@@ -733,13 +733,20 @@ git可以暂存文件的特定部分。simplegit.rb 文件中做了两处修改�
 
 将要拆分的提交设置为`edit`
 
+在`git commit --amend`出现后，
 
+运行`$ git reset HEAD^`,随后暂存与提交被重置的文件。
+
+最后运行`$ git rebase --continue`结束。
 
 ### 7.6.6 核武器级选项：filter-branch
 
 * 从每一个提交移除一个文件
 * 使一个子目录做为新的根目录
 * 全局修改邮箱地址
+
+
+-----
 
 ## 7.7 重置揭密
 
