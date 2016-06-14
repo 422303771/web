@@ -743,10 +743,40 @@ git可以暂存文件的特定部分。simplegit.rb 文件中做了两处修改�
 
 ### 7.6.6 核武器级选项：filter-branch
 
+`$ git filter-branch`可以大量的改变文件。
+
 * 从每一个提交移除一个文件
+
+	从整个提交历史中移除[文件]，命令如下：
+	
+	`$ git filter-branch --tree-filter 'rm -f [文件名]' HEAD`
+
+	`--tree-filter`在检出项目的，每一个提交后，运行指定的命令，然后重新提交结果。
+
+	为了`filter-branch`在所有分支上运行，加`--all`
+
+
 * 使一个子目录做为新的根目录
+
+	使用`$ git filter-branch --subdirectory-filter trunk HEAD`
+
+	Git会自动移除所有不影响子目录的提交。
+
 * 全局修改邮箱地址
 
+	忘记设置名字与邮箱地址，或者修改邮箱。  
+
+		$ git filter-branch --commit-filter '
+	        if [ "$GIT_AUTHOR_EMAIL" = "schacon@localhost" ];
+	        then
+	                GIT_AUTHOR_NAME="Scott Chacon";
+	                GIT_AUTHOR_EMAIL="schacon@example.com";
+	                git commit-tree "$@";
+	        else
+	                git commit-tree "$@";
+	        fi' HEAD
+		
+	命令会修改每一个提交SHA-1校验。
 
 -----
 
