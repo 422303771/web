@@ -662,6 +662,7 @@ git可以暂存文件的特定部分。simplegit.rb 文件中做了两处修改�
 
 `$ git commit --amend`修改最后一次的提交信息。进入文本编辑器修改。
 
+对于忘记添加文件，或移除文件，先运行`git add `或`git rm`，在运行`git commit --amend`.
 
 ### 7.6.2 修改多个提交信息
 
