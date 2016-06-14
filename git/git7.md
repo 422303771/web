@@ -442,11 +442,155 @@ git可以暂存文件的特定部分。simplegit.rb 文件中做了两处修改�
 
 ### 7.4.2 签署标签
 
+签署命令时，使用`-S ` 代替`-a`。
+
+*$ git tag -a -m "[注释]"命令为标签加注释。*
+
+>**例子：**
+>
+>		$ git tag -s v1.5 -m 'my signed 1.5 tag'
+>	
+>		You need a passphrase to unlock the secret key for
+>		user: "Ben Straub <ben@straub.cc>"
+>		2048-bit RSA key, ID 800430EB, created 2014-05-04
+
+运行`$ git show [v1.5]`可以查看到GPG签名。[v1.5]为标签号。
+>	**例子：**
+>		
+>		$ git show v1.5
+>		tag v1.5
+>		Tagger: Ben Straub <ben@straub.cc>
+>		Date:   Sat May 3 20:29:41 2014 -0700
+>		
+>		my signed 1.5 tag
+>		-----BEGIN PGP SIGNATURE-----
+>		Version: GnuPG v1
+>		
+>		iQEcBAABAgAGBQJTZbQlAAoJEF0+sviABDDrZbQH/09PfE51KPVPlanr6q1v4/Ut
+>		LQxfojUWiLQdg2ESJItkcuweYg+kc3HCyFejeDIBw9dpXt00rY26p05qrpnG+85b
+>		hM1/PswpPLuBSr+oCIDj5GMC2r2iEKsfv2fJbNW8iWAXVLoWZRF8B0MfqX/YTMbm
+>		ecorc4iXzQu7tupRihslbNkfvfciMnSDeSvzCpWAHl7h8Wj6hhqePmLm9lAYqnKp
+>		8S5B/1SSQuEAjRZgI4IexpZoeKGVDptPHxLLS38fozsyi0QyDyzEgJxcJQVMXxVi
+>		RUysgqjcpT8+iQM1PblGfHR4XAhuOqN5Fx06PSaFZhqvWFezJ28/CLyX5q+oIVk=
+>		=EFTF
+>		-----END PGP SIGNATURE-----
+>		
+>		commit ca82a6dff817ec66f44342007202690a93763949
+>		Author: Scott Chacon <schacon@gee-mail.com>
+>		Date:   Mon Mar 17 21:52:11 2008 -0700
+>		
+>		    changed the version number
+	
 ### 7.4.3 验证标签
 
+使用`git tag -v [标签名]`验证使用GPG的签名。
+
+> **例子：**
+>
+>		$ git tag -v v1.4.2.1
+>		object 883653babd8ee7ea23e6a5c392bb739348b1eb61
+>		type commit
+>		tag v1.4.2.1
+>		tagger Junio C Hamano <junkio@cox.net> 1158138501 -0700
+>	
+>		GIT 1.4.2.1
+>	
+>		Minor fixes since 1.4.2, including git-mv and git-http with alternates.
+>		gpg: Signature made Wed Sep 13 02:08:25 2006 PDT using DSA key ID F3119B9A
+>		gpg: Good signature from "Junio C Hamano <junkio@cox.net>"
+>		gpg:                 aka "[jpeg image of size 1513]"
+>		Primary key fingerprint: 3565 2A26 2040 E066 C9A7  4A7D C0C6 D9A4 F311 9B9A
+
+如果没有署名者的公钥，你会得到报错。
+
+>		gpg: Signature made Wed Sep 13 02:08:25 2006 PDT using DSA key ID F3119B9A
+>		gpg: Can't check signature: public key not found
+>		error: could not verify the tag 'v1.4.2.1'
+	
 ### 7.4.4 签署提交
 
+在`$ git commit -m "注释"`时加上`-S`，使用带签名的提交。
+
+> **例子：**
+>
+>		$ git commit -a -S -m 'signed commit'
+>		
+>		You need a passphrase to unlock the secret key for
+>		user: "Scott Chacon (Git signing key) <schacon@gmail.com>"
+>		2048-bit RSA key, ID 0A46826A, created 2014-06-04
+>	
+>		[master 5c3386c] signed commit
+>		 4 files changed, 4 insertions(+), 24 deletions(-)
+> 		 rewrite Rakefile (100%)
+>		 create mode 100644 lib/git.rb
+
+使用`$ git log`时，加上`--show-signature`来查看签名。
+
+>**例子：**
+>
+>		$ git log --show-signature -1
+>		commit 5c3386cf54bba0a33a32da706aa52bc0155503c2
+>		gpg: Signature made Wed Jun  4 19:49:17 2014 PDT using RSA key ID 0A46826A
+>		gpg: Good signature from "Scott Chacon (Git signing key) <schacon@gmail.com>"
+>		Author: Scott Chacon <schacon@gmail.com>
+>		Date:   Wed Jun 4 19:49:17 2014 -0700
+> 
+>	         signed commit
+
+也可以配置`git log`时，加入`%G？`格式化输出。
+
+> **例子：**
+>
+>		$ git log --pretty="format:%h %G? %aN  %s"
+>	
+>		5c3386c G Scott Chacon  signed commit
+>		ca82a6d N Scott Chacon  changed the version number
+>		085bb3b N Scott Chacon  removed unnecessary test code
+>		a11bef0 N Scott Chacon  first commit
+	
+
+在`git merge`与`git pull`中，可以使用`--verify-signatures`来检查并拒绝没有可信GPG的提交。
+
+合并一个未签名提交的分支时，合并不会生效
+
+`$ git merge --verify-signatures non-verify`。
+
+>**例子：**
+>    
+>		$ git merge --verify-signatures non-verify
+>		fatal: Commit ab06180 does not have a GPG signature.
+
+如果合并的分支，有有效的GPG签名时，合并命令会提示GPG签名已经检查过了，然后继续。
+
+>**例子：**
+>
+>		$ git merge --verify-signatures signed-branch
+>		Commit 13ad65e has a good GPG signature by Scott Chacon (Git signing key) <schacon@gmail.com>
+>		Updating 5c3386c..13ad65e
+>		Fast-forward
+>		 README | 2 ++
+>		 1 file changed, 2 insertions(+)
+
+还可以在`git merge`命令后加`-S`来签署合并。
+
+>**例子：**
+>
+>		$ git merge --verify-signatures -S  signed-branch
+>		Commit 13ad65e has a good GPG signature by Scott Chacon (Git signing key) <schacon@gmail.com>
+>		
+>		You need a passphrase to unlock the secret key for
+>		user: "Scott Chacon (Git signing key) <schacon@gmail.com>"
+>		2048-bit RSA key, ID 0A46826A, created 2014-06-04
+>		
+>		Merge made by the 'recursive' strategy.
+>		 README | 2 ++
+>		 1 file changed, 2 insertions(+)
+
+
+
 ### 7.4.5 每个人必须签署
+
+确定要使用签名时，团队的每个人都要建立GPG签名，不然会很麻烦。
 
 ## 7.5 搜索
 
