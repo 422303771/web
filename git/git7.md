@@ -729,6 +729,10 @@ git可以暂存文件的特定部分。simplegit.rb 文件中做了两处修改�
 
 ### 7.6.5 拆分提交
 
+使用 `$ git rebase -i [HEAD^2]` [HEAD^2]为后退步数。
+
+将要拆分的提交设置为`edit`
+
 
 
 ### 7.6.6 核武器级选项：filter-branch
