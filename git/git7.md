@@ -826,6 +826,28 @@ Git 主要是通过操纵三棵树，来以连续的状态记录项目的快照�
 
 ![](https://git-scm.com/book/en/v2/book/07-git-tools/images/reset-ex1.png)
 
+当是用`git add`后
+
+![](https://git-scm.com/book/en/v2/book/07-git-tools/images/reset-ex2.png)
+
+当使用`git commit`后
+
+![](https://git-scm.com/book/en/v2/book/07-git-tools/images/reset-ex3.png)
+
+当修改文件时，
+
+![](https://git-scm.com/book/en/v2/book/07-git-tools/images/reset-ex4.png)
+
+再次使用`git add`时
+
+![](https://git-scm.com/book/en/v2/book/07-git-tools/images/reset-ex5.png)
+
+`git commit`提交后HEAD移动
+
+
+![](https://git-scm.com/book/en/v2/book/07-git-tools/images/reset-ex6.png)
+
+
 ### 7.7.3 重置的作用
 
 * 第 1 步：移动 HEAD

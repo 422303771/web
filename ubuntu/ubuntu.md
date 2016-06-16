@@ -270,7 +270,7 @@ Android Studio [下载](https://developer.android.com/studio/index.html)
 
 不知道有没有安装JDK，可以在终端查询
 
-	$ javac -version
+	$ java -version
 
 1. 安装JDK
 	
@@ -302,13 +302,14 @@ Android Studio [下载](https://developer.android.com/studio/index.html)
 		set PATH="$PATH:$JAVA_HOME/bin"
 		export PATH
 	
-	再次运行输入`javac -version`可看到版本号如下。
+	再次输入`$ java -version`可看到版本号如下。
 		
+		$ java -version
 		java version "1.8.0_91"
 		Java(TM) SE Runtime Environment (build 1.8.0_91-b14)
 		Java HotSpot(TM) 64-Bit Server VM (build 25.91-b14, mixed mode)
 
-	*传说中快捷方法(未测试)*
+	*传说中快捷方法，自动安装。*
 	
 		$ sudo add-apt-repository ppa:webupd8team/java
 		$ sudo apt-get update
