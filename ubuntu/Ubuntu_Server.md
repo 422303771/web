@@ -1,11 +1,10 @@
-Ubuntu Server 16.04 LTS
+# Ubuntu Server 16.04 LTS
+
+## 更新：
 
 	$ sudo apt-get update   //更新软件源
 	$ sudo apt-get upgrade  //升级软件
 	$ sudo apt-get dist-upgrade  //升级系统
-
-
-#
 	
 对于出现：
 		   
