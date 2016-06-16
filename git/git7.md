@@ -782,7 +782,15 @@ git可以暂存文件的特定部分。simplegit.rb 文件中做了两处修改�
 
 ## 7.7 重置揭密
 
+ 介绍`reset`与`checkout`
+
 ### 7.7.1 三棵树
+
+|树|用途|
+|:----:|:----|
+|HEAD|上次提交的快照，下次提交的起点|
+|Index|预提交的快照(`add`命令)|
+|Working Directory|沙盒|
 
 * HEAD
 
