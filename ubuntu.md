@@ -222,6 +222,18 @@
 
 *****
 
+### 安装爱壁纸HD 
+
+官方[下载](https://www.lovebizhi.com/linux.html)
+
+需要额外的包python-support_1.0.15_all.deb [地址](https://launchpad.net/ubuntu/xenial/amd64/python-support/1.0.15)
+
+
+
+----
+
+
+
 ### 安装Netgare WNDA3100v2 USB
 
 1. `$ lsusb` 显示设备列表。`$ iwconfig`不能找到网卡。
@@ -238,6 +250,8 @@
 		$ sudo modprobe ndiswrapper
 
 ----
+
+
 
 ### 安装配置JDK与Android Studio
 
@@ -313,6 +327,12 @@ Android Studio [下载](https://developer.android.com/studio/index.html)
 		$ ./studio.sh
 	
 	弹出窗口，询问导入配置，还是全新用户。选择全新。随后选择内容，安装。
+
+	当出现`unable to run mksdcard sdk tool`时，安装32位包
+
+	$ sudo apt-get install lib32z1 lib32ncurses5 lib32bz2-1.0 lib32stdc++6
+
+	*`lib32bz2-1.0`包没有找到，有手动安装[地址](http://packages.ubuntu.com/trusty/lib32bz2-1.0)*
 
 
 ----
