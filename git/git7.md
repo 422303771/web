@@ -792,13 +792,39 @@ git可以暂存文件的特定部分。simplegit.rb 文件中做了两处修改�
 |Index|预提交的快照(`add`命令)|
 |Working Directory|沙盒|
 
+*注意：“树”指的是“文件的集合”*
+
 * HEAD
+	
+	HEAD是当前分支的指针，总是指向分支上最后一次提交。
+	
+	`$ git cat-file -p HEAD`查看实际的目录列表。
+	
+	`$ git ls-tree -r HEAD`当前全部文件的SHA-1校验
+	
+*注意：`cat-file`与`ls-tree`是底层命令。*
 
 * 索引
 
+	索引，将文件提交到暂存区。
+
 * 工作目录
 
+	项目的工作目录，在没有暂存与提交前，进行文件修改操作。
+
 ### 7.7.2 工作流程
+
+Git 主要是通过操纵三棵树，来以连续的状态记录项目的快照。
+
+参考图，如下：
+
+![](https://git-scm.com/book/en/v2/book/07-git-tools/images/reset-workflow.png)
+
+下方以图片的形式详细说明Git的工作过程。
+
+首先使用`git init`创建一个Git仓库，其中HEAD指向不明，因为什么都没有创建。
+
+![](https://git-scm.com/book/en/v2/book/07-git-tools/images/reset-ex1.png)
 
 ### 7.7.3 重置的作用
 

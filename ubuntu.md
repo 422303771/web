@@ -19,7 +19,7 @@
 
 
 
->安装vmware tools *VWmare虚假机需要安装*  
+>### 安装vmware tools *VWmare虚假机需要安装*  
 >
 >`$ cd vmware-tools-distrib`  
 >`$ sudo ./vmware-install.pl ` 	
@@ -30,7 +30,7 @@
 
 ***********
 
->安装shadowsocks  
+>### 安装shadowsocks  
 >
 >`$ sudo add-apt-repository ppa:hzwhuang/ss-qt5`  
 >`$ sudo apt-get update`  
@@ -38,7 +38,7 @@
 
 ********
 
->安装privoxy //代理工具  
+>### 安装privoxy //代理工具  
 >`$ sudo apt-get install privoxy`  
 
 ># 
@@ -75,7 +75,7 @@
 
 ----
 
->安装google拼音  
+>### 安装google拼音  
 >
 >`$ sudo add-apt-repository ppa:fcitx-team/nightly`  
 >`$ sudo apt-get update`  
@@ -83,7 +83,7 @@
 
 ****
 
->安装 unity-tweak-tool  
+>### 安装 unity-tweak-tool  
 >
 >`$ sudo add-apt-repository ppa:freyja-dev/unity-tweak-tool-daily`  
 >`$ sudo apt-get update`  
@@ -91,13 +91,13 @@
 
 ****
 
->删除火狐  
+>### 删除火狐  
 >  
 > ``$ sudo apt-get remove firefox``  
 
 ****
 
-> 删除libreoffice  
+>###  删除libreoffice  
 > 
 > `$ sudo apt-get remove --purge libreoffice*`   
 > `$ sudo apt-get clean`  
@@ -105,25 +105,25 @@
 
 ****
 
-> 安装新力得  
+>###  安装新力得  
 >
 >`$ sudo apt-get install synaptic`   
 
 ****
 
->安装gdebi  
+>### 安装gdebi  
 >
 > `$ sudo apt-get install gdebi`  
 
 *****
 
->安装chromium  
+>### 安装chromium  
 >
 >`$ sudo apt-get install chromium-browser`  
 
 ****
 
->安装sublime text 3  
+>### 安装sublime text 3  
 >  
 >`$ sudo add-apt-repository ppa:webupd8team/sublime-text-3`  
 >`$ sudo apt-get update`  
@@ -132,7 +132,7 @@
 ****
 		
 
-> 安装与配置zsh与oh-my-zsh  
+> ### 安装与配置zsh与oh-my-zsh  
 
 ># 
 
@@ -168,7 +168,7 @@
 
 ****
 
->安装ravefinity风格  
+>### 安装ravefinity风格  
 >
 >`$ sudo add-apt-repository ppa:ravefinity-project/ppa`   
 >`$ sudo apt-get update`    
@@ -177,7 +177,7 @@
 
 *****
 
->安装my weather  
+>### 安装my weather  
 >
 >>`$ sudo add-apt-repository ppa:atareao/atareao`   
 >>`$ sudo apt-get update`   
@@ -193,12 +193,12 @@
 
 *****
 
->安装网易云音乐  
+>### 安装网易云音乐  
 >去[官方网站](http://music.163.com/#/download)下载  
 
 *****
 
->安装dropbox  
+>### 安装dropbox  
 >去[官方网站](https://www.dropbox.com/install?os=lnx)下载  
 
 ># 
@@ -222,7 +222,7 @@
 
 *****
 
-安装Netgare WNDA3100v2 USB
+### 安装Netgare WNDA3100v2 USB
 
 1. `$ lsusb` 显示设备列表。`$ iwconfig`不能找到网卡。
 
@@ -236,3 +236,86 @@
 
 		$ sudo depmod -a
 		$ sudo modprobe ndiswrapper
+
+----
+
+### 安装配置JDK与Android Studio
+
+JDK [下载](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
+[参考视频](https://www.youtube.com/watch?v=NZB3Iy7Lve4)
+
+Android Studio [下载](https://developer.android.com/studio/index.html)
+[参考视频](https://www.youtube.com/watch?v=qfinKxwYYZs)
+
+当前下载的版本,安装与配置以当前版本为基准。要使用Android Studio首先要安装JDK。
+
+|软件|版本|
+|:----:|:----:|
+|JDK|1.8.0_91|
+|Android Studio|143.2915827|
+
+不知道有没有安装JDK，可以在终端查询
+
+	$ javac -version
+
+1. 安装JDK
+	
+	解压下载包，到根目录`~/`方便以后操作。
+	
+	在`/usr/lib`中创建`java`文件夹使用命令。
+		
+		$ cd /usr/lib/ 
+		$ sudo mkdir java 
+	
+	随后退回到根目录，移动`jdk1.8.0_91`到`/usr/lib/java/`。
+	
+		$ cd ~ 
+		$ sudo mv jdk1.8.0_91/ /usr/lib/java 
+	
+	之后设置JDK。
+	
+		$ sudo update-alternatives --install "/usr/bin/java" "java" "/usr/lib/java/jdk1.8.0_91/bin/java" 1
+		$ sudo update-alternatives --install "/usr/bin/javac" "javac" "/usr/lib/java/jdk1.8.0_91/bin/javac" 1
+		$ sudo update-alternatives --install "/usr/bin/javaws" "javaws" "/usr/lib/java/jdk1.8.0_91/bin/javaws" 1
+	
+	最后配置本机环境。在`~/.bashrc`文件中。
+	
+		$ sudo subl ~/.bashrc 
+	
+	`~/.bashrc`要写入的内容
+	
+		export JAVA_HOME=/usr/lib/java/jdk1.8.0_91
+		set PATH="$PATH:$JAVA_HOME/bin"
+		export PATH
+	
+	再次运行输入`javac -version`可看到版本号如下。
+		
+		java version "1.8.0_91"
+		Java(TM) SE Runtime Environment (build 1.8.0_91-b14)
+		Java HotSpot(TM) 64-Bit Server VM (build 25.91-b14, mixed mode)
+
+	*传说中快捷方法(未测试)*
+	
+		$ sudo add-apt-repository ppa:webupd8team/java
+		$ sudo apt-get update
+		$ sudo apt-get install oracle-java8-installer
+
+
+2. 安装 Android Studio
+	
+	下载Android Studio后解压到`/home`，进入`/home/new/android-studio/bin/`目录
+	
+		$ cd /home/new/android-studio/bin/
+		
+	对`studio.sh`文件提权后，运行。
+	
+		$ sudo chmod 777 -R studio.sh
+		$ ./studio.sh
+	
+	弹出窗口，询问导入配置，还是全新用户。选择全新。随后选择内容，安装。
+
+
+----
+
+
+
