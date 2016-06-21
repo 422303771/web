@@ -950,13 +950,39 @@ Git 主要是通过操纵三棵树，来以连续的状态记录项目的快照�
 
 ## 7.8 高级合并
 
+用来说明合并过程中可能遇到的问题，以及问题的解决方法。
+
 ### 7.8.1 合并冲突
 
+在合并分支前，先清理工作目录，确保没有尚未储存的文件。如果有先保存到一个临时的分支，或者提交到当前分支。
+
 * 中断一次合并
+	
+	`git merge --abort`
+
+	`git merge --abort`选项会尝试恢复到合并前状态。
+	
+	*注意：当目录中有没有储存，没提交的文件时，命令不能工作*
 
 * 忽略空白
 
+	当更改制表符时，常见的错误。Unix换到DOS时，等等类似情况。
+
+	忽略文件中的空白，而后合并。
+	1. `-Xignore-all-space`忽略任意数量的已有空白的修改
+	2. `-Xignore-space-change`忽略所有空白修改
+
+		**例子**	
+
+			$ git merge -Xignore-space-change whitespace
+			Auto-merging hello.rb
+			Merge made by the 'recursive' strategy.
+			 hello.rb | 2 +-
+			 1 file changed, 1 insertion(+), 1 deletion(-)			
+			
 * 手动文件再合并
+
+
 
 * 检出冲突
 
