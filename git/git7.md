@@ -1173,15 +1173,93 @@ Git 主要是通过操纵三棵树，来以连续的状态记录项目的快照�
 
 ### 7.8.2 撤消合并
 
+假设现在在一个特性分支上工作，不小心将其合并到 master 中，现在提交历史看起来是这样  
+
+![](https://git-scm.com/book/en/v2/book/07-git-tools/images/undomerge-start.png)
+
+有两种方法用来撤销合并`修复引用`与`还原提交`
+
 * 修复引用
+   
+	运行`git reset --hard HEAD~`，要在没有提交之前，提交到服务器后，在执行会带来不必要的麻烦。
+	
+	它会重新提交历史，提交后不要使用，提交后不要使用，提交后不要使用。
+
+	**在 git reset --hard HEAD~ 之后的历史**
+
+	![](https://git-scm.com/book/en/v2/book/07-git-tools/images/undomerge-reset.png)
 
 * 还原提交
+
+	还原上一次的提交`$ git revert -m [1] HEAD`[1]为还原的步数。
+
+	使用命令后效果如下图。要撤销C4的合并修改，同时保存C6的内容。使新生成的^m内容完全与C6一致。
+
+	![](https://git-scm.com/book/en/v2/book/07-git-tools/images/undomerge-revert.png)
+
+	这时如果将`topic`合并到`master`中，git会报错。因为已经合并过到M了。
+
+	如果再次在`topic`分支进行修改，随后合并到`master`，那么C3，C4就没有合并到分支上，从而出现错误。
+	
+	说明图如下，
+
+	![](https://git-scm.com/book/en/v2/book/07-git-tools/images/undomerge-revert2.png)
+
+	这时可以撤销到M，更新到^^M,分支，M与^^M的内容相同，随后合并修改后的C7。
+
+		$ git revert HEAD^   //撤销两次。
+
+	![](https://git-scm.com/book/en/v2/book/07-git-tools/images/undomerge-revert3.png)
+	
+	这样合并的结果就包含了，`topic`的修改。
 
 ### 7.8.3 其他类型的合并
 
 * 我们的或他们的偏好
 
+	默认情况下，git在合并产生冲突时，标记错误，并要求用户手动修改。
+
+	当在合并时使用`-Xours`或`-Xtheirs`，可以自动的忽略一个而选择另一个。
+
+	`-Xours`选择保存之前的提交。
+
+	`-Xtheirs`选择保存之后的提交。
+
+	**例子：**
+
+		$ git merge -Xours mundo
+
+
 * 子树合并
+
+	当有两个项目的时候，其中一个映射到另一个子目录，合并时执行一个子树合并，git通常会自动计算之后正确合并。
+
+	先拉取另一分支到目录，切入本地分支与拉取得分支，会发现两者的目录不同。
+
+	假设本地分支为master，拉取的分支为rack_branch。
+
+	先切回master，随后执行`$ git read-tree --prefix=rack/ -u rack_branck`在master的目录下建立rack文件夹，并包含rack的文件。
+
+	当rack项目更新是，依然可以切到rack_brank分支进行拉取更新。
+
+	将rack拉取的更新合并到master，使用命令：
+
+		$ git checkout master
+		$ git merge --squash -s recursive -Xsubtree=rack rack_branch
+
+	*注意：*
+
+	当要查看rack子目录与rack_branch分支的差异时，使用`$ git diff-tree`而不是`$ git diff`。
+
+		$ git diff-tree -p rack_branch
+
+	或者，将子目录与最后一次抓取的master分支进行比较。
+
+		$ git diff-tree -p rack_remote/master
+
+
+----
+
 
 ## 7.9 Rerere
 
