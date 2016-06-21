@@ -982,13 +982,194 @@ Git 主要是通过操纵三棵树，来以连续的状态记录项目的快照�
 			
 * 手动文件再合并
 
+	先将冲突文件提取为备份，使用`stages`控制提取是的文本。
+
+	|stages|说明|
+	|:----:|:----|
+	|stages 1|文件的共同祖先版本|
+	|stages 2|你的版本|
+	|stages 3|来自MERGE_HEAD的版本，将要合并的版本|
+
+	**例子：**
+
+		$ git show :1:hello.rb > hello.common.rb
+		$ git show :2:hello.rb > hello.ours.rb
+		$ git show :3:hello.rb > hello.theirs.rb
+
+	也可以使用`ls-files -u`来得到文件的SHA-1值。
+
+	**效果如下**
+
+		$ git ls-files -u
+		100755 ac51efdc3df4f4fd328d1a02ad05331d8e2c9111 1	hello.rb
+		100755 36c06c8752c78d2aff89571132f3bf7841a7b5c3 2	hello.rb
+		100755 e85207e04dfdd5eb0a1e9febbc67fd837c44a1cd 3	hello.rb
 
 
+	手动修改文件后，使用`git merge-file`来合并分离开的文件。
+
+	`$ dos2unix [文件]`将指定文件的制表符，从DOS改为unix。
+
+	**例子：**
+
+		$ dos2unix hello.theirs.rb
+		dos2unix: converting file hello.theirs.rb to Unix format ...
+		
+		$ git merge-file -p \
+		    hello.ours.rb hello.common.rb hello.theirs.rb > hello.rb
+		
+		$ git diff -b
+		diff --cc hello.rb
+		index 36c06c8,e85207e..0000000
+		--- a/hello.rb
+		+++ b/hello.rb
+		@@@ -1,8 -1,7 +1,8 @@@
+		  #! /usr/bin/env ruby
+		
+		 +# prints out a greeting
+		  def hello
+		-   puts 'hello world'
+		+   puts 'hello mundo'
+		  end
+		
+		  hello()
+		
+	最后使用`git clean`命令来清理手动产出的文件。
+
+	**例子：**
+
+		$ git clean -f
+		Removing hello.common.rb
+		Removing hello.ours.rb
+		Removing hello.theirs.rb
+			
 * 检出冲突
 
+	**例子：**
+		
+		$ git log --graph --oneline --decorate --all
+		* f1270f7 (HEAD, master) update README
+		* 9af9d3b add a README
+		* 694971d update phrase to hola world
+		| * e3eb223 (mundo) add more tests
+		| * 7cff591 add testing script
+		| * c3ffff1 changed text to hello mundo
+		|/
+		* b7dcc89 initial hello world code
+
+	现在有只在 master 分支上的三次单独提交，还有其他三次提交在 mundo 分支上。 如果我们尝试将 mundo 分支合并入 master 分支，我们得到一个冲突。
+	
+		$ git merge mundo
+		Auto-merging hello.rb
+		CONFLICT (content): Merge conflict in hello.rb
+		Automatic merge failed; fix conflicts and then commit the result.
+
+	关于冲突的显示方法`$ git checkout --conflict [文件]`，检出文件并替换合并冲突标记。
+	
+	`-- conflict`参数有`diff3`或`merge`。使用`diff3`时，增加`base`版本
+
+	**例子：**
+
+		$ git checkout --conflict=diff3 hello.rb
+		
+	返回结果如下：
+
+		#! /usr/bin/env ruby
+		
+		def hello
+		<<<<<<< ours
+		  puts 'hola world'
+		||||||| base
+		  puts 'hello world'
+		=======
+		  puts 'hello mundo'
+		>>>>>>> theirs
+		end
+		
+		hello()
+
+如果喜欢这种格式可以使用`merge.conflictstyle`设置`diff3`为默认选项。
+
+	$ git config --global merge.conflictstyle diff3
+
+还可以使用`--ours`和`--theirs`,选择留下一边，删除另一边。
+
 * 合并日志
+	
+	使用`git log`解决合并冲突。
+	
+	**例子：**
+	
+		$ git log --oneline --left-right HEAD...MERGE_HEAD
+		< f1270f7 update README
+		< 9af9d3b add a README
+		< 694971d update phrase to hola world
+		> e3eb223 add more tests
+		> 7cff591 add testing script
+		> c3ffff1 changed text to hello mundo
+	
+	使用`--merge`选项，会只显示任何一个触发合并冲突的提交。
+
+		$ git log --oneline --left-right --merge
+		< 694971d update phrase to hola world
+		> c3ffff1 changed text to hello mundo
+
+	如果在运行命令是加`-p`选项，会看到所有冲突文件的区别，很有用。	
 
 * 组合式差异格式
+
+	当合并冲突时，直接运行`git diff`会显示一个独特的输出格式。这种格式叫作`组合式差异`
+	
+	**例子：**
+
+		$ git diff
+		diff --cc hello.rb
+		index 0399cd5,59727f0..0000000
+		--- a/hello.rb
+		+++ b/hello.rb
+		@@@ -1,7 -1,7 +1,11 @@@
+		  #! /usr/bin/env ruby
+		
+		  def hello
+		++<<<<<<< HEAD
+		 +  puts 'hola world'
+		++=======
+		+   puts 'hello mundo'
+		++>>>>>>> mundo
+		  end
+		
+		  hello()	
+
+	可以在后，使用`git log`来获取相同信息，增加`-p`与`--cc`参数。
+
+	**例子：**
+		
+		$ git log --cc -p -1
+		commit 14f41939956d80b9e17bb8721354c33f8d5b5a79
+		Merge: f1270f7 e3eb223
+		Author: Scott Chacon <schacon@gmail.com>
+		Date:   Fri Sep 19 18:14:49 2014 +0200
+		
+		    Merge branch 'mundo'
+		
+		    Conflicts:
+		        hello.rb
+		
+		diff --cc hello.rb
+		index 0399cd5,59727f0..e1d0799
+		--- a/hello.rb
+		+++ b/hello.rb
+		@@@ -1,7 -1,7 +1,7 @@@
+		  #! /usr/bin/env ruby
+		
+		  def hello
+		-   puts 'hola world'
+		 -  puts 'hello mundo'
+		++  puts 'hola mundo'
+		  end
+		
+		  hello()	
+	
 
 ### 7.8.2 撤消合并
 
