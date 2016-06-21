@@ -1263,6 +1263,153 @@ Git 主要是通过操纵三棵树，来以连续的状态记录项目的快照�
 
 ## 7.9 Rerere
 
+
+说明：它允许你让Git记住解决一个冲突的方法，下一次有相同冲突时，Git可以为你自动解决。
+
+`$ git rerere`是一个隐藏的功能。
+
+开启功能是，需要使用命令设置：
+
+	$ git config --global rerere.enabled ture
+
+也可以通过 **创建.git/rr-cache目录**来开启功能，但是使用起来没有命令方便，命令是全局控制的。
+
+**例子:**
+
+当分支中的文件产生可能的冲突时。
+
+![](https://git-scm.com/book/en/v2/book/07-git-tools/images/rerere1.png)
+
+当合并两个分支到一起时，将得到一个合并冲突
+
+	$ git merge i18n-world
+	Auto-merging hello.rb
+	CONFLICT (content): Merge conflict in hello.rb
+	Recorded preimage for 'hello.rb'
+	Automatic merge failed; fix conflicts and then commit the result.
+	
+*注意：Recorded preimage for 'hello.rb'* 其中的'hello.rb'可能是任意的冲突文件。
+
+之后使用`$ git status`不会有任何的冲突提示，但是可以使用`$ git rerere status`查看。
+
+使用`$ git rerere diff`将会显示解决方案的当前状态，即开始解决前与解决后的样子。
+
+**例子：**
+
+	$ git rerere diff
+	--- a/hello.rb
+	+++ b/hello.rb
+	@@ -1,11 +1,11 @@
+	 #! /usr/bin/env ruby
+	
+	 def hello
+	-<<<<<<<
+	-  puts 'hello mundo'
+	-=======
+	+<<<<<<< HEAD
+	   puts 'hola world'
+	->>>>>>>
+	+=======
+	+  puts 'hello mundo'
+	+>>>>>>> i18n-world
+	 end
+
+还可以使用`$ git ls-files -u`查看冲突文件之前，左右两边的情况。
+
+**例子：**
+
+	$ git ls-files -u
+	100644 39804c942a9c1f2c03dc7c5ebcd7f3e3a6b97519 1	hello.rb
+	100644 a440db6e8d1fd76ad438a49025a9ad9ce746f581 2	hello.rb
+	100644 54336ba847c3758ab604876419607e9443848474 3	hello.rb
+
+当合并的结果并不满意时，就需要手动修改。之后执行`$ git add [文件]`与`$ git commit`
+
+没有手动修改的结果：
+
+![](https://git-scm.com/book/en/v2/book/07-git-tools/images/rerere2.png)
+
+现在撤销合并，将它变基到master分支。使用命令`$ git reset --hard HEAD^`回到上次的状态。
+
+随后切到`i18-world`分支，执行变基。
+
+	$ git checkout i18n-world
+	Switched to branch 'i18n-world'
+	
+	$ git rebase master
+	First, rewinding head to replay your work on top of it...
+	Applying: i18n one word
+	Using index info to reconstruct a base tree...
+	Falling back to patching base and 3-way merge...
+	Auto-merging hello.rb
+	CONFLICT (content): Merge conflict in hello.rb
+	Resolved 'hello.rb' using previous resolution.
+	Failed to merge in the changes.
+	Patch failed at 0001 i18n one word
+	
+当看到`Resolved 'hello.rb' using previous resolution.`这行时，说明合并冲突已经自动解决了。
+
+再次查看文件时，可以看到里面没有合并冲突的标记。使用`$ cat [文件]`查看
+
+使用`$ git diff`也可以看出它是如何自动解决的。
+
+	$ git diff
+	diff --cc hello.rb
+	index a440db6,54336ba..0000000
+	--- a/hello.rb
+	+++ b/hello.rb
+	@@@ -1,7 -1,7 +1,7 @@@
+	  #! /usr/bin/env ruby
+	
+	  def hello
+	-   puts 'hola world'
+	 -  puts 'hello mundo'
+	++  puts 'hola mundo'
+	  end
+
+**下方是参考图片**
+
+![](https://git-scm.com/book/en/v2/book/07-git-tools/images/rerere3.png)
+
+
+还可以通过`checkout`命令重新恢复到冲突的文件状态。
+
+	$ git checkout --conflict=merge hello.rb
+	$ cat hello.rb
+	#! /usr/bin/env ruby
+	
+	def hello
+	<<<<<<< ours
+	  puts 'hola world'
+	=======
+	  puts 'hello mundo'
+	>>>>>>> theirs
+	end
+
+随后运行`$ git rerere`解决。
+
+	$ git rerere
+	Resolved 'hello.rb' using previous resolution.
+	$ cat hello.rb
+	#! /usr/bin/env ruby
+	
+	def hello
+	  puts 'hola mundo'
+	end
+
+通过`rerere`解决文件冲突后，添加并继续变基完成。
+	
+	$ git add hello.rb
+	$ git rebase --continue
+	Applying: i18n one word
+	
+如果做了很多次重新合并，或者想要一个特性分支始终与你的 master 分支保持最新但却不想要一大堆合并，或者经常变基，打开 rerere 功能可以帮助你的生活变得更美好。
+
+
+----
+
+
+
 ## 7.10 使用 Git 调试
 
 ### 7.10.1 文件标注
