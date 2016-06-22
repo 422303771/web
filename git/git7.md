@@ -1412,10 +1412,97 @@ Git 主要是通过操纵三棵树，来以连续的状态记录项目的快照�
 
 ## 7.10 使用 Git 调试
 
+用于跟踪bug或者找错误。
+
 ### 7.10.1 文件标注
 
+`$ git blame` 标注指定文件，查看每一行的最后修改时间，以及被谁修改的。`-L`指定输出范围。
+
+**例子：**
+
+	$ git blame -L 12,22 simplegit.rb
+	^4832fe2 (Scott Chacon  2008-03-15 10:31:28 -0700 12)  def show(tree = 'master')
+	^4832fe2 (Scott Chacon  2008-03-15 10:31:28 -0700 13)   command("git show #{tree}")
+	^4832fe2 (Scott Chacon  2008-03-15 10:31:28 -0700 14)  end
+	^4832fe2 (Scott Chacon  2008-03-15 10:31:28 -0700 15)
+	9f6560e4 (Scott Chacon  2008-03-17 21:52:20 -0700 16)  def log(tree = 'master')
+	79eaf55d (Scott Chacon  2008-04-06 10:15:08 -0700 17)   command("git log #{tree}")
+	9f6560e4 (Scott Chacon  2008-03-17 21:52:20 -0700 18)  end
+	9f6560e4 (Scott Chacon  2008-03-17 21:52:20 -0700 19)
+	42cf2861 (Magnus Chacon 2008-04-13 10:45:01 -0700 20)  def blame(path)
+	42cf2861 (Magnus Chacon 2008-04-13 10:45:01 -0700 21)   command("git blame #{path}")
+	42cf2861 (Magnus Chacon 2008-04-13 10:45:01 -0700 22)  end
+
+例子说明：第一项为SHA-1值，第二项是用户名称，第三项是修改时间，最后是文件行的内容。
+
+*注意：^4832fe2为第一次提交的行*
+
+`-C`选项，查看代码来源。
+
+**例子：**
+
+将GITServerHandler.m文件拆分为数个文件，其中一个是GITPackUpload.m
+
+使用`-C`参数，可以看到代码的原始出处。
+
+	$ git blame -C -L 141,153 GITPackUpload.m
+	f344f58d GITServerHandler.m (Scott 2009-01-04 141)
+	f344f58d GITServerHandler.m (Scott 2009-01-04 142) - (void) gatherObjectShasFromC
+	f344f58d GITServerHandler.m (Scott 2009-01-04 143) {
+	70befddd GITServerHandler.m (Scott 2009-03-22 144)         //NSLog(@"GATHER COMMI
+	ad11ac80 GITPackUpload.m    (Scott 2009-03-24 145)
+	ad11ac80 GITPackUpload.m    (Scott 2009-03-24 146)         NSString *parentSha;
+	ad11ac80 GITPackUpload.m    (Scott 2009-03-24 147)         GITCommit *commit = [g
+	ad11ac80 GITPackUpload.m    (Scott 2009-03-24 148)
+	ad11ac80 GITPackUpload.m    (Scott 2009-03-24 149)         //NSLog(@"GATHER COMMI
+	ad11ac80 GITPackUpload.m    (Scott 2009-03-24 150)
+	56ef2caf GITServerHandler.m (Scott 2009-01-05 151)         if(commit) {
+	56ef2caf GITServerHandler.m (Scott 2009-01-05 152)                 [refDict setOb
+	56ef2caf GITServerHandler.m (Scott 2009-01-05 153)
+	
 ### 7.10.2 二分查找
 
+用于查找未知文件错误，首先使用`$ git bisect start`来启动，最后执行`$ git bisect bad`来告诉系统，你所在的提交是有问题的，最后使用`$ git bisect good [好的]`
+
+	$ git bisect start
+	$ git bisect bad
+	$ git bisect good v1.0
+	Bisecting: 6 revisions left to test after this
+	[ecb6e1bc347ccecc5f9350d878ce677feb13d3b2] error handling on repo
+
+Git在你标记为正常的提交和当前的错误版本之间有12次左右的提交，git会检出中的提交。
+
+现在可以执行测试，如果问题还存在，说明问题在前六次的提交，如果没有问题，说明问题在后6次的提交。
+
+如果没有问题，通过`$ git bisect good`来告诉Git，继续寻找。
+	
+	$ git bisect good
+	Bisecting: 3 revisions left to test after this
+	[b047b02ea83310a70fd603dc8cd7a6cd13d15c04] secure this thing
+
+现在你在另一个提交上，这个提交是刚刚那个测试通过的提交和有问题提交的中点。再一次执行测试，发现这个提交是有问题的，可以通过`$ git bisect bad`告诉Git
+	
+	$ git bisect bad
+	Bisecting: 1 revisions left to test after this
+	[f71ce38690acf49c1f3c9bea38e09d82a5ce6014] drop exceptions table
+
+现在git拥有的信息可以确定引入问题的位置，它会告诉你第一个提交的SHA-1 值并显示一些提交说明。方便找出问题的根源。
+
+	$ git bisect good
+	b047b02ea83310a70fd603dc8cd7a6cd13d15c04 is first bad commit
+	commit b047b02ea83310a70fd603dc8cd7a6cd13d15c04
+	Author: PJ Hyett <pjhyett@example.com>
+	Date:   Tue Jan 27 14:48:32 2009 -0800
+	
+	    secure this thing
+	
+	:040000 040000 40ee3e7821b895e52c1695092db9bdc4c61d1730
+	f24d3c6ebcfc639b1a3814550e62d60b8e68a8e4 M  config
+		
+随后使用`$ git bisect reset`重置HEAD到最开始位置。
+
+可以写一个脚本，来处理`git bisect`方法见[文档](https://git-scm.com/book/zh/v2/Git-%E5%B7%A5%E5%85%B7-%E4%BD%BF%E7%94%A8-Git-%E8%B0%83%E8%AF%95#二分查找)
+	
 ## 7.11 子模块
 
 ### 7.11.1 开始使用子模块
