@@ -39,3 +39,6 @@
 		sudo gitlab-ctl reconfigure
 
 默认登陆的用户名是root，密码在第一次登陆时设置。
+
+## 安装laravel
+

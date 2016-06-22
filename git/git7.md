@@ -1505,7 +1505,95 @@ Git在你标记为正常的提交和当前的错误版本之间有12次左右的
 	
 ## 7.11 子模块
 
+当项目中，需要包含并使用另一个项目，也许是第三方库。或者独立开发的，用于多个父项目的库。
+
+现在，想要把他们当做两个独立的项目，同时又想在一个项目中使用另一个。
+
+**例子：**
+
+假设你正在开发一个网站然后创建了 Atom 订阅。 你决定使用一个库，而不是写自己的 Atom 生成代码。 你可能不得不通过 CPAN 安装或 Ruby gem 来包含共享库中的代码，或者将源代码直接拷贝到自己的项目中。 如果将这个库包含进来，那么无论用何种方式都很难定制它，部署则更加困难，因为你必须确保每一个客户端都包含该库。 如果将代码复制到自己的项目中，那么你做的任何自定义修改都会使合并上游的改动变得困难。
+
+Git通过子模块来解决这个问题，子模块允许你将一个Git仓库作为另一个Git仓库的子目录，它能让你将另一个仓库克隆到自己的项目中，同时还保持提交的独立。
+
 ### 7.11.1 开始使用子模块
+
+**例子：**
+
+我们将要演示如何在一个被分成一个主项目与几个子项目上开发。
+
+我们首先将一个已存在的Git仓库添加为正在工作的仓库的子模块，你可以通过`git submodule add [仓库地址]`来添加子模块。
+
+例子中将添加一个名为`DbConnector`的库
+
+	$ git submodule add https://github.com/chaconinc/DbConnector
+	Cloning into 'DbConnector'...
+	remote: Counting objects: 11, done.
+	remote: Compressing objects: 100% (10/10), done.
+	remote: Total 11 (delta 0), reused 11 (delta 0)
+	Unpacking objects: 100% (11/11), done.
+	Checking connectivity... done.
+
+默认情况下，子模块会将子项目放到一个与仓库同名的目录中，本例中是`DbConnector`,如果想要放到其他地方，那么可以在命令结尾添加一个不同的路径。
+
+这时运行`git status`,可以看到新的文件以及`.gitmodules`文件。
+
+	$ git status
+	On branch master
+	Your branch is up-to-date with 'origin/master'.
+	
+	Changes to be committed:
+	  (use "git reset HEAD <file>..." to unstage)
+	
+		new file:   .gitmodules
+		new file:   DbConnector
+
+`.gitmodules`文件，用来保存项目URL与已经拉取的本地目录之间的映射。查看一下文件的内容。
+	
+	$ cat .gitmodules
+	[submodule "DbConnector"]
+		path = DbConnector
+		url = https://github.com/chaconinc/DbConnector
+
+如果有多个子模块，该文件就会有多条记录。
+
+*注意：`.gitmodules`文件同样受版本控制，它会和该项目的其他部分一同被拉取推送。克隆项目的人就知道要去哪找子模块了。*
+
+`$ git status`显示的另外一个输出是文件夹的记录，如果运行`git diff`，会看到类似的下面的信息：
+
+	$ git diff --cached DbConnector
+	diff --git a/DbConnector b/DbConnector
+	new file mode 160000
+	index 0000000..c3f01dc
+	--- /dev/null
+	+++ b/DbConnector
+	@@ -0,0 +1 @@
+	+Subproject commit c3f01dc8862123d317dd46284b05b6892c7b29bc
+
+虽然`DbConnector`是工作目录的一个子目录，但是Git还是会将它视作一个子模块。当你不在子模块的目录中时，Git不会跟踪它的内容，而是将它看作一个特殊提交。
+	
+如果想要更漂亮的输出，可以给`git diff`加`--submodule`选项。
+
+	$ git diff --cached --submodule
+	diff --git a/.gitmodules b/.gitmodules
+	new file mode 100644
+	index 0000000..71fc376
+	--- /dev/null
+	+++ b/.gitmodules
+	@@ -0,0 +1,3 @@
+	+[submodule "DbConnector"]
+	+       path = DbConnector
+	+       url = https://github.com/chaconinc/DbConnector
+	Submodule DbConnector 0000000...c3f01dc (new submodule)
+
+当你提交时，会看到下方的信息
+
+	$ git commit -am 'added DbConnector module'
+	[master fb9093c] added DbConnector module
+	 2 files changed, 4 insertions(+)
+	 create mode 100644 .gitmodules
+	 create mode 160000 DbConnector
+
+*注意：`DbConnector`记录的160000模式，这是一种特殊模式，它意味着你将一次提交作为一项目录记录，而非将它记录成一个子目录或者一个文件。*
 
 ### 7.11.2 克隆含有子模块的项目
 
