@@ -12,3 +12,30 @@
     y updates are security updates.
 
 只是每日提示日记。如果想要移除，修改`/etc/update-motd.d/90-updates-available`文件。
+
+## 安装Gitlab
+
+私有git仓库工具，可以设置在任何主机上，主机限定linux。
+
+[官方地址](https://about.gitlab.com/)
+
+社区版，可以建立最多十个项目。
+
+安装以社区版为例。
+
+*注意：需要梯子*
+
+1. 安装与配置必要依赖
+
+		sudo apt-get install curl openssh-server ca-certificates postfix
+
+2. 安装Gitlab源与软件包
+
+		curl -sS https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh | sudo bash
+		sudo apt-get install gitlab-ce
+
+3. 设置并启动Gitlab
+
+		sudo gitlab-ctl reconfigure
+
+默认登陆的用户名是root，密码在第一次登陆时设置。
