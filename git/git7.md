@@ -1597,9 +1597,186 @@ Git通过子模块来解决这个问题，子模块允许你将一个Git仓库�
 
 ### 7.11.2 克隆含有子模块的项目
 
+当克隆一个含有子模块的项目时，默认会包含子模块目录，但其中还没有任何文件。
+
+**例子:**
+
+	$ git clone https://github.com/chaconinc/MainProject
+	Cloning into 'MainProject'...
+	remote: Counting objects: 14, done.
+	remote: Compressing objects: 100% (13/13), done.
+	remote: Total 14 (delta 1), reused 13 (delta 0)
+	Unpacking objects: 100% (14/14), done.
+	Checking connectivity... done.
+	$ cd MainProject
+	$ ls -la
+	total 16
+	drwxr-xr-x   9 schacon  staff  306 Sep 17 15:21 .
+	drwxr-xr-x   7 schacon  staff  238 Sep 17 15:21 ..
+	drwxr-xr-x  13 schacon  staff  442 Sep 17 15:21 .git
+	-rw-r--r--   1 schacon  staff   92 Sep 17 15:21 .gitmodules
+	drwxr-xr-x   2 schacon  staff   68 Sep 17 15:21 DbConnector
+	-rw-r--r--   1 schacon  staff  756 Sep 17 15:21 Makefile
+	drwxr-xr-x   3 schacon  staff  102 Sep 17 15:21 includes
+	drwxr-xr-x   4 schacon  staff  136 Sep 17 15:21 scripts
+	drwxr-xr-x   4 schacon  staff  136 Sep 17 15:21 src
+	$ cd DbConnector/
+	$ ls
+	$
+
+其中有`DbConnector`目录，但是空的。必须运行两个命令：`$ git submodule init`用来初始化本地配置文件。而`$ git submodule update`则从该项目中抓取所有数据，并检出父项目中列出的合适的提交。
+
+	$ git submodule init
+	Submodule 'DbConnector' (https://github.com/chaconinc/DbConnector) registered for path 'DbConnector'
+	$ git submodule update
+	Cloning into 'DbConnector'...
+	remote: Counting objects: 11, done.
+	remote: Compressing objects: 100% (10/10), done.
+	remote: Total 11 (delta 0), reused 11 (delta 0)
+	Unpacking objects: 100% (11/11), done.
+	Checking connectivity... done.
+	Submodule path 'DbConnector': checked out 'c3f01dc8862123d317dd46284b05b6892c7b29bc'
+
+现在`DbConnector`子目录的状态与提交时相同了。
+
+**快捷方式：**
+
+如果给`$ git clone`命令加`--recursive`选项，它就会自动的初始化并更新仓库中的每一个子模块。
+
+	$ git clone --recursive [url]    //[url]指链接地址。
+
+**例子:**
+
+	$ git clone --recursive https://github.com/chaconinc/MainProject
+	Cloning into 'MainProject'...
+	remote: Counting objects: 14, done.
+	remote: Compressing objects: 100% (13/13), done.
+	remote: Total 14 (delta 1), reused 13 (delta 0)
+	Unpacking objects: 100% (14/14), done.
+	Checking connectivity... done.
+	Submodule 'DbConnector' (https://github.com/chaconinc/DbConnector) registered for path 'DbConnector'
+	Cloning into 'DbConnector'...
+	remote: Counting objects: 11, done.
+	remote: Compressing objects: 100% (10/10), done.
+	remote: Total 11 (delta 0), reused 11 (delta 0)
+	Unpacking objects: 100% (11/11), done.
+	Checking connectivity... done.
+	Submodule path 'DbConnector': checked out 'c3f01dc8862123d317dd46284b05b6892c7b29bc'
+	
 ### 7.11.3 在包含子模块的项目上工作
 
+同时与主项目和子项目上的队员协作。
+
 * 拉取上游修改
+
+	下面的例子中，将使用最简单的模型，只使用子项目并不时地更新，也不对子项目进行任何修改。
+
+	如果要查看子模块中的新工作，可以进入到目录中运行`$ git fetch`与`git merge`,合并上游分支来更新本地代码。
+		
+		$ git fetch
+		From https://github.com/chaconinc/DbConnector
+		   c3f01dc..d0354fc  master     -> origin/master
+		$ git merge origin/master
+		Updating c3f01dc..d0354fc
+		Fast-forward
+		 scripts/connect.sh | 1 +
+		 src/db.c           | 1 +
+		 2 files changed, 2 insertions(+)
+
+如果现在返回主项目并运行`$ git diff --submodule`,就会看到子模块被更新，同时获得了一个包含新添加提交的列表。如果你不想每次运行`$ git diff`时都输入`--submodule`,那么可以将`diff.submodule`设置为`log`来将其作为默认行为。
+
+**例子：**
+
+	$ git config --global diff.submodule log
+	$ git diff
+	Submodule DbConnector c3f01dc..d0354fc:
+	  > more efficient db routine
+	  > better connection routine
+
+如果现在提交，那么子模块锁定为其他人更新时的新代码。
+
+如果不想手动抓取与合并，那么还有更容易的方式。运作`$ git submodule update --remote [子模块名]`,Git将会进入子模块然后抓取更新。
+
+	$ git submodule update --remote DbConnector
+	remote: Counting objects: 4, done.
+	remote: Compressing objects: 100% (2/2), done.
+	remote: Total 4 (delta 2), reused 4 (delta 2)
+	Unpacking objects: 100% (4/4), done.
+	From https://github.com/chaconinc/DbConnector
+	   3f19983..d0354fc  master     -> origin/master
+	Submodule path 'DbConnector': checked out 'd0354fc054692d3906c85c3af05ddce39a1c0644'
+
+此命令默认会假定你要更新子模块仓库的`master`分支。也可以设置为其它分支。
+
+例如，你要DbConnector子模块跟踪仓库的`stable`分支，那么可以在`.gitmodules`文件中设置（这种方法使其他人也可以跟踪），也可以在`.git/config`文件中设置。
+
+在`.gitmodules`中设置方法
+
+	$ git config -f .gitmodules submodule.DbConnector.branch stable
+
+之后可以直接使用`$ git submodule update --remote`更新子模块。
+
+如果不用`-f .gitmodules`选择，那么它只会为你修改。（其他人不能跟踪）
+
+这时运行`$ git status`,Git会显示子模块中有新提交。
+
+	$ git status
+	On branch master
+	Your branch is up-to-date with 'origin/master'.
+	
+	Changes not staged for commit:
+	  (use "git add <file>..." to update what will be committed)
+	  (use "git checkout -- <file>..." to discard changes in working directory)
+	
+	  modified:   .gitmodules
+	  modified:   DbConnector (new commits)
+	
+	no changes added to commit (use "git add" and/or "git commit -a")
+
+如果你设置了配置选项`status.submodulesummary`,Git也会显示子模块的更改摘要：
+
+	$ git config status.submodulesummary 1
+	
+	$ git status
+	On branch master
+	Your branch is up-to-date with 'origin/master'.
+	
+	Changes not staged for commit:
+	  (use "git add <file>..." to update what will be committed)
+	  (use "git checkout -- <file>..." to discard changes in working directory)
+	
+		modified:   .gitmodules
+		modified:   DbConnector (new commits)
+	
+	Submodules changed but not updated:
+	
+	* DbConnector c3f01dc...c87d55d (4):
+	  > catch non-null terminated lines
+
+这时如果运行`$ git diff`,可以看到修改了`.gitmodules`文件，同时还有几个已拉取的提交，需要提交到子模块上。
+	
+	$ git diff
+	diff --git a/.gitmodules b/.gitmodules
+	index 6fc0b3d..fd1cc29 100644
+	--- a/.gitmodules
+	+++ b/.gitmodules
+	@@ -1,3 +1,4 @@
+	 [submodule "DbConnector"]
+	        path = DbConnector
+	        url = https://github.com/chaconinc/DbConnector
+	+       branch = stable
+	 Submodule DbConnector c3f01dc..c87d55d:
+	  > catch non-null terminated lines
+	  > more robust error handling
+	  > more efficient db routine
+	  > better connection routine
+
+
+运行`$ git log -p --submodule`查看子模块中的提交日记。
+
+当运行`$ git submodule update --remote [子模块]`时，Git会尝试更所有子模块，所以如果有很多子模块的话，你可以传递想要更新的子模块的名字。
+
+	$ git submodule update --remote [子模块]
 
 * 在子模块上工作
 
