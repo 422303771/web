@@ -1774,7 +1774,7 @@ Git通过子模块来解决这个问题，子模块允许你将一个Git仓库�
 
 运行`$ git log -p --submodule`查看子模块中的提交日记。
 
-当运行`$ git submodule update --remote [子模块]`时，Git会尝试更所有子模块，所以如果有很多子模块的话，你可以传递想要更新的子模块的名字。
+当运行`$ git submodule update --remote`时，Git会尝试更所有子模块，所以如果有很多子模块的话，你可以传递想要更新的子模块的名字。
 
 	$ git submodule update --remote [子模块]
 
