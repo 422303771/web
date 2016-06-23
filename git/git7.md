@@ -1928,15 +1928,236 @@ Git通过子模块来解决这个问题，子模块允许你将一个Git仓库�
 
 * 合并子模块改动
 
-
- 
+	如果你与其他人同时改动了一个子模块，那么可能会遇上一些问题。
+	
+	如果子模块的历史已经分叉，并在父项目中分别提交到分叉的分支上，那么你需要做一些工作来修复它。
+	
+	为了解决这个问题，先运行`git diff`查看。
+	
+		$ git diff
+		diff --cc DbConnector
+		index eb41d76,c771610..0000000
+		--- a/DbConnector
+		+++ b/DbConnector
+	
+	`eb41d76 `是子模块中共有的提交，而`c771610`是上游拥有的提交。
+	
+	如果进入子模块中，HEAD应该在`eb41d76`上，如果不在，手动处理。
+	
+	所有先进入子模块目录，基于`git diff`的第二个SHA创建一个分支，然后手动合并。
+	
+		$ cd DbConnector				//进入子模块目录
+		
+		$ git rev-parse HEAD                     //查看HEAD的SHA值
+		eb41d764bccf88be77aced643c13a7fa86714135
+		
+		$ git branch try-merge c771610			//从 c771610 创建分支
+		(DbConnector) 
+	
+		$ git merge try-merge					//合并到try-merge分支。
+		Auto-merging src/main.c
+		CONFLICT (content): Merge conflict in src/main.c
+		Recorded preimage for 'src/main.c'
+		Automatic merge failed; fix conflicts and then commit the result.
+	
+	这里得到一个合并冲突，所以如果想解决并提交它，需要通过结果来更新主项目。
+	
+		$ vim src/main.c 				// 手动处理冲突
+		$ git add src/main.c					//添加到暂存区
+		$ git commit -am 'merged our changes'	//提交
+		Recorded resolution for 'src/main.c'.
+		[master 9fd905e] merged our changes
+		
+		$ cd ..             //回到主目录
+		$ git diff 			//	再次检查SHA-1值
+		diff --cc DbConnector
+		index eb41d76,c771610..0000000
+		--- a/DbConnector
+		+++ b/DbConnector
+		@@@ -1,1 -1,1 +1,1 @@@
+		- Subproject commit eb41d764bccf88be77aced643c13a7fa86714135
+		 -Subproject commit c77161012afbbe1f58b5053316ead08f4b7e6d1d
+		++Subproject commit 9fd905e5d7f45a0d4cbc43d1ee550f16a30e825a
+		$ git add DbConnector 		   //解决子模块冲突的记录
+		
+		$ git commit -m "Merge Tom's Changes"		//提交合并
+		[master 10d2c60] Merge Tom's Changes
+	
+	
+	如果Git目录中有同样的一个合并提交，它的历史包含两边的提交，Git会建议你将它作为一个可行的解决方案。
+	
+	如果有解决方案，你会看到类似下面的信息
+	
+		$ git merge origin/master
+		warning: Failed to merge submodule DbConnector (not fast-forward)
+		Found a possible merge resolution for the submodule:
+		 9fd905e5d7f45a0d4cbc43d1ee550f16a30e825a: > merged our changes
+		If this is correct simply add it to the index for example
+		by using:
+		
+		  git update-index --cacheinfo 160000 9fd905e5d7f45a0d4cbc43d1ee550f16a30e825a "DbConnector"
+		
+		which will accept this suggestion.
+		Auto-merging DbConnector
+		CONFLICT (submodule): Merge conflict in DbConnector
+		Automatic merge failed; fix conflicts and then commit the result.
+	
+	Git会建议你更新索引，就像运行了`git add`那样，这样会清除冲突，随后提交。
+	
+	不过下方是另外一种解决方案。
+	
+	进入子模块，查看差异，快进的这次提交。
+	
+		$ cd DbConnector/
+		$ git merge 9fd905e
+		Updating eb41d76..9fd905e
+		Fast-forward
+		
+		$ cd ..
+		$ git add DbConnector
+		$ git commit -am 'Fast forwarded to a common submodule child'
+	
+	这个方法可以检验工作是否有效，以及确保子模块目录中有代码。
+		 
 ### 7.11.4 子模块技巧
 
+你可以做几件事情来让使用子模块工作轻松一点。
+
 * 子模块遍历
+	
+	有一个`foreach`子模块命令，它能在每一个子模块中运行任意命令。如果项目中包含了大量子模块，这会非常有用。
+	
+	**例子：**
+	
+	假设我们想要开始开发一项新功能或者修改一些错误，并且需要在几个子模块内工作。我们可以轻松地保存所有子模块的工作进度。
+	
+	使用命令`$ git submodule foreach 'git stash'`
+	
+		$ git submodule foreach 'git stash'
+		Entering 'CryptoLibrary'
+		No local changes to save
+		Entering 'DbConnector'
+		Saved working directory and index state WIP on stable: 82d2ad3 Merge from origin/stable
+		HEAD is now at 82d2ad3 Merge from origin/stable
+	
+	然后我们可以创建一个新分支，并将所有子模块都切换过去。
+	
+	使用命令`$ git submodule foreach 'git checkout -b featureA'`
+		
+		$ git submodule foreach 'git checkout -b featureA'
+		Entering 'CryptoLibrary'
+		Switched to a new branch 'featureA'
+		Entering 'DbConnector'
+		Switched to a new branch 'featureA'
+	
+	能够生成一个主项目与所有子项目的改动统一时非常有用的。
+	
+	下方命令用来显示主项目与子项目的差异。
+	
+		$ git diff; git submodule foreach 'git diff'
+
 
 * 有用的别名
 
+	设置别名，方便日常使用
+		
+		$ git config alias.sdiff '!'"git diff && git submodule foreach 'git diff'"    //显示修改
+		$ git config alias.spush 'push --recurse-submodules=on-demand'					//子模块拉取
+		$ git config alias.supdate 'submodule update --remote --merge'					//子模块合并
+	
 ### 7.11.5 子模块的问题
+
+其他的一些小问题
+
+**例子：**
+
+假如在有子模块的项目中切换分支可能会有问题。如果你创建一个新分支，在其中添加一个子模块，之后切换到没有子模块的分支上，你依然会有一个没有跟踪的子模块目录。
+	
+	$ git checkout -b add-crypto
+	Switched to a new branch 'add-crypto'
+	
+	$ git submodule add https://github.com/chaconinc/CryptoLibrary
+	Cloning into 'CryptoLibrary'...
+	...
+	
+	$ git commit -am 'adding crypto library'
+	[add-crypto 4445836] adding crypto library
+	 2 files changed, 4 insertions(+)
+	 create mode 160000 CryptoLibrary
+	
+	$ git checkout master
+	warning: unable to rmdir CryptoLibrary: Directory not empty
+	Switched to branch 'master'
+	Your branch is up-to-date with 'origin/master'.
+	
+	$ git status
+	On branch master
+	Your branch is up-to-date with 'origin/master'.
+	
+	Untracked files:
+	  (use "git add <file>..." to include in what will be committed)
+	
+		CryptoLibrary/
+	
+	nothing added to commit but untracked files present (use "git add" to track)
+
+移除文件并不困难。但是当切换回包含子模块的分支时，需要使用`$ submodule update --init`来重新创建和填充。
+	
+	$ git clean -fdx
+	Removing CryptoLibrary/
+	
+	$ git checkout add-crypto
+	Switched to branch 'add-crypto'
+	
+	$ ls CryptoLibrary/
+	
+	$ git submodule update --init
+	Submodule path 'CryptoLibrary': checked out 'b8dda6aa182ea4464f3f3264b11e0268545172af'
+	
+	$ ls CryptoLibrary/
+	Makefile	includes	scripts		src
+
+
+当想要将正在使用的子目录变为子模块是时。要特别注意，如果删除子目录然后运行`submodule add`,Gith会报错。
+
+	$ rm -Rf CryptoLibrary/
+	$ git submodule add https://github.com/chaconinc/CryptoLibrary
+	'CryptoLibrary' already exists in the index
+
+必须要先取消暂存`CryptoLibrary`目录。然后才可以添加子模块。
+
+	$ git rm -r CryptoLibrary
+	$ git submodule add https://github.com/chaconinc/CryptoLibrary
+	Cloning into 'CryptoLibrary'...
+	remote: Counting objects: 11, done.
+	remote: Compressing objects: 100% (10/10), done.
+	remote: Total 11 (delta 0), reused 11 (delta 0)
+	Unpacking objects: 100% (11/11), done.
+	Checking connectivity... done.
+
+**另一个例子：**
+
+当你在分支中做了一些工作。现在要切换回的分支中，修改过的文件还在子目录中，而不是子模块中时，会报错。
+
+	$ git checkout master
+	error: The following untracked working tree files would be overwritten by checkout:
+	  CryptoLibrary/Makefile
+	  CryptoLibrary/includes/crypto.h
+	  ...
+	Please move or remove them before you can switch branches.
+	Aborting
+	
+这时可以使用`check -f`来强制切换，但是要小心，如果其中有未保存的修改，这个命令会把它们覆盖掉。
+
+	$ git checkout -f master
+	warning: unable to rmdir CryptoLibrary: Directory not empty
+	Switched to branch 'master'
+	
+当你切换回来之后，因为一些原因得到了一个空的`CryptoLibrary`目录，并且`git submodule update`也无法修复它。
+
+你需要进入到子模块中运行`git checkout .`来找回所有的文件，也可以通过`submodule foreach`脚本来为多个子模块运行。
+
+*注意：近来子模块将所有Git数据保存在顶级项目的`.git`目录中。删除一个子模块并不会丢失任何提交或分支。*
 
 ## 7.12 打包
 
