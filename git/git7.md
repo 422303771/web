@@ -2159,7 +2159,137 @@ Git通过子模块来解决这个问题，子模块允许你将一个Git仓库�
 
 *注意：近来子模块将所有Git数据保存在顶级项目的`.git`目录中。删除一个子模块并不会丢失任何提交或分支。*
 
+
+-----
+
+
 ## 7.12 打包
+
+使用次数上并不常用，功能上十分有用。
+
+将要提交的数据打包，打包的内容为一个二进制文件。
+
+随后可以将文件通过邮件或者闪存传给其他人，随后解包到其他的仓库中。
+
+**例子：**
+
+假设你有一个包含两个提交的仓库：
+
+	$ git log
+	commit 9a466c572fe88b195efd356c3f2bbeccdb504102
+	Author: Scott Chacon <schacon@gmail.com>
+	Date:   Wed Mar 10 07:34:10 2010 -0800
+	
+	    second commit
+	
+	commit b1ec3248f39900d2a406049d762aa68e9641be25
+	Author: Scott Chacon <schacon@gmail.com>
+	Date:   Wed Mar 10 07:34:01 2010 -0800
+	
+	    first commit
+
+如果你想把这个仓库发送给其他人，但你没有其他仓库的权限，或者不想建立一个仓库。
+
+这时你就可以用`git bundle create`命令来打包。
+
+命令解释`$ git bundle create [文件名] HEAD master` 包括为设定的文件名，文件中包含`master`分支所需的数据。
+
+	$ git bundle create repo.bundle HEAD master
+	Counting objects: 6, done.
+	Delta compression using up to 2 threads.
+	Compressing objects: 100% (2/2), done.
+	Writing objects: 100% (6/6), 441 bytes, done.
+	Total 6 (delta 0), reused 0 (delta 0)
+
+使用`bundle`命令时，需要列出所有希望打包的引用或者提交的区间。如果希望仓库可以被克隆，应该增加一个HEAD引用。
+
+当别人传给你一个`repo.bundle`文件并希望你在这个项目上工作，你可以从这个二进制文件中克隆出一个目录，就像从一个URL克隆一样。
+
+	$ git clone repo.bundle repo
+	Initialized empty Git repository in /private/tmp/bundle/repo/.git/
+	$ cd repo
+	$ git log --oneline
+	9a466c5 second commit
+	b1ec324 first commit
+
+如果你在打包时没有包含HEAD引用，你还需要在命令后指定一个`-b master`或者其他被引入的分支，否则Git不知道应该检出哪一个分支。
+
+现在假设你提交了3个修订，并要用邮件或U盘，将新的提交放在一个包里传回去。
+
+	$ git log --oneline
+	71b84da last commit - second repo
+	c99cf5b fourth commit - second repo
+	7011d3d third commit - second repo
+	9a466c5 second commit
+	b1ec324 first commit
+
+首先要确认我们要打包的提交区间，与网络传输不同（网络传输会自动计算。）。
+
+当然可是打包整个仓库，但最好仅仅打包变更的部分。
+
+为了仅打包变更的部分，我们需要计算差别。
+
+有很多种方法去指明提交区间，`origin/master..master`或`master ^origin/master `之类的方法。
+
+可以使用`$ git log --oneline master ^origin/master`来测试。
+
+	$ git log --oneline master ^origin/master
+	71b84da last commit - second repo
+	c99cf5b fourth commit - second repo
+	7011d3d third commit - second repo
+
+这样就找出了要打包的列表。可以使用`$ git bundle create`命令，加上[文件名]，与要打包的提交区间。
+	
+	$ git bundle create commits.bundle master ^9a466c5
+	Counting objects: 11, done.
+	Delta compression using up to 2 threads.
+	Compressing objects: 100% (3/3), done.
+	Writing objects: 100% (9/9), 775 bytes, done.
+	Total 9 (delta 0), reused 0 (delta 0)
+
+当其他人拿到时，可以使用`bundle verify`命令检查是否为一个合法的Git包，是否有共同的祖先来导入。
+
+	$ git bundle verify ../[commits.bundle]
+	The bundle contains 1 ref
+	71b84daaf49abed142a373b6e5c59a22dc6560dc refs/heads/master
+	The bundle requires these 1 ref
+	9a466c572fe88b195efd356c3f2bbeccdb504102 second commit
+	../commits.bundle is okay
+
+如果在打包时，仅仅打包了两个提交，检查时会报错
+	
+	$ git bundle verify ../commits-bad.bundle
+	error: Repository lacks these prerequisite commits:
+	error: 7011d3d8fc200abe0ad561c011c3852a4b7bbe95 third commit - second repo
+
+如果想看看包中可以导入的分支使用下方的命令：
+
+$ git bundle list-heads ../[commits.bundle]
+
+[commits.bundle]可以是任意的导入包
+
+现在要从包中取出`master`分支到仓库中的`other-master`分支。
+
+	$ git fetch ../commits.bundle master:other-master
+	From ../commits.bundle
+	 * [new branch]      master     -> other-master
+
+最后可以看到`other-master`分支，以及自己的`master`分支。
+
+下方代码为查看的结果。
+	
+	$ git log --oneline --decorate --graph --all
+	* 8255d41 (HEAD, master) third commit - first repo
+	| * 71b84da (other-master) last commit - second repo
+	| * c99cf5b fourth commit - second repo
+	| * 7011d3d third commit - second repo
+	|/
+	* 9a466c5 second commit
+	* b1ec324 first commit
+
+
+-----
+
 
 ## 7.13 替换
 
