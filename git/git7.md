@@ -1780,10 +1780,156 @@ Git通过子模块来解决这个问题，子模块允许你将一个Git仓库�
 
 * 在子模块上工作
 
+	当你想在子模块编写代码时，同时可能还想在主项目上编写代码。
+	
+	下面的例子将说明如何在子模块与主项目中同时做修改，以及如何同时提交与发布那些修改。
+	
+	默认情况下，Git不会记录子模块仓库的修改。
+	
+	为使Git能够保存子模块的修改，需要要做两件事儿。
+	
+	1. 进入每个子模块并检出其相应的工作分支分，
+	
+	2. 如果做了修改，需要告诉Git它该做什么，然后运行`$ git submodule update --remote`来从上游拉取新工作。随后可以合并到本地工作中，也可以尝试将你的工作变基到新的更改上。
+	
+	**下方是操作示例：**
+	
+	首先，进入子模块然后检出一个分支。
+	
+		$ git checkout stable
+		Switched to branch 'stable'
+	
+	然后用`merge`选项，为了手动指定它，只需要给`update`添加`--merge`选项即可。这时我们将会看到服务器上的这个子模块有一个改动并且它被合并了进来。
+	
+		$ git submodule update --remote --merge
+		remote: Counting objects: 4, done.
+		remote: Compressing objects: 100% (2/2), done.
+		remote: Total 4 (delta 2), reused 4 (delta 2)
+		Unpacking objects: 100% (4/4), done.
+		From https://github.com/chaconinc/DbConnector
+		   c87d55d..92c7337  stable     -> origin/stable
+		Updating c87d55d..92c7337
+		Fast-forward
+		 src/main.c | 1 +
+		 1 file changed, 1 insertion(+)
+		Submodule path 'DbConnector': merged in '92c7337b30ef9e0893e758dac2459d07362ab5ea'
+	
+	如果进入DbConnector目录，可以发现新的改动已经合并入本地`stable`分支。
+	
+	现在让我们看看当我们对库做一些本地的改动，而同时其他人推送另外一个修改到上游时会发生什么。
+		
+		$ cd DbConnector/
+		$ vim src/db.c
+		$ git commit -am 'unicode support'
+		[stable f906e16] unicode support
+		 1 file changed, 1 insertion(+)
+	
+	如果我们现在更新子模块，就会看到当我们在本地做了更改时上游也有一个改动，我们需要将它并入本地。（并入的是上游改动，而非本地。）
+		
+		$ git submodule update --remote --rebase
+		First, rewinding head to replay your work on top of it...
+		Applying: unicode support
+		Submodule path 'DbConnector': rebased into '5d60ef9bbebf5a0c1c1050f242ceeb54ad58da94'
+	
+	如果你忘记`--rebase`或`--merge`,Git会将子模块更新为服务器上的状态。并将项目重置为一个游离的HEAD状态。
+	
+	真的忘了加`--rebase`或`--merge`也没有问题，重新检出分支，之后手动合并或变基就可以了。
+	
+	如果没有提交子模块的改动，那么运行一个子模块更新也不会出现问题，此时Git会只抓取更新并不会覆盖子模块目录中未保存的工作。
+	
+		$ git submodule update --remote
+		remote: Counting objects: 4, done.
+		remote: Compressing objects: 100% (3/3), done.
+		remote: Total 4 (delta 0), reused 4 (delta 0)
+		Unpacking objects: 100% (4/4), done.
+		From https://github.com/chaconinc/DbConnector
+		   5d60ef9..c75e92a  stable     -> origin/stable
+		error: Your local changes to the following files would be overwritten by checkout:
+			scripts/setup.sh
+		Please, commit your changes or stash them before you can switch branches.
+		Aborting
+		Unable to checkout 'c75e92a2b3855c9e5b66f915308390d9db204aca' in submodule path 'DbConnector'
+	
+	如果做了一些与上游改动冲突的改动，当运行更新时Git会让你知道。
+		
+		$ git submodule update --remote --merge
+		Auto-merging scripts/setup.sh
+		CONFLICT (content): Merge conflict in scripts/setup.sh
+		Recorded preimage for 'scripts/setup.sh'
+		Automatic merge failed; fix conflicts and then commit the result.
+		Unable to merge 'c75e92a2b3855c9e5b66f915308390d9db204aca' in submodule path 'DbConnector'
+	
+
 * 发布子模块改动
+
+	现在我们的子模块目录中有一些改动。其中一些是我们通过更新从上游引入的（服务器拉取的），而另一些是本地生成的，由于我们还没有推送它们，对任何其他人都不可用。
+	
+	**例子:**
+		
+		$ git diff
+		Submodule DbConnector c87d55d..82d2ad3:
+		  > Merge from origin/stable
+		  > updated setup script
+		  > unicode support
+		  > remove unnecessary method
+		  > add new option for conn pooling
+		
+	如果我们在主项目中提交但并不推送子模块上的改动，其他尝试检出我们修改的人会遇到麻烦，因为他们无法得到依赖的子模块改动。那些改动还只存在于我们本地的分支中。
+	
+	为了不发生上述的情况，要让Git在推送到主项目前检查所有子模块是否已经推送（推送到服务器）。
+	
+	**下方命令为自动子模块是否提交，防止错误。**
+	
+	`git push`命令可以设置`--recurse-submodules`参数`check`或`on-demand`。
+	
+	如果任何提交的子模块改动没有推送那么`check`选项会直接使`push`失败
+	
+	`$ git push --recurse-submodules=check`
+	
+		$ git push --recurse-submodules=check
+		The following submodule paths contain changes that can
+		not be found on any remote:
+		  DbConnector
+		
+		Please try
+		
+			git push --recurse-submodules=on-demand
+		
+		or cd to the path and use
+		
+			git push
+		
+		to push them to a remote.
+	
+	当然`$ git push --recurse-submodules=check`也会给我们一些建议。
+	
+	最简单的方法是进入每一个子模块中，然后手动推送到远程创库，确保本地修改能别其他人获得，之后再推送。
+	
+	另一种选项是使用`on-demand`值，它会尝试为你自动推送子模块的修改。
+	
+		$ git push --recurse-submodules=on-demand
+		Pushing submodule 'DbConnector'
+		Counting objects: 9, done.
+		Delta compression using up to 8 threads.
+		Compressing objects: 100% (8/8), done.
+		Writing objects: 100% (9/9), 917 bytes | 0 bytes/s, done.
+		Total 9 (delta 3), reused 0 (delta 0)
+		To https://github.com/chaconinc/DbConnector
+		   c75e92a..82d2ad3  stable -> stable
+		Counting objects: 2, done.
+		Delta compression using up to 8 threads.
+		Compressing objects: 100% (2/2), done.
+		Writing objects: 100% (2/2), 266 bytes | 0 bytes/s, done.
+		Total 2 (delta 1), reused 0 (delta 0)
+		To https://github.com/chaconinc/MainProject
+		   3d6d338..9a377d1  master -> master
+	
+	使用`$ git push --recurse-submodules=on-demand`时如果子模块推动失败了，那么主项目也会失败。
 
 * 合并子模块改动
 
+
+ 
 ### 7.11.4 子模块技巧
 
 * 子模块遍历
