@@ -2357,10 +2357,10 @@ Git对象是不可改变的，但是它提供一种方法，用其他对象假�
 现在的情况下，创建一个能够扩展历史的基础提交是很有用的。其他开发者想要修改第一次提交或者其他操作时就知道要做些什么了，因此，我们要用命令创建一个最初的提交，然后将第四、五次提交变基到它上面。
 
 我们需要选择一个点去拆分，第三个提交是一个很好的选择。使用`commit-tree`命令来创建基础提交，这样我们就有了一个树，并返回一个全新的，无父节点的SHA提交对象。
-
-$ echo 'get history from blah blah blah' | git commit-tree 9c68fdc^{tree}
-622e88e9cbfbacfb75b5279245b9fb38dfea10cf
-
+	
+	$ echo 'get history from blah blah blah' | git commit-tree 9c68fdc^{tree}
+	622e88e9cbfbacfb75b5279245b9fb38dfea10cf
+	
 `echo`是说明，后方是创建。
 
 ![](https://git-scm.com/book/en/v2/book/07-git-tools/images/replace3.png)
