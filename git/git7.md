@@ -2427,7 +2427,7 @@ $ echo 'get history from blah blah blah' | git commit-tree 9c68fdc^{tree}
 
 有趣的是，即使使用了`c6e1e95`替换数据，它的SHA-1显示为`81a708d`,即使你运行了`cat-file`命令，它仍会显示替换的数据。
 
-`81a708d` 真正的父提交是 `622e882` ，而非呈现的 9c68fdce 提交
+`81a708d` 真正的父提交是 `622e882` ，而非呈现的 `9c68fdce` 提交
 
 ## 7.14 凭证存储
 
