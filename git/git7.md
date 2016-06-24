@@ -2293,6 +2293,142 @@ Git通过子模块来解决这个问题，子模块允许你将一个Git仓库�
 
 ## 7.13 替换
 
+Git对象是不可改变的，但是它提供一种方法，用其他对象假装替换数据库中的Git对象。
+
+`replace`命令可以让你在Git中指定一个对象，并可以声 明`每次遇到这个Git对象时，假装它是其他的东西。`
+
+**例子：**
+
+你有一个大型的代码历史并想把自己的仓库分成一个短历史和一个更大更长久的历史，短历史供新的开发者使用，长历史给喜欢挖掘数据的人使用。
+
+你可以通过用新仓库的提交链接老仓库中的提交。
+
+这里有一个有5次提交的仓库
+
+	$ git log --oneline
+	ef989d8 fifth commit
+	c6e1e95 fourth commit
+	9c68fdc third commit
+	945704c second commit
+	c1822cf first commit
+
+我们想将其拆分为两个仓库，第一次到第四次提交作为一个历史版本，第四、五次提交作为第二个历史版本。
+
+![](https://git-scm.com/book/en/v2/book/07-git-tools/images/replace1.png)
+
+创建一个历史版本很容易，只将一个历史中分支推送到一个新的远程仓库的master分支。
+
+使用命令`$ git branch history [c6e1e95]`[c6e1e95]为分支创建处的SHA-1值。
+
+	$ git branch history c6e1e95
+	$ git log --oneline --decorate
+	ef989d8 (HEAD, master) fifth commit
+	c6e1e95 (history) fourth commit
+	9c68fdc third commit
+	945704c second commit
+	c1822cf first commit
+	
+![](https://git-scm.com/book/en/v2/book/07-git-tools/images/replace2.png)
+
+现在我们可以把这个新的`history`分支推送到我们新仓库的`master`分支
+
+	$ git remote add project-history https://github.com/schacon/project-history
+	$ git push project-history history:master
+	Counting objects: 12, done.
+	Delta compression using up to 2 threads.
+	Compressing objects: 100% (4/4), done.
+	Writing objects: 100% (12/12), 907 bytes, done.
+	Total 12 (delta 0), reused 0 (delta 0)
+	Unpacking objects: 100% (12/12), done.
+	To git@github.com:schacon/project-history.git
+	 * [new branch]      history -> master
+	
+这样历史版本就发布了。难一点的部分是删除我们最近的历史让它变得更小。我们需要一个重叠以便用一个相等的提交来替换另一个提交。这样一来，我们将截断到第四、五个提交。
+	
+下方代码为显示当前提交。
+
+	$ git log --oneline --decorate
+	ef989d8 (HEAD, master) fifth commit
+	c6e1e95 (history) fourth commit
+	9c68fdc third commit
+	945704c second commit
+	c1822cf first commit
+
+现在的情况下，创建一个能够扩展历史的基础提交是很有用的。其他开发者想要修改第一次提交或者其他操作时就知道要做些什么了，因此，我们要用命令创建一个最初的提交，然后将第四、五次提交变基到它上面。
+
+我们需要选择一个点去拆分，第三个提交是一个很好的选择。使用`commit-tree`命令来创建基础提交，这样我们就有了一个树，并返回一个全新的，无父节点的SHA提交对象。
+
+$ echo 'get history from blah blah blah' | git commit-tree 9c68fdc^{tree}
+622e88e9cbfbacfb75b5279245b9fb38dfea10cf
+
+`echo`是说明，后方是创建。
+
+![](https://git-scm.com/book/en/v2/book/07-git-tools/images/replace3.png)
+
+现在就有了一个基本提交了，我们可以通过`git rebase --onto`命令将剩余的历史变基到基础提交上。
+
+`--onto`参数是`commit-tree`命令返回的SHA值，变基点会为第三次提交。
+
+	$ git rebase --onto 622e88 9c68fdc
+	First, rewinding head to replay your work on top of it...
+	Applying: fourth commit
+	Applying: fifth commit
+
+![](https://git-scm.com/book/en/v2/book/07-git-tools/images/replace4.png)
+
+现在可以将新历史推送到新项目中，当有人克隆这个仓库时，他们只能看到最近两次提交以及一个包含说明的基础提交。
+
+假如我们是一个想要获得整个历史的开发者。在克隆这个阶段后的仓库后，想要获得历史数据，就需要添加第二个远程的历史版本并拉取到本地。
+
+	$ git clone https://github.com/schacon/project
+	$ cd project
+	
+	$ git log --oneline master
+	e146b5f fifth commit
+	81a708d fourth commit
+	622e88e get history from blah blah blah
+	
+	$ git remote add project-history https://github.com/schacon/project-history
+	$ git fetch project-history
+	From https://github.com/schacon/project-history
+	 * [new branch]      master     -> project-history/master
+	
+现在其他人在`master`分支中有最近的提交，在`project-history/master`分支中有过去的提交。
+
+下方代码为查看提交信息：
+
+	$ git log --oneline master
+	e146b5f fifth commit
+	81a708d fourth commit
+	622e88e get history from blah blah blah
+	
+	$ git log --oneline project-history/master
+	c6e1e95 fourth commit
+	9c68fdc third commit
+	945704c second commit
+	c1822cf first commit
+
+为了合并两个分支，可以使用`git replace`命令加上想要替换的提交信息。
+
+例子中，可以用`master`分支中的第四次提交(81a708d)替换为`project-history/master`分支中的第四个提交。
+
+	$ git replace 81a708d c6e1e95
+
+再次查看`master`分支中的历史信息，显示如下：
+
+	$ git log --oneline master
+	e146b5f fifth commit
+	81a708d fourth commit
+	9c68fdc third commit
+	945704c second commit
+	c1822cf first commit
+	
+![](https://git-scm.com/book/en/v2/book/07-git-tools/images/replace5.png)
+
+有趣的是，即使使用了`c6e1e95`替换数据，它的SHA-1显示为`81a708d`,即使你运行了`cat-file`命令，它仍会显示替换的数据。
+
+`81a708d` 真正的父提交是 `622e882` ，而非呈现的 9c68fdce 提交
+
 ## 7.14 凭证存储
 
 ### 7.14.1 底层实现
