@@ -2431,6 +2431,109 @@ $ echo 'get history from blah blah blah' | git commit-tree 9c68fdc^{tree}
 
 ## 7.14 凭证存储
 
+如果你使用的是SSH方式连接服务器，并设置了一个没有口令的密钥，这样可以不输出用户名和密码的情况下安全地传输数据。而使用HTTP是不可能的。
+
+Git有一个凭证系统来处理一些登陆验证。使用HTTP通信时。
+
+* 默认为缓存密码。每次连接都会询问用户名与密码
+
+* `cache`模式。将密码放入内存一段时间。密码永远不会被存储在硬盘中，并且15分钟后从内存中清除。
+
+* `store`模式。将密码以明文的形式存储到硬盘，并且永不过期。 缺点就是密码用明文的方式存放在home的目录下。
+
+* 如果使用的是Mac，Git还有一种`osxkeychain`模式，它会将密码缓存到系统用户的钥匙串中。这种方法将密码存放在硬盘中，永不过期，但是被加密的。
+
+* 如果使用的是window，可以安装一个叫做`winstore`的辅助工具。与`osxkeychain`十分类似。
+
+设置方法：
+
+	$ git config --global credential.helper cache
+
+`store`模式可以接受`--file [目录]`，可以自定义存放密码的文件目录。默认是`~/.git-credentials`.
+
+`cache`模式可以使用`--timeout [秒数]`可以设置后台密码的保存时间。默认是900秒。
+
+下方代码是自定义路径的例子：
+
+	$ git config --global credential.helper store --file ~/.my-credentials
+
+Git允许配置多个辅助工具。当查找特定服务器时，Git会按顺序查询，并在找到有效用户与密码时停止。
+
+如果在U盘上有一个密码文件，又希望U盘拔出时使用内存缓存来保护用户名和密码。要设置`.gitconfig`文件。
+
+下方是配置
+
+	[credential]
+	    helper = store --file /mnt/thumbdrive/.git-credentials
+	    helper = cache --timeout 30000
+
+
 ### 7.14.1 底层实现
 
+Git密码辅助工作的命令是`$ git credential`,这个命令接收一个参数，并通过标准输入获取更多参数。
+
+**例子：**
+
+假设已经配置好一个凭证辅助工具，这个辅助工具保存了 mygithost 的凭证信息。 下面是一个使用 “fill” 命令的会话，当 Git 尝试寻找一个服务器的凭证时就会被调用。
+
+	$ git credential fill   //这是开始交互的命令
+	protocol=https 			//Git-credential 接下来会等待标准输入。 我们提供我们所知道的信息：协议和主机名。
+	host=mygithost
+							//一个空行代表输入已经完成，凭证系统应该输出它所知道的信息。
+	protocol=https 			//接下来由 Git-credential 接管，并且将找到的信息打印到标准输出。
+	host=mygithost
+	username=bob
+	password=s3cre7
+
+	$ git credential fill 		//如果没有找到对应的凭证，Git 会询问用户的用户名和密码，我们将这些信息输入到在标准输出的地方（这个例子中是同一个控制台）。
+	protocol=https
+	host=unknownhost
+	
+	Username for 'https://unknownhost': bob
+	Password for 'https://bob@unknownhost':
+	protocol=https
+	host=unknownhost
+	username=bob
+	password=s3cre7
+
+密码系统实际调用的程序和Git本身是分开的，具体是哪一个以及如何调用与`credential.helper`配置的值有关。
+
+|配置值|行为|
+|:----:|:----|
+|foo|执行git-credential-foo|
+|foo -a --opt=bcd|执行git-credential-foo -a --opt=bcd|
+|/absolute/path/foo -xyz|执行 /absolute/path/foo -xyz|
+|!f() { echo "password=s3cre7"; }; f|! 后面的代码会在shell执行|
+
+
+可以配置它们来接受命令行参数。
+
+通常格式是`git-credential-foo [args] [action]`输入/输出协议和`git-credential`一样。
+
+* get 是请求输入一对用户名和密码
+
+* store 是请求保存一个凭证到辅助工具的内存
+
+* erase 会将给定的证书从辅助工具内存中清除。
+
+**例子：**
+	
+	$ git credential-store --file ~/git.store store 		//告诉 git-credential-store 去保存凭证，当访问https://mygithost时使用用户名bob，密码s3cre7。
+	protocol=https
+	host=mygithost
+	username=bob
+	password=s3cre7
+	$ git credential-store --file ~/git.store get   //取出刚刚保存的用户名与密码。
+	protocol=https
+	host=mygithost
+	
+	username=bob 
+	password=s3cre7
+	
+`osxkeychain` 和 `winstore`会使用原生格式，而`cache`使用内存格式。
+
+
 ### 7.14.2 自定义凭证缓存
+
+参看[文档](https://git-scm.com/book/zh/v2/Git-%E5%B7%A5%E5%85%B7-%E5%87%AD%E8%AF%81%E5%AD%98%E5%82%A8#自定义凭证缓存)
+
