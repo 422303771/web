@@ -1,6 +1,25 @@
 # 8. 自定义 Git
 
+介绍一些配置与钩子机制
+
 ## 8.1 配置 Git
+
+我们已经知道使用`git config `可以配置Git。
+
+首先要做的是设置名字与电子邮件地址。
+
+	$ git config --global user.name "[名字]"
+	$ git config --global user.email [邮件地址]
+
+Git的配置文件分为三个层级，低级的设置会覆盖高级的。
+
+1. 全系统设置，位于`/etc/gitconfig`文件，该文件含有系统里每位用户及他们所有仓库的配置。使用`$ git config --system`读写文件。
+
+2. 全局设置，位于每个用户的`~/.gitconfig`文件。可以使用`$ git config --global`读写文件。
+
+3. 本地设置，位于工作目录下`.git/config`,只对当前的项目有效。
+
+只要合乎语法，可以使用任意编辑工具。
 
 ### 8.1.1 客户端基本配置
 
