@@ -161,9 +161,118 @@ Git支持对终端内容着色。
 
 ### 8.1.3 外部的合并与比较工具
 
+Perforce 工具的设置与介绍。
+
+Perforce[下载地址](https://www.perforce.com/)
+
+[文档说明地址](https://git-scm.com/book/zh/v2/%E8%87%AA%E5%AE%9A%E4%B9%89-Git-%E9%85%8D%E7%BD%AE-Git#外部的合并与比较工具)
+
 ### 8.1.4 格式化与多余的空白字符
 
+* `core.autocrlf`
+	
+	CRLF问题：问题产生的原因是window使用回车（CR）和换行（LF）两个字符来结束一行，而Mac和Linux只用换行（LF）一个字符。
+	
+	虽然这是小问题，但是它会扰乱跨平台协作，许多Window上的编辑器会悄悄把行尾的换行字符转成回车和换行。或者在用户按下Enter时，插入回车和换行两个字符。
+	
+	Git可以在提交时，自动把回车和换行转变成换行，而在检出代码时把换行转换成回车和换行。
+	
+	可以使用`core.autocrlf`来打开此功能。
+	
+	如果在window系统上，把它设置成`true`,这样在检出代码时，换行会被转换成回车和换行。
+	
+		$ git config --global core.autocrlf true
+	
+	如果使用的是Linux或Mac，不需要Git在检出文件时自动转换。然而当一个以回车加换行作为结束符的文件不小心被引入时，你一定想让Git修正。你可以把`core.autocrlf`设置成`input`来告诉Git在提交时把回车和换行转换成换行，检出时不转换：
+	
+		$ git config --global core.autocrlf input
+	
+	以上方法在window上检出文件会保留回车和换行，而在Mac和Linux上会保留换行。
+	
+	如果是window程序员，且正在开发仅运行在window上的项目，可以设置`false`取消此功能，
+	
+		$ git config --global core.autocrlf false
+	
+* `core.whitespace` 设定Git对空白的处理。
+
+	Git 中预先设置了一些选项来探测和修正多余空白字符问题。它提供了六种处理多余空白字符的选项。
+	
+	其中三个默认开启，另外三个默认关闭，不过可在自由的设置它们。
+	
+	默认被打开的三个选项是
+	
+	1. `blank-at-eol`,查找行尾的空格。
+	
+	2. `blank-at-eof`,盯住文件底部的空行。
+	
+	3. `space-before-tab`,警惕行头tag前面的空行。
+	
+	默认被关闭的三个选项是
+	
+	1. `indent-with-non-tab`,揪出以空格而非tab开头的行（可以用`tabwidth`选项控制它）
+	
+	2. `tab-in-indent`，监视在行头表示缩进的tab
+	
+	3. `cr-at-eol`,告诉Git忽略行尾的回车
+	
+	**例子：**
+	
+	例如，你想要打开除`cr-at-eol`之外的所有选项
+	
+		$ git config --global core.whitespace \ trailing-space,space-before-tab,indent-with-non-tab
+	
+	当使用`git apply`打补丁时你也会从中受益。
+	
+	下方命令为处理补丁时发出警告:
+	
+		$ git apply --whitespace=warn <patch> 
+	
+	下方命令为在Git打补丁前自动修正此问题：
+	
+		$ git apply --whitespace=fix <patch>
+	
+	如果提交了有空白问题的文件，但还没推送到上游，你让Git在重写补丁时自动修正它们。
+	
+		$ git rebase --whitespace=fix
+	
 ### 8.1.5 服务器端配置
+
+Git服务器的配置项并不多，但有一些选项值得一看。
+
+* `receive.fsckObjects`
+
+	检测文件的有效性以及SHA-1验证是否保持一致。
+	
+	默认为关闭，因为速度很慢。
+	
+		$ git config --system receive.fsckObjects true
+	
+	现在，Git会在每次推送前检查库的完整性，确保没有被问题客户端引入破坏性数据。
+	
+* `receive.denyNonFastForwards`
+
+	当确认要更新远程分支时，可以使用`-f`强制更新。
+	
+	如有要禁止强制更新推送，使用下方命令
+	
+		$ git config --system receive.denyNonFastForwards true
+
+
+* `receive.denyDeletes`
+
+	有一些方法可以绕过`denyNonFastForwards`策略。
+	
+	其中一种是先删除某个分支，在连同新的引用一起推送回该分支。
+	
+	设置`receive.denyDeletes`可以把漏洞补上
+	
+		$ git config --system receive.denyDeletes true
+
+	这样会禁止通过推送删除分支和标签。要删除远程分支，必须从服务器手动删除。
+	
+	通过用户访问控制列表也能实现同样的功能。
+
+----
 
 ## 8.2 Git 属性
 
