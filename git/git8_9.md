@@ -124,6 +124,41 @@ Git能识别配置为两大类：客户端和服务器。其中大部分属于�
 	
 ### 8.1.2 Git 中的着色
 
+Git支持对终端内容着色。
+
+* `color.ui`
+
+	Git会自动着色大部分输入内容，如果不喜欢可以关掉。
+	
+	关闭终端颜色输出命令：
+	
+		$ git config --global color.ui false
+	
+	默认值是`auto`，它会着色直接输出到终端的内容。当有特殊指定是无效。
+	
+	有可以设置为`always`,来忽略自定制的设置。
+
+* `color.*` 设置命令对应的着色。
+
+它们都能被设置为`true`、`false`、`always`。
+
+	color.branch
+	color.diff
+	color.interactive
+	color.status
+
+以上配置都有子选项，它们可以覆盖父设置，达到输出各个部分着色。
+
+**例子：**
+
+为了让diff输出信息以蓝色前景、黑色背景和粗体显示，可以运行
+
+	$ git config --global color.diff.meta "blue black bold"
+
+可以设置的颜色有：`normal`、`black`、`red`、`green`、`yellow`、`blue`、`magenta`、`cyan`、`white`。
+
+可以设置的字体有：`bold`（粗体）、`dim`（斜体）、`ul`（下滑线）、`blink`（交换前景色）、`reverse`（背景色）。
+
 ### 8.1.3 外部的合并与比较工具
 
 ### 8.1.4 格式化与多余的空白字符
