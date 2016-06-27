@@ -340,9 +340,138 @@ Git服务器的配置项并不多，但有一些选项值得一看。
 
 ### 8.2.2 关键字展开
 
+在Git中，关键字展开有一个主要问题，无法利用它往文件中加入其关联提交的相关信息。
+
+Git属性提供了两种方法来达成关键字展开的目的。
+
+**方法一**
+
+把文件所对应数据对象的SHA-1校验，自动注入到文件中的`$Id$`字段。如果在一个或者多个文件上设置，下次当你检出相关分支时，Git会用相应数据对象SHA-1值替换对应字段。
+
+	$ echo '*.txt ident' >> .gitattributes
+	$ echo '$Id$' > test.txt
+	
+当下次检出文件时，Git将注入数据对象的SHA-1校验
+
+	$ rm test.txt
+	$ git checkout -- test.txt
+	$ cat test.txt
+	$Id: 42812b7653c7b88933f8a9d6cad0ca16714b9bb3 $
+
+上述方法的用途比较有限。
+
+**方法二**
+
+自己编写过滤器来实现文件提交或检出时关键字替换。
+
+一个过滤器由`clean`和`smudge`两个子过滤器组成。在`.gitattributes`文件中，你能对特定的路径设置一个过滤器，然后设置文件检出前的处理脚本(`smudge`)和文件暂存前的处理脚本（`clean`）。
+
+下图是`smudge`的处理过程
+
+![](https://git-scm.com/book/en/v2/book/08-customizing-git/images/smudge.png)
+
+下图是`clean`的处理过程
+
+![](https://git-scm.com/book/en/v2/book/08-customizing-git/images/clean.png)
+
+**例子：**
+
+在提交前，用`indent`程序过滤所有C源码。可以在`.gitattributes`文件中对filter属性设置`indent`过滤器来过滤`*.c`文件。
+
+	*.c filter=indent
+
+然后，通过下方配置，让Git知道`indent`过滤器在`smudge`和`clean`时分别该做什么:
+
+	$ git config --global filter.indent.clean indent
+	$ git config --global filter.indent.smudge cat
+
+
+在这个例子中，当暂存`*.c`文件时，`indent`程序会先被触发。在把它们检出回硬盘时，`cat`程序会先被触发。`cat`在这里没有作用，它仅把输入的数据重新输出。
+
+
+还有一个使用Ruby的例子，详细的查看[官方文档](https://git-scm.com/book/zh/v2/%E8%87%AA%E5%AE%9A%E4%B9%89-Git-Git-%E5%B1%9E%E6%80%A7#filters_a)
+
+
 ### 8.2.3 导出版本库
 
+Git属性在导出项目归档时也能发挥作用。
+
+`export-ignore`
+
+当归档时，可以设置Git不导出某些文件和目录。如果不想在归档中包含某个子目录或文件，但想把他们纳入项目的版本管理中，可以在`export-ignore`属性中指定。
+
+**例子：**
+
+假如在`test/`子目录下有一些测试文件，不希望它们被包含在项目导出的压缩包中。
+
+在Git属性文件中加：
+
+	test/ export-ignore
+
+当运行`git archive`时，`test`不会再压缩文件中。
+
+`export-subst`
+
+在导出文件进行部署时，将`git log`格式化，并将关键字展开。
+
+**例子：**
+
+想在项目中包含一个叫做`LAST_COMMIT`的文件，并在运行`git archive`时自动注入最新的体提交数据，应该这样设置：
+
+	$ echo 'Last commit date: $Format:%cd by %aN$' > LAST_COMMIT
+	$ echo "LAST_COMMIT export-subst" >> .gitattributes
+	$ git add LAST_COMMIT .gitattributes
+	$ git commit -am 'adding LAST_COMMIT file for archives'
+
+运行`git archive`后，内容会被替换成下方的样子：
+
+	$ git archive HEAD | tar xCf ../deployment-testing -
+	$ cat ../deployment-testing/LAST_COMMIT
+	Last commit date: Tue Apr 21 08:38:48 2009 -0700 by Scott Chacon
+	
+还可以用提交信息或者git注解进行替换，并且`git log`还能做字词包装：
+
+	$ echo '$Format:Last commit: %h by %aN at %cd%n%+w(76,6,9)%B$' > LAST_COMMIT
+	$ git commit -am 'export-subst 使用 git log 的自定义格式化工具
+	
+	git archive 直接使用 git log 的 `pretty=format:`
+	处理器，并在输出中移除两侧的 `$Format:` 和 `$`
+	标记。
+	'
+	$ git archive @ | tar xfO - LAST_COMMIT
+	Last commit: 312ccc8 by Jim Hill at Fri May 8 09:14:04 2015 -0700
+	       export-subst 使用 git log 的自定义格式化工具
+	
+	         git archive 直接使用 git log 的 `pretty=format:` 处理器，并
+	         在输出中移除两侧的 `$Format:` 和 `$` 标记。
+	
+
 ### 8.2.4 合并策略
+
+通过Git属性，能对项目中特定文件指定不同的合并策略。
+
+一个有用的选项，告诉Git当特定文件发送冲突时不要合并它们，而是直接使用本地内容。
+
+**例子：**
+
+假设你有一个数据库设置文件 `database.xml`，在两个分支中它是不同的，而你想合并另一个分支到你的分支上，又不想弄乱该数据库文件。 你可以设置属性如下：
+
+	database.xml merge=ours
+
+然后定义一个虚拟的合并策略，叫做 `ours`：
+
+	$ git config --global merge.ours.driver true
+
+如果你合并了另一个分支，`database.xml` 文件不会有合并冲突，相反会显示如下信息：
+	
+	$ git merge topic
+	Auto-merging database.xml
+	Merge made by recursive.
+	
+`database.xml` 就保持了主干分支中的原始版本。
+
+
+-----
 
 ## 8.3 Git 钩子
 
