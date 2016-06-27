@@ -161,7 +161,7 @@ Git支持对终端内容着色。
 
 ### 8.1.3 外部的合并与比较工具
 
-Perforce 工具的设置与介绍。
+Perforce 工具的设置与介绍，Perforce是图像化的处理工具。
 
 Perforce[下载地址](https://www.perforce.com/)
 
