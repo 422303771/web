@@ -268,19 +268,75 @@ Git服务器的配置项并不多，但有一些选项值得一看。
 	
 		$ git config --system receive.denyDeletes true
 
-	这样会禁止通过推送删除分支和标签。要删除远程分支，必须从服务器手动删除。
-	
-	通过用户访问控制列表也能实现同样的功能。
+	   
 
 ----
 
 ## 8.2 Git 属性
 
+对一些项目进行特定的设置，可以在目录下`.gitattributes`文件进行设置（通常在项目的根目录）。如果不想让设置文件与其它文件一同提交，可以在`.git/info/attributes`文件中设置。
+
 ### 8.2.1 二进制文件
+
+你可以用Git属性让Git知道哪些是二进制文件，并设置如何处理这些文件。
 
 * 识别二进制文件
 
+	例如Mac平台上的Xcode项目包含一个`.pbxproj`结尾的文件，它通常是一个记录项目构建的JSON数据集，由IDE写入磁盘。希望将它当成二进制文件。
+	
+	要让Git把所有`pbxproj`文件当成二进制文件，在`.gitattributes`文件中如下设置
+	
+		*.pbxproj binary
+
+现在使用`git show`或`git diff`时，Git不会比较或打印该文件的变化。
+	
 * 比较二进制文件
+
+也可以使用Git属性来有效的比较两个二进制文件。秘诀在于，告诉Git怎么把二进制文件转化为文本格式，从而能够使用普通的diff方式进行对比。
+
+最让人头疼的问题之一：对Microsoft Word文档进行版本控制。
+
+**例子：**
+
+**Windows环境下未测试**
+
+默认情况下，只能得到下方的输出结果：
+
+	$ git diff
+	diff --git a/chapter1.docx b/chapter1.docx
+	index 88839c4..4afcb7c 100644
+	Binary files a/chapter1.docx and b/chapter1.docx differ
+
+设置Git属性可以在很好的解决此问题，在`.gitattributes`文件中添加
+
+	*.docx diff=word
+
+这是告诉Git当你尝试查看`.docx`模式的文件都应该使用`word`过滤器。
+
+对Git进行设置，令其能够借助docx2txt程序将Wrod文档转为可读文本文件，这样就可以正常的比较了。
+
+首先安装`docx2txt`，下载[地址](http://docx2txt.sourceforge.net )最新日期为2014年，版本为v1.4。下载后按照`INSTALL`文件，把它放到可执行的路径下。接下来，还需要写一个脚本把输出结果包装成Git支持的格式。在路径下创建一个`docx2txt`文件，添加这些下方内容。
+
+	#!/bin/bash
+	docx2txt.pl $1 -
+
+使用`chmod a+x`给这个文件加上可执行权限（linux下）。最后配置Git来使用脚本。
+
+	$ git config diff.word.textconv docx2txt
+
+现在Git就能将Word文件转换成文本文件了。
+
+**关于图片的比较**
+
+`exigtool`下载[地址](http://www.sno.phy.queensu.ca/~phil/exiftool/),目前还在更新。
+
+还可以比较图像文件。其中一个办法是，在比较时对图像文件运用一个过滤器，提炼出EXIF信息。
+
+需要下载`exiftool`,它可以将图像转换为元数据的文本信息，这样能以文本形式显示发送过的变动：
+	
+	$ echo '*.png diff=exif' >> .gitattributes
+	$ git config diff.exif.textconv exiftool
+	
 
 ### 8.2.2 关键字展开
 
