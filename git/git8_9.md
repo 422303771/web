@@ -624,13 +624,295 @@ Git能在特定动作发生时触发自定义脚本。有两组这样的钩子�
 
 * 指定特殊的提交信息格式
 
+第一项任务是每一条提交信息都必须遵循某种特殊的格式。
 
+假如每一个信息必须包含一条`ref:1234`的字符串，要逐一检查每一条推送上来的提交内容，看看提交信息是否包含这么一个字符串，然后，如果某个提交里不包含字符串，以非零返回，退出并拒绝推送。
+
+把`$newrev`和`$oldrev`变量的值传给`git rev-list`的Git底层命令，你可以获取所有提交SHA-1值。`git rev-list`只输出SHA-1值，没有其他信息。
+
+**例子：**
+
+	$ git rev-list 538c33..d14fc7
+	d14fc7c847ab946ec39590d87783c69b031bdfb7
+	9f585da4401b0a3999e84113824d15245c13f0be
+	234071a1be950e2a8d078e6141f5cd20c1e61ad3
+	dfa04c9ef3d5197182f13fb5b9b1fb7717d2222a
+	17716ec0f1ff5c77eff40b7fe912f9f6cfd0e475
+
+下一步实现从每一个提交中提取出提交信息。使用另一个`git cat-file`的底层命令来获取原始的提交数据。
+
+	$ git cat-file commit ca82a6
+	tree cfda3bf379e4f8dba8717dee55aab78aef7f4daf
+	parent 085bb3bcb608e1e8451d4b2432f8ecbe6306e7e7
+	author Scott Chacon <schacon@gmail.com> 1205815931 -0700
+	committer Scott Chacon <schacon@gmail.com> 1240030591 -0700
+	
+	changed the version number
+	
+通过 SHA-1 值获得提交中的提交信息的一个简单办法是找到提交的第一个空行，然后取从它往后的所有内容。 可以使用 Unix 系统的 `sed` 命令来实现该效果：
+	
+	$ git cat-file commit ca82a6 | sed '1,/^$/d'
+	changed the version number
+
+下面写判处脚本，返回非零值，整个脚本如下：
+	
+	$regex = /\[ref: (\d+)\]/
+	
+	# 指定自定义的提交信息格式
+	def check_message_format
+	  missed_revs = `git rev-list #{$oldrev}..#{$newrev}`.split("\n")
+	  missed_revs.each do |rev|
+	    message = `git cat-file commit #{rev} | sed '1,/^$/d'`
+	    if !$regex.match(message)
+	      puts "[POLICY] Your message is not formatted correctly"
+	      exit 1
+	    end
+	  end
+	end
+	check_message_format
+
+这样不符合指定规则的提交都会遭到拒绝。
 
 * 指定基于用户的访问权限控制列表（ACL）系统
 
+假定你需要添加一个使用访问权限控制列表的机制，来指定哪些用户对项目的哪些部分有推送权限。
+
+为了实现这一点，要把相关的规则写入位于服务器原始Git仓库的acl中，还需要让`update`钩子检阅规则，审视推送的提交内容中被修改的所有文件，然后决定用户是否对所有这些文件都有权限。
+
+先从写一个ACL文件开始，下方是ACL文件的设置方法。
+
+第一项，内容是`avail`或者`unavail`。
+
+第二项，用逗号分隔适用该规则的用户列表。
+
+第三项，适用该规则的路径。
+
+第四项，使用`|`隔开，各命令。
+
+ACL文件设置如下：
+
+	avail|nickh,pjhyett,defunkt,tpw
+	avail|usinclair,cdickens,ebronte|doc
+	avail|schacon|lib
+	avail|schacon|tests
+	
+下面把这些数据读入你要用到的数据结构里。暂时只实现`avail`规则。
+
+下方是生成一个关联数组的方法，它的键是用户名，值是一个由该用户有写入权限的所有目录组成的数据：
+
+	def get_acl_access_data(acl_file)
+	  # 读取ACL数据
+	  acl_file = File.read(acl_file).split("\n").reject { |line| line == '' }
+	  access = {}
+	  acl_file.each do |line|
+	    avail, users, path = line.split('|')
+	    next unless avail == 'avail'
+	    users.split(',').each do |user|
+	      access[user] ||= []
+	      access[user] << path
+	    end
+	  end
+	  access
+	end
+
+对刚刚设置的ACL规则文件使用，这个`get_acl_access_date`方法返回的数据结构如下：
+
+	{"defunkt"=>[nil],
+	 "tpw"=>[nil],
+	 "nickh"=>[nil],
+	 "pjhyett"=>[nil],
+	 "schacon"=>["lib", "tests"],
+	 "cdickens"=>["doc"],
+	 "usinclair"=>["doc"],
+	 "ebronte"=>["doc"]}
+
+接下来，需要找出提交都修改了哪些路径，从而才能保证推送者对所有这些路径都有权限。
+
+使用`git log`的`--name-only`选项，可以很容易的找出一次提交里修改的文件：
+	
+	$ git log -1 --name-only --pretty=format:'' 9f585d
+	
+	README
+	lib/test.rb
+
+使用`get_acl_access_data`返回的ACL结构来一一核对每次提交修改的文件列表，就能找出该用户是否有权限推送所有的提交内容：
+
+	# 仅允许特定用户修改项目中的特定子目录
+	def check_directory_perms
+	  access = get_acl_access_data('acl')
+	
+	  # 检查是否有人在向他没有权限的地方推送内容
+	  new_commits = `git rev-list #{$oldrev}..#{$newrev}`.split("\n")
+	  new_commits.each do |rev|
+	    files_modified = `git log -1 --name-only --pretty=format:'' #{rev}`.split("\n")
+	    files_modified.each do |path|
+	      next if path.size == 0
+	      has_file_access = false
+	      access[$user].each do |access_path|
+	        if !access_path  # 用户拥有完全访问权限
+	           || (path.start_with? access_path) # 或者对此路径有访问权限
+	          has_file_access = true
+	        end
+	      end
+	      if !has_file_access
+	        puts "[POLICY] You do not have access to push to #{path}"
+	        exit 1
+	      end
+	    end
+	  end
+	end
+	
+	check_directory_perms
+
+通过`git rev-list`获取推送到服务器的所有提交。接着，对于每一个提交，找出它修改的文件，然后，确保推送者具有这些文件的推送权限。
+
 * 测试一下
 
+把上面的代码放到`.git/hooks/update`文件里，运行`chmod u+x .git/hooks/update`,然后推送一个不符合格式的提交，你会得到以下的提示：
+	
+	$ git push -f origin master
+	Counting objects: 5, done.
+	Compressing objects: 100% (3/3), done.
+	Writing objects: 100% (3/3), 323 bytes, done.
+	Total 3 (delta 1), reused 0 (delta 0)
+	Unpacking objects: 100% (3/3), done.
+	Enforcing Policies...
+	(refs/heads/master) (8338c5) (c5b616)
+	[POLICY] Your message is not formatted correctly
+	error: hooks/update exited with error code 1
+	error: hook declined to update refs/heads/master
+	To git@gitserver:project.git
+	 ! [remote rejected] master -> master (hook declined)
+	error: failed to push some refs to 'git@gitserver:project.git'
+	
+这有几个信息。
+
+首先可以看到钩子运行的起点。
+	
+	Enforcing Policies...
+	(refs/heads/master) (fb8c72) (c56860)
+
+这是`update`脚本开头输出到标准输出的。
+
+下一个值得注意的部分是错误信息。
+
+	[POLICY] Your message is not formatted correctly
+	error: hooks/update exited with error code 1
+	error: hook declined to update refs/heads/master
+
+第一行是我们脚本输出的，剩下两行是Git在告诉我们`update`脚本退出时返回了非零值而推送被拒绝。最后
+	
+	To git@gitserver:project.git
+	 ! [remote rejected] master -> master (hook declined)
+	error: failed to push some refs to 'git@gitserver:project.git'
+	
+每个被钩子拒绝的推送都收到一个`remote rejected`信息，它告诉你是钩子无法成功运行导致推送的拒绝。
+
+而后，只要`update`脚本存在并且可执行，我们的版本中永远都不会包含不符合格式的提交信息。
+
 ### 8.4.2 客户端钩子
+
+在服务端推送时被拒绝是非常不愉快的，可以给客户端一些钩子，在他们出错时给出警告。
+
+所以必须通过其他途径把这些钩子分发到用户的`.git/hooks`目录并设置为可执行文件。虽然你可以在相同或单独项目里加入并分发钩子，但是Git不会自动设置它。
+
+首先，在每次提交前核查提交信息，这样才能确保服务器不会因为不合条件的提交信息而拒绝更改。
+
+为了这个目的，你可以增加`commit-msg`钩子。如果使用钩子来读取作为第一个参数传递的提交信息，然后与规定的格式作比较，你就可以使Git在提交信息不对的情况下拒绝提交。
+
+	#!/usr/bin/env ruby
+	message_file = ARGV[0]
+	message = File.read(message_file)
+	
+	$regex = /\[ref: (\d+)\]/
+	
+	if !$regex.match(message)
+	  puts "[POLICY] Your message is not formatted correctly"
+	  exit 1
+	end
+
+脚本位于正确的位置`.git/hooks/commit-msg`并可执行时，提交信息的格式又是不正确的，你会看到：
+
+	$ git commit -am 'test'
+	[POLICY] Your message is not formatted correctly
+	
+在这个示例中，提交没有成功。然而提交注释信息符合要求，Git会允许提交：
+	
+	$ git commit -am 'test [ref: 132]'
+	[master e05c914] test [ref: 132]
+	 1 file changed, 1 insertions(+), 0 deletions(-)
+	
+接下来要保证没有修改到ACL允许范围之外的文件。假设你的`.git`目录下有前面使用过的ACL文件，那么下方的`pre-commit`脚本将把里面的规定执行起来：
+
+	#!/usr/bin/env ruby
+	
+	$user    = ENV['USER']
+	
+	# [ 插入上文中的 get_acl_access_data 方法 ]
+	
+	# 仅允许特定用户修改项目中的特定子目录
+	def check_directory_perms
+	  access = get_acl_access_data('.git/acl')
+	
+	  files_modified = `git diff-index --cached --name-only HEAD`.split("\n")
+	  files_modified.each do |path|
+	    next if path.size == 0
+	    has_file_access = false
+	    access[$user].each do |access_path|
+	    if !access_path || (path.index(access_path) == 0)
+	      has_file_access = true
+	    end
+	    if !has_file_access
+	      puts "[POLICY] You do not have access to push to #{path}"
+	      exit 1
+	    end
+	  end
+	end
+	
+	check_directory_perms
+	
+这和服务器的脚本几乎一样，除了两个重要区别。
+
+第一，ACL文件的位置不同，因为这个脚本在当前工作目录运行，而非`.git`目录。
+
+第二，获取被修改文件列表的方式。在服务器时使用查看提交记录的方式。而本地还没有提交，所以这个列表只能从暂存区获取。
+
+*注意：假定的是本地用户和推送到远程服务器端的相同。如果不同，则需要手动设置一下`$USER`变量。*
+
+还有确保推送内容中不包含非快进的引用。出现一个不是快进的引用有两种情况，一种是在某个已经推送过的提交上作变基，一种是从本地推送一个错误的分支到远程分支上。
+
+假定为了执行这个策略，已经在服务器上配置好了`receive.denyDeletes`和`receive.denyNonFastForwards`,而唯一需要避免的是某个已经推送过提交作变基。
+
+下方是用来检查这个问题的`pre-rebase`脚本示例。它获取所有待重写的提交列表，然后检查它们是否存在于远程引用中。一旦发现其中一个提交是某个远程引用的，它就终止此次变基：
+	
+	#!/usr/bin/env ruby
+	
+	base_branch = ARGV[0]
+	if ARGV[1]
+	  topic_branch = ARGV[1]
+	else
+	  topic_branch = "HEAD"
+	end
+	
+	target_shas = `git rev-list #{base_branch}..#{topic_branch}`.split("\n")
+	remote_refs = `git branch -r`.split("\n").map { |r| r.strip }
+	
+	target_shas.each do |sha|
+	  remote_refs.each do |remote_ref|
+	    shas_pushed = `git rev-list ^#{sha}^@ refs/remotes/#{remote_ref}`
+	    if shas_pushed.split("\n").include?(sha)
+	      puts "[POLICY] Commit #{sha} has already been pushed to #{remote_ref}"
+	      exit 1
+	    end
+	  end
+	end
+
+`SHA^@` 会被解析成该提交的所有父提交。该命令会列出远程分支最新的提交中可到达的。
+
+这个解决方案主要问题是`它可能很慢，而且常常没有必要`。只有不使用`-f`强制推送，服务器就会自动给出警告并且拒绝接受推送。
+
+
+-----
 
 # 9. Git 与其他系统
 
