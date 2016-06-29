@@ -307,6 +307,68 @@ Git以一种类似于UNIX文件系统的方式存储内容，但作了些简化�
 
 ### 10.2.3 对象存储
 
+在存储内容时，会有一个头部信息一并被保存。
+
+现在看看Git是如何存储对象的。
+
+通过在Ruby中交互演示，将看到数据对象`what is up ,doc`是如何存储的。
+
+通过`irb`命令启动Ruby交互模式：
+
+	$ irb
+	>> content = "what is up, doc?"
+	=> "what is up, doc?"
+
+Git以对象类型作为开头来构造一个头部信息，这里是`blob`字符串。接着Git会添加一个空格，随后是数据内容的长度，最后是一个空字节：
+
+	>> header = "blob #{content.length}\0"
+	=> "blob 16\u0000"
+
+Git会将上述信息和原始数据拼接起来，并计算出这条新内容的SHA-1校验。
+
+在Ruby中可以先通过`require`命令导入SHA-1 digest 库，然后对目标字符串调用`Digest::SHA1.hexdigest()`
+
+	>> store = header + content
+	=> "blob 16\u0000what is up, doc?"
+	>> require 'digest/sha1'
+	=> true
+	>> sha1 = Digest::SHA1.hexdigest(store)
+	=> "bd9dbf5aae1a3862dd1526723246b20206e5fc37"
+	
+Git会通过`zlib`压缩这条新内容。在Ruby中可以借助`zlib`库做到这一点。
+
+先导入相应的库，然后对目标内容调用`Zlib::Deflate.deflate()`
+	
+	>> require 'zlib'
+	=> true
+	>> zlib_content = Zlib::Deflate.deflate(store)
+	=> "x\x9CK\xCA\xC9OR04c(\xCFH,Q\xC8,V(-\xD0QH\xC9O\xB6\a\x00_\x1C\a\x9D"
+
+最后，需要将这条经由`zlib`压缩的内容写入磁盘上的某个对象。要先确定待写入对象的路径（SHA-1值得前两个字符作为子目录名称，后38个字符作为子目录内文件的名字）。
+
+如果该子目录不存在，可以通过Ruby中的`FileUtils.mkdir_p() `函数来创建它。
+
+接着，通过`File.open()`打开这个文件。
+
+最后，对上一步中得到的文件调用`write()`函数，以向目标文件写入之前那条`zlib`压缩过的内容：
+	
+	>> path = '.git/objects/' + sha1[0,2] + '/' + sha1[2,38]
+	=> ".git/objects/bd/9dbf5aae1a3862dd1526723246b20206e5fc37"
+	>> require 'fileutils'
+	=> true
+	>> FileUtils.mkdir_p(File.dirname(path))
+	=> ".git/objects/bd"
+	>> File.open(path, 'w') { |f| f.write zlib_content }
+	=> 32
+
+这样就创建了一个有效的Git数据对象。所有的Git对象均以这种方式存储，区别仅在于类型识别。
+
+另外两种对象类型的头部信息以字符串`commit`或`tree`开头，而不是`blob`。
+
+**注册：虽然数据对象的内容几乎可以是任何东西，但提交对象和树对象的内容却有各自固定的格式。**
+
+------
+
 ## 10.3 Git 引用
 
 ### 10.3.1 HEAD 引用
