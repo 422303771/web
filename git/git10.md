@@ -220,6 +220,91 @@ Git以一种类似于UNIX文件系统的方式存储内容，但作了些简化�
 
 ### 10.2.2 提交对象
 
+现在有三个树对象，分别代表了我们想要跟踪的不同项目快照。然而问题是，想重新使用这些快照，必须知道所有三个SHA-1值，并且，你也不知道谁保存了这些快照，在什么时刻保存的，以及为什么保存这些快照。以上这些，正是提交对象能为保存的基本信息。
+
+可以通过调用`commit-tree`命令创建一个提交对象，需要指定一个树对象的SHA-1值，以及该提交的父提交对象。
+
+我们从之前创建的第一个树对象开始：
+	
+	$ echo 'first commit' | git commit-tree d8329f
+	fdf4fc3344e67ab068f836878b6c4951e3b15f3dw
+
+现在可以通过`cat-file`命令查看新提交对象：
+
+	$ git cat-file -p fdf4fc3
+	tree d8329fc1cc938780ffdd9f94e0d364e0ea74f579
+	author Scott Chacon <schacon@gmail.com> 1243040974 -0700
+	committer Scott Chacon <schacon@gmail.com> 1243040974 -0700
+	
+	first commit
+
+提交对象的格式很简单：先指定一个顶层树对象，代表当前项目快照，然后是作者/提交者信息（`user.name`和`user.email`配置来设定，外加一个时间戳），留空一行，最后是提交注释。
+
+接着，我们创建另外两个提交对象，它们分别引用各自的上一个提交：
+
+	$ echo 'second commit' | git commit-tree 0155eb -p fdf4fc3
+	cac0cab538b970a37ea1e769cbbde608743bc96d
+	$ echo 'third commit'  | git commit-tree 3c4e9c -p cac0cab
+	1a410efbd13591db07496601ebc7a059dd55cfe9
+
+这三个提交对象分别指向之前创建的三个树对象快照中的一个。
+
+现在，如果对最后一个提交的SHA-1值运行`git log`命令，会发现，可以查看到提交历史了：
+
+	$ git log --stat 1a410e
+	commit 1a410efbd13591db07496601ebc7a059dd55cfe9
+	Author: Scott Chacon <schacon@gmail.com>
+	Date:   Fri May 22 18:15:24 2009 -0700
+	
+		third commit
+	
+	 bak/test.txt | 1 +
+	 1 file changed, 1 insertion(+)
+	
+	commit cac0cab538b970a37ea1e769cbbde608743bc96d
+	Author: Scott Chacon <schacon@gmail.com>
+	Date:   Fri May 22 18:14:29 2009 -0700
+	
+		second commit
+	
+	 new.txt  | 1 +
+	 test.txt | 2 +-
+	 2 files changed, 2 insertions(+), 1 deletion(-)
+	
+	commit fdf4fc3344e67ab068f836878b6c4951e3b15f3d
+	Author: Scott Chacon <schacon@gmail.com>
+	Date:   Fri May 22 18:09:34 2009 -0700
+	
+	    first commit
+	
+	 test.txt | 1 +
+	 1 file changed, 1 insertion(+)
+
+上方例子中，在不使用任何上层命令，仅凭几个底层操作便完成了一个Git提交历史的创建。这就是每次我们运行`git add`和`git commit`命令时，Git所做的工作。
+
+将被改写的文件保存为数据对象，更新暂存区，记录树对象，最后创建一个指明了顶层树对象和父提交的提交对象。
+
+这三种主要的Git对象，数据对象、树对象、提交对象，最初均以单独文件的形式保存在`.git/objects`目录下。
+
+下面列出了目前示例目录内的所有对象，辅以各自所保存内容的注释：
+
+	$ find .git/objects -type f
+	.git/objects/01/55eb4229851634a0f03eb265b69f5a2d56f341 # tree 2
+	.git/objects/1a/410efbd13591db07496601ebc7a059dd55cfe9 # commit 3
+	.git/objects/1f/7a7a472abf3dd9643fd615f6da379c4acb3e3a # test.txt v2
+	.git/objects/3c/4e9cd789d88d8d89c1073707c3585e41b0e614 # tree 3
+	.git/objects/83/baae61804e65cc73a7201a7252750c76066a30 # test.txt v1
+	.git/objects/ca/c0cab538b970a37ea1e769cbbde608743bc96d # commit 2
+	.git/objects/d6/70460b4b4aece5915caf5c68d12f560a9fe3e4 # 'test content'
+	.git/objects/d8/329fc1cc938780ffdd9f94e0d364e0ea74f579 # tree 1
+	.git/objects/fa/49b077972391ad58037050f2a75f74e3671e92 # new.txt
+	.git/objects/fd/f4fc3344e67ab068f836878b6c4951e3b15f3d # commit 1
+
+如果跟踪所有的内部指针，将得到一个类似下方的对象关系图：
+
+![](https://git-scm.com/book/en/v2/book/10-git-internals/images/data-model-3.png)
+
+
 ### 10.2.3 对象存储
 
 ## 10.3 Git 引用
