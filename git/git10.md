@@ -518,12 +518,75 @@ HEAD文件是一个符号引用，指向目前所在的分支。
 
 ### 10.3.2 标签引用
 
+Git中三种主要的对象类型已经介绍过了，还有第四种。标签对象（tag object）非常类似于一个提交对象。
+
+它包含一个标签创建者信息、一个日期、一段注释信息，以及一个指针。
+
+主要的区别在于，标签对象通常指向一个提交对象，而不是一个树对象。
+
+它是一个不移动的分支引用，永远指向同一个提交对象，只不过给提交对象加一个更友好的名字罢了。
+
+下方命令可以创建一个轻量标签：
+
+	$ git update-ref refs/tags/v1.0 cac0cab538b970a37ea1e769cbbde608743bc96d
+
+这就是轻量标签的全部内容，一个固定的引用。
+
+附注标签则更复杂一些，要创建一个附注标签，Git会创建一个标签对象，并记录一个引用来指向该标签对象，而不是直接指向提交对象。
+
+可以通过创建一个附注标签来验证这个过程(`-a`选项指定了要创建的是一个附注标签)：
+
+	$ git tag -a v1.1 1a410efbd13591db07496601ebc7a059dd55cfe9 -m 'test tag'
 
 
+通过下方命令查找SHA-1值：
+	
+	$ cat .git/refs/tags/v1.1
+	9585191f37f7b0fb9444f35a9bf50de191beadc2
+
+现在对SHA-1值运行`cat-file`命令：
+
+	$ git cat-file -p 9585191f37f7b0fb9444f35a9bf50de191beadc2
+	object 1a410efbd13591db07496601ebc7a059dd55cfe9
+	type commit
+	tag v1.1
+	tagger Scott Chacon <schacon@gmail.com> Sat May 23 16:48:58 2009 -0700
+	
+	test tag
+
+可以看到，object条目指向打了标签的那个提交对象的SHA-1值。另外要注意，标签对象并不是必须指向某个提交对象；你可以对任意类型的Git对象打标签。
+
+在Git源码中，项目维护者将他们的GPG公钥添加为一个数据对象，然后对这个对象打了标签。
+
+可以克隆一个Git版本库，然后通过执行下面命令查看：
+
+	$ git cat-file blob junio-gpg-pub
+
+	
 ### 10.3.3 远程引用
 
 
+第三种引用类型是远程引用，如果添加了一个远程版本库并对其执行过推送操作，Git会记录下最近一次推送操作时每一个分支所对应的值，并保存在`refs/remotes`目录下。
 
+**例子：**
+
+你可以添加一个叫做`origin`的远程版本库，然后把`master`分支推送上去：
+
+	$ git remote add origin git@github.com:schacon/simplegit-progit.git
+	$ git push origin master
+	Counting objects: 11, done.
+	Compressing objects: 100% (5/5), done.
+	Writing objects: 100% (7/7), 716 bytes, done.
+	Total 7 (delta 2), reused 4 (delta 1)
+	To git@github.com:schacon/simplegit-progit.git
+	  a11bef0..ca82a6d  master -> master
+	
+此时，如果查看`refs/remotes/origin/master`文件，可以发现`origin`远程版本库的master分支对应的SHA-1值，就是最近一次与服务器通信时本地`master`分支的SHA-1值：
+
+	$ cat .git/refs/remotes/origin/master
+	ca82a6dff817ec66f44342007202690a93763949
+	
+远程引用和分支（位于`refs/heads`目录下的引用）之间最主要的区别在于，远程引用是只读的。虽然可以`git checkout`到某个远程引用，但是Git并不会将HEAD引用指向远程引用。因此，你永远不能通过`commit`命令来更新远程引用。git将这些远程引进作为记录远程服务器上各分支最后已知位置状态的书签来管理。
 
 -----
 
