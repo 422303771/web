@@ -1,6 +1,70 @@
-# [10. Git 内部原理]
+# 目录
+
+ 
+* [10. Git 内部原理]
+
+	* [10.1 底层命令和高层命令]
+
+ * [10.2 Git 对象]
+
+ 	* [10.2.1 树对象]
+
+	* [10.2.2 提交对象]
+
+	* [10.2.3 对象存储]
+
+* [10.3 Git 引用]
+
+	* [10.3.1 HEAD 引用]
+
+	* [10.3.2 标签引用]
+
+	* [10.3.3 远程引用]
+
+* [10.4 包文件]
+
+* [10.5 引用规格]
+
+	* [10.5.1 引用规格推送]
+
+	* [10.5.2 删除引用]
+
+* [10.6 传输协议]
+
+	* [10.6.1 哑协议]
+
+	* [10.6.2 智能协议]
+
+* [10.7 维护与数据恢复]
+
+	* [10.7.1 维护]
+
+	* [10.7.2 数据恢复]
+
+	* [10.7.3 移除对象]
+
+* [10.8 环境变量]
+
+	* [10.8.1 全局行为]
+
+	* [10.8.2 版本库位置]
+
+	* [10.8.3 路径规则]
+
+	* [10.8.4 提交]
+
+	* [10.8.5 网络]
+
+	* [10.8.6 调试]
+
+	* [10.8.7 其它]
 
 
+------
+
+
+
+# 10. Git 内部原理
 
 介绍Git内部工作原理和实现方式。
 
@@ -489,4 +553,65 @@ Git中不提倡直接编辑引用文件。如果想更新某个引用，Git提�
 ### 10.8.7 其它
 
 
-[10. Git 内部原理]: https://github.com/422303771/web/blob/master/git/git10.md#10-git-内部原理 "test"
+
+---------
+
+
+
+[10. Git 内部原理]: https://github.com/422303771/web/blob/master/git/git10.md#10-git-内部原理
+
+[10.1 底层命令和高层命令]: https://github.com/422303771/web/blob/master/git/git10.md#101-底层命令和高层命令
+
+[10.2 Git 对象]: https://github.com/422303771/web/blob/master/git/git10.md#102-git-对象
+
+[10.2.1 树对象]: https://github.com/422303771/web/blob/master/git/git10.md#1021-树对象
+
+[10.2.2 提交对象]: https://github.com/422303771/web/blob/master/git/git10.md#1022-提交对象
+
+[10.2.3 对象存储]: https://github.com/422303771/web/blob/master/git/git10.md#1023-对象存储
+
+[10.3 Git 引用]: https://github.com/422303771/web/blob/master/git/git10.md#103-git-引用
+
+[10.3.1 HEAD 引用]: https://github.com/422303771/web/blob/master/git/git10.md#1031-head-引用
+
+[10.3.2 标签引用]: https://github.com/422303771/web/blob/master/git/git10.md#1032-标签引用
+
+[10.3.3 远程引用]: https://github.com/422303771/web/blob/master/git/git10.md#1033-远程引用
+
+[10.4 包文件]: https://github.com/422303771/web/blob/master/git/git10.md#104-包文件
+
+[10.5 引用规格]: https://github.com/422303771/web/blob/master/git/git10.md#105-引用规格
+
+[10.5.1 引用规格推送]: https://github.com/422303771/web/blob/master/git/git10.md#1051-引用规格推送
+
+[10.5.2 删除引用]: https://github.com/422303771/web/blob/master/git/git10.md#1052-删除引用
+
+[10.6 传输协议]: https://github.com/422303771/web/blob/master/git/git10.md#106-传输协议
+
+[10.6.1 哑协议]: https://github.com/422303771/web/blob/master/git/git10.md#1061-哑协议
+
+[10.6.2 智能协议]: https://github.com/422303771/web/blob/master/git/git10.md#1062-智能协议
+
+[10.7 维护与数据恢复]: https://github.com/422303771/web/blob/master/git/git10.md#107-维护与数据恢复
+
+[10.7.1 维护]: https://github.com/422303771/web/blob/master/git/git10.md#1071-维护
+
+[10.7.2 数据恢复]: https://github.com/422303771/web/blob/master/git/git10.md#1072-数据恢复
+
+[10.7.3 移除对象]: https://github.com/422303771/web/blob/master/git/git10.md#1073-移除对象
+
+[10.8 环境变量]: https://github.com/422303771/web/blob/master/git/git10.md#108-环境变量
+
+[10.8.1 全局行为]: https://github.com/422303771/web/blob/master/git/git10.md#1081-全局行为
+
+[10.8.2 版本库位置]: https://github.com/422303771/web/blob/master/git/git10.md#1082-版本库位置
+
+[10.8.3 路径规则]: https://github.com/422303771/web/blob/master/git/git10.md#1083-路径规则
+
+[10.8.4 提交]: https://github.com/422303771/web/blob/master/git/git10.md#1084-提交
+
+[10.8.5 网络]: https://github.com/422303771/web/blob/master/git/git10.md#1085-网络
+
+[10.8.6 调试]: https://github.com/422303771/web/blob/master/git/git10.md#1086-调试
+
+[10.8.7 其它]: https://github.com/422303771/web/blob/master/git/git10.md#1087-其它
