@@ -481,10 +481,48 @@ Git中不提倡直接编辑引用文件。如果想更新某个引用，Git提�
 
 ### 10.3.1 HEAD 引用
 
+现在的问题是，当你执行`git branch [分支名]`时，Git使用`HEAD文件`知道最新提交的SHA-1值。
+
+HEAD文件是一个符号引用，指向目前所在的分支。
+
+符合引用，它并不像普通引用那样包含一个SHA-1值，它是一个指向其他引用的指针。
+
+查看`HEAD`文件的内容,一般如下
+
+	$ cat .git/HEAD
+	ref: refs/heads/master
+
+如果执行`git checkout test`,Git会像这样更新`HEAD文件`:
+
+	$ cat .git/HEAD
+	ref: refs/heads/test
+
+当执行`git commit `时，该命令会创建一个提交对象，并用HEAD文件中的引用指向SHA-1值，设置其父提交字段。
+
+你也可以手动编辑该文件，可以安全的命令来代替手动修改`symbolic-ref`。可以用此命令查看HEAD引用对应的值：
+
+	$ git symbolic-ref HEAD
+	refs/heads/master
+
+同样可以设置HEAD引用值：
+
+	$ git symbolic-ref HEAD refs/heads/test
+	$ cat .git/HEAD
+	ref: refs/heads/test
+
+但是不能把符合引用设置为一个不符合引用格式的值：
+
+	$ git symbolic-ref HEAD test
+	fatal: Refusing to point HEAD outside of refs/
+	
 
 ### 10.3.2 标签引用
 
+
+
 ### 10.3.3 远程引用
+
+
 
 
 -----
