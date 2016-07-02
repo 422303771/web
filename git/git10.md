@@ -941,18 +941,117 @@ Git会将开始时下载的HEAD引用指向`master`分支的工作目录。
 
 总共有两组进程用于传输数据，它们分别负责上传和下载数据。
 
-* 上传数据
+* 上传数据    
+  	
+	为了上传数据到服务端，Git使用`send-pack`和`receive-pack`进程。运行在客户端上的`send-pack`进程连接到服务端`receive-pack`进程。
 
 	* SSH
 
+		举例来说，在项目中使用命令`git push origin master`时，`origin`是由基于SSH协议的URL所定义的。
+
+		Git会运行`send-pack`进程，它会通过SSH连接你的服务器。它会尝试通过SSH在服务端执行命令，如下：
+
+			$ ssh -x git@server "git-receive-pack 'simplegit-progit.git'"
+			00a5ca82a6dff817ec66f4437202690a93763949 refs/heads/master report-status \
+				delete-refs side-band-64k quiet ofs-delta \
+				agent=git/2:2.1.1+github-607-gfba4028 delete-refs
+			0000
+
+		`git-receive-pack`命令会立即为它的每一个引用发送一行响应，在这个例子，就只有`master`分支和它的SHA-1值。第一行响应中也包含了一个服务器能力的列表（这里是`report-status`、`delete-refs`和一些其它的，包括客户端的识别码。）
+
+		`0000`表示服务端己完成了发送引用列表。
+
+		现在Git知道了服务器的状态，`send-pack`进程会判断哪些提交记录是本地拥有的，而服务端没有的。
+
+		`send-pack`会告知`receive-pack`这次推送将会更新各个引用。
+
+		**例子：**
+
+		如果你正在更新`master`分支，并且增加`experiment`分支，这个`send-pack`的响应将会是这样：
+
+			0076ca82a6dff817ec66f44342007202690a93763949 15027957951b64cf874c3557a0f3547bd83b3ff6 \
+				refs/heads/master report-status
+			006c0000000000000000000000000000000000000000 cdfdb42577e2506715f8cfeacdbabc092bf63e8d \
+				refs/heads/experiment
+			0000
+
+		Git会为每一个将要更新的引用发送一行数据，包含该行长度，旧SHA-1值，新SHA-1值和将要更新的引用。
+		
+		这里全为`0`的SHA-1值表示之前没有过这个引用。因为正要添加新的`experiment`应用，删除引用时，将会看到相反的情况，右边的SHA-1值全为`0`。
+		
+		接下来，客户端会发送一个包文件，它包含了所以服务端还没有的对象。最后，服务端会以成功或失败响应：
+		
+			000eunpack ok
+
+			
 	* HTTP(S)
+		
+		HTTPS与HTTP相比，除了在`握手`过程略有不同外，其他基本相似。连接是从下面这个请求开始的：
+		
+			=> GET http://server/simplegit-progit.git/info/refs?service=git-receive-pack
+			001f# service=git-receive-pack
+			00ab6c5f0e45abd7832bf23074a333f739977c9e8188 refs/heads/master report-status \
+				delete-refs side-band-64k quiet ofs-delta \
+				agent=git/2:2.1.1~vmg-bitmaps-bugaloo-608-g116744e
+			0000
+		
+		这完成了客户端和服务器的第一次数据交换，接下来客户端发起另一个请求，这次是一个`POST`请求，这个请求中包含了`git-upload-pack`提供的数据。
+		
+			=> POST http://server/simplegit-progit.git/git-receive-pack
+		
+		这个`POST`请求的内容是`send-pack`的输出和相应的包文件。服务端在收到请求后相应地作出成功或者失败的HTTP响应。
+
 
 * 下载数据
 
+	当下载数据时，`fetch-pack`和`upload-pack`进程就起作用了。客户端启动`fetch-pack`进程，连接到远程的`upload-pack`进程，以协商后续传输的数据。
+
 	* SSH
+
+		如果通过SSH使用抓取功能，`fetch-pack`会像下方一样运行：
+		
+			$ ssh -x git@server "git-upload-pack 'simplegit-progit.git'"
+		
+		在`fetch-pack`连接后，`upload-pack`会返回类似下面的内容：
+		
+			00dfca82a6dff817ec66f44342007202690a93763949 HEAD multi_ack thin-pack \
+				side-band side-band-64k ofs-delta shallow no-progress include-tag \
+				multi_ack_detailed symref=HEAD:refs/heads/master \
+				agent=git/2:2.1.1+github-607-gfba4028
+			003fe2409a098dc3e53539a9028a94b6224db9d6a6b6 refs/heads/master
+			0000
+		
+		这与`receive-pack`的响应类似，但是这里所包含的能力是不同的。而且它还包含HEAD引用所指向内容（`symref=HEAD:refs/heads/master`）,这样如果客户端执行的是克隆，Git就会知道要检出什么。
+		
+		这时，`fetch-pack`进程查看它自己所拥有的对象，并响应`want`和它需要的对象的SHA-1值。它还会发送`have`和所有它已拥有的对象的SHA-1值。在列表的最后，它还会发送`done`以通知`upload-pack`进程可以开始发送它所需对象的包文件：
+		
+			003cwant ca82a6dff817ec66f44342007202690a93763949 ofs-delta
+			0032have 085bb3bcb608e1e8451d4b2432f8ecbe6306e7e7
+			0009done
+			0000
+
 
 	* HTTP(S)
 
+抓取操作的握手需要两个HTTP请求。第一个是向和哑协议中相同的端点发送`GET`请求：
+
+	=> GET $GIT_URL/info/refs?service=git-upload-pack
+	001e# service=git-upload-pack
+	00e7ca82a6dff817ec66f44342007202690a93763949 HEAD multi_ack thin-pack \
+		side-band side-band-64k ofs-delta shallow no-progress include-tag \
+		multi_ack_detailed no-done symref=HEAD:refs/heads/master \
+		agent=git/2:2.1.1+github-607-gfba4028
+	003fca82a6dff817ec66f44342007202690a93763949 refs/heads/master
+	0000
+
+这和通过SSH使用`git-upload-pack`是非常相似的，但是第二个数据交换则是一个单独的请求：
+	
+	=> POST $GIT_URL/git-upload-pack HTTP/1.0
+	0032want 0a53e9ddeaddad63ad106860237bbf53411d11a7
+	0032have 441b40d833fdfa93eb2908e52742248faf0ee993
+	0000
+	
+这个输出格式还是和前面一样的。这个请求的响应包含了所需要的包文件，并指明成功或失败。
 
 ----------
 
