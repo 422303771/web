@@ -1089,7 +1089,7 @@ Git会将开始时下载的HEAD引用指向`master`分支的工作目录。
 
 
 
-[10. Git 内部原理]: https://github.com/422303771/web/blob/master/git/git10.md#10-git-内部原理
+[10. Git 内部原理]: #10-git-内部原理
 
 [10.1 底层命令和高层命令]: https://github.com/422303771/web/blob/master/git/git10.md#101-底层命令和高层命令
 
