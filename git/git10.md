@@ -1032,26 +1032,26 @@ Git会将开始时下载的HEAD引用指向`master`分支的工作目录。
 
 
 	* HTTP(S)
-
-抓取操作的握手需要两个HTTP请求。第一个是向和哑协议中相同的端点发送`GET`请求：
-
-	=> GET $GIT_URL/info/refs?service=git-upload-pack
-	001e# service=git-upload-pack
-	00e7ca82a6dff817ec66f44342007202690a93763949 HEAD multi_ack thin-pack \
-		side-band side-band-64k ofs-delta shallow no-progress include-tag \
-		multi_ack_detailed no-done symref=HEAD:refs/heads/master \
-		agent=git/2:2.1.1+github-607-gfba4028
-	003fca82a6dff817ec66f44342007202690a93763949 refs/heads/master
-	0000
-
-这和通过SSH使用`git-upload-pack`是非常相似的，但是第二个数据交换则是一个单独的请求：
-	
-	=> POST $GIT_URL/git-upload-pack HTTP/1.0
-	0032want 0a53e9ddeaddad63ad106860237bbf53411d11a7
-	0032have 441b40d833fdfa93eb2908e52742248faf0ee993
-	0000
-	
-这个输出格式还是和前面一样的。这个请求的响应包含了所需要的包文件，并指明成功或失败。
+		
+		抓取操作的握手需要两个HTTP请求。第一个是向和哑协议中相同的端点发送`GET`请求：
+		
+			=> GET $GIT_URL/info/refs?service=git-upload-pack
+			001e# service=git-upload-pack
+			00e7ca82a6dff817ec66f44342007202690a93763949 HEAD multi_ack thin-pack \
+				side-band side-band-64k ofs-delta shallow no-progress include-tag \
+				multi_ack_detailed no-done symref=HEAD:refs/heads/master \
+				agent=git/2:2.1.1+github-607-gfba4028
+			003fca82a6dff817ec66f44342007202690a93763949 refs/heads/master
+			0000
+		
+		这和通过SSH使用`git-upload-pack`是非常相似的，但是第二个数据交换则是一个单独的请求：
+			
+			=> POST $GIT_URL/git-upload-pack HTTP/1.0
+			0032want 0a53e9ddeaddad63ad106860237bbf53411d11a7
+			0032have 441b40d833fdfa93eb2908e52742248faf0ee993
+			0000
+			
+		这个输出格式还是和前面一样的。这个请求的响应包含了所需要的包文件，并指明成功或失败。
 
 ----------
 
