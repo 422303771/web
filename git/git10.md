@@ -841,7 +841,97 @@ QA团队先要使用下方命令将他们的`master`分支推送到远程服务�
 
 ## 10.6 传输协议
 
+Git可以通过两种主要的方式在版本库之间传输数据。一种是`哑(dumb)协议`，一种是`智能(smart)`协议。
+
 ### 10.6.1 哑协议
+
+如果正在架设一个基于HTTP协议的只读版本版，一般这种情况下使用的就是哑协议。
+
+被称为`哑协议`，是因为在传输过程中，服务端不需要有针对Git特有的代码，抓取过程是一系列HTTP的`GET`请求，这种情况下，客户端可以推断出服务端Git仓库的布局。
+
+*注意：现在很少使用哑协议了，使用哑协议的版本库很难保证安全性和私有化，所以大多数Git服务器宿主都会拒绝使用它。一般情况下都建议使用智能协议。*
+
+通过`simplegit`版本库开看`http-fetch`的过程：
+
+	$ git clone http://server/simplegit-progit.git
+
+它做的第一件事就是拉取`info/refs`文件。这个文件是通过`update-server-info`命令生成的，这也解释了在使用HTTP传输时，必须把它设置为`post-receive`钩子的原因：
+
+	=> GET info/refs
+	ca82a6dff817ec66f44342007202690a93763949     refs/heads/master
+
+现在，得到一个远程引用和SHA-1值得列表。接下来，要确定HEAD引用是什么，这样就知道在完成后应该被检出的工作目录的内容：
+
+	=> GET HEAD
+	ref: refs/heads/master
+	
+在完成抓取后，需要检出`master`分支。这时，就可以可以遍历处理了。
+
+因为你从`info/refs`文件中所提提取的`ca82a6`提交对象开始，所以首先要获取它：
+
+	=> GET objects/ca/82a6dff817ec66f44342007202690a93763949
+	(179 bytes of binary data)
+	
+取回了一个对象，这是一个在服务端以松散格式保存的对象，是你通过使用静态HTTP GET请求获取的。
+
+你可以使用zlib解压缩它，去除头部，查看提交记录的内容：
+
+	$ git cat-file -p ca82a6dff817ec66f44342007202690a93763949
+	tree cfda3bf379e4f8dba8717dee55aab78aef7f4daf
+	parent 085bb3bcb608e1e8451d4b2432f8ecbe6306e7e7
+	author Scott Chacon <schacon@gmail.com> 1205815931 -0700
+	committer Scott Chacon <schacon@gmail.com> 1240030591 -0700
+	
+	changed the version number
+	
+接下来，还要在获取两个对象，一个是树对象`cfda3b`，它包含有刚刚获取的提交对象所指向的内容，另一个是它的父提交`085bb3`
+
+	=> GET objects/08/5bb3bcb608e1e8451d4b2432f8ecbe6306e7e7
+	(179 bytes of data)
+
+这样就取得了你的下一个提交对象。再抓取树对象：
+
+	=> GET objects/cf/da3bf379e4f8dba8717dee55aab78aef7f4daf
+	(404 - Not Found)
+
+这个树对象在服务端并不以松散格式对象存在，所有得到一个404响应，表示在HTTP服务端没有找到该对象。
+
+有几个可以得原因。 第一，这个对象可能在替代版本库里面。第二在包文件里面。
+
+Git会首先检查所有列出的替代版本库：
+
+	=> GET objects/info/http-alternates
+	(empty file)
+	
+如果返回了一个包含替代版本库URL的列表，那么Git就会去那些地址检查格式对象和文件。这是一种节省磁盘的好方法。
+
+但是，这个例子中，没有列出可用的替代版本库。所以你所需要的对象肯定在某个包文件中。
+
+要检查服务端有哪些可用的包文件，你需要获取`objects/info/packs`文件，这里面有一个包文件列表（它也是通过执行`update-server-info`所生成的）：
+
+	=> GET objects/info/packs
+	P pack-816a9b2334da9953e530f27bcac22082a9f5b835.pack
+
+服务器上只有一个包文件，需要的对象就在里面。但是要先检查它的索引文件以确认。
+
+即使服务端有多个包文件，这也很有用，这样你就知道所需要的对象是在哪一个包文件里面：
+
+	=> GET objects/pack/pack-816a9b2334da9953e530f27bcac22082a9f5b835.idx
+	(4k of binary data)
+
+现在你有这个包文件的索引，你可以查看你要的对象是否在里面。
+
+因为索引文件列出了这个包文件所包含的所有对象的SHA-1值，和该对象存在于包文件中的偏移量。
+
+你的对象就在f这里，接下来就是获取整个包文件：
+
+	=> GET objects/pack/pack-816a9b2334da9953e530f27bcac22082a9f5b835.pack
+	(13k of binary data)
+
+现在你也有了树对象，你可以继续在浏览提交记录。它们全部都在刚下载的包文件里面，所以不需求更多的下载了。
+
+Git会将开始时下载的HEAD引用指向`master`分支的工作目录。
+
 
 ### 10.6.2 智能协议
 
