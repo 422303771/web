@@ -1091,23 +1091,23 @@ Git会将开始时下载的HEAD引用指向`master`分支的工作目录。
 
 [10. Git 内部原理]: #10-git-内部原理
 
-[10.1 底层命令和高层命令]: https://github.com/422303771/web/blob/master/git/git10.md#101-底层命令和高层命令
+[10.1 底层命令和高层命令]: #101-底层命令和高层命令
 
-[10.2 Git 对象]: https://github.com/422303771/web/blob/master/git/git10.md#102-git-对象
+[10.2 Git 对象]: #102-git-对象
 
-[10.2.1 树对象]: https://github.com/422303771/web/blob/master/git/git10.md#1021-树对象
+[10.2.1 树对象]: #1021-树对象
 
-[10.2.2 提交对象]: https://github.com/422303771/web/blob/master/git/git10.md#1022-提交对象
+[10.2.2 提交对象]: #1022-提交对象
 
-[10.2.3 对象存储]: https://github.com/422303771/web/blob/master/git/git10.md#1023-对象存储
+[10.2.3 对象存储]: #1023-对象存储
 
-[10.3 Git 引用]: https://github.com/422303771/web/blob/master/git/git10.md#103-git-引用
+[10.3 Git 引用]: #103-git-引用
 
-[10.3.1 HEAD 引用]: https://github.com/422303771/web/blob/master/git/git10.md#1031-head-引用
+[10.3.1 HEAD 引用]: #1031-head-引用
 
-[10.3.2 标签引用]: https://github.com/422303771/web/blob/master/git/git10.md#1032-标签引用
+[10.3.2 标签引用]: #1032-标签引用
 
-[10.3.3 远程引用]: https://github.com/422303771/web/blob/master/git/git10.md#1033-远程引用
+[10.3.3 远程引用]: #1033-远程引用
 
 [10.4 包文件]: https://github.com/422303771/web/blob/master/git/git10.md#104-包文件
 
