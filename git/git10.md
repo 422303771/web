@@ -1109,40 +1109,40 @@ Git会将开始时下载的HEAD引用指向`master`分支的工作目录。
 
 [10.3.3 远程引用]: #1033-远程引用
 
-[10.4 包文件]: https://github.com/422303771/web/blob/master/git/git10.md#104-包文件
+[10.4 包文件]: #104-包文件
 
-[10.5 引用规格]: https://github.com/422303771/web/blob/master/git/git10.md#105-引用规格
+[10.5 引用规格]: #105-引用规格
 
-[10.5.1 引用规格推送]: https://github.com/422303771/web/blob/master/git/git10.md#1051-引用规格推送
+[10.5.1 引用规格推送]: #1051-引用规格推送
 
-[10.5.2 删除引用]: https://github.com/422303771/web/blob/master/git/git10.md#1052-删除引用
+[10.5.2 删除引用]: #1052-删除引用
 
-[10.6 传输协议]: https://github.com/422303771/web/blob/master/git/git10.md#106-传输协议
+[10.6 传输协议]: #106-传输协议
 
-[10.6.1 哑协议]: https://github.com/422303771/web/blob/master/git/git10.md#1061-哑协议
+[10.6.1 哑协议]: #1061-哑协议
 
-[10.6.2 智能协议]: https://github.com/422303771/web/blob/master/git/git10.md#1062-智能协议
+[10.6.2 智能协议]: #1062-智能协议
 
-[10.7 维护与数据恢复]: https://github.com/422303771/web/blob/master/git/git10.md#107-维护与数据恢复
+[10.7 维护与数据恢复]: #107-维护与数据恢复
 
-[10.7.1 维护]: https://github.com/422303771/web/blob/master/git/git10.md#1071-维护
+[10.7.1 维护]: #1071-维护
 
-[10.7.2 数据恢复]: https://github.com/422303771/web/blob/master/git/git10.md#1072-数据恢复
+[10.7.2 数据恢复]: #1072-数据恢复
 
-[10.7.3 移除对象]: https://github.com/422303771/web/blob/master/git/git10.md#1073-移除对象
+[10.7.3 移除对象]: #1073-移除对象
 
-[10.8 环境变量]: https://github.com/422303771/web/blob/master/git/git10.md#108-环境变量
+[10.8 环境变量]: #108-环境变量
 
-[10.8.1 全局行为]: https://github.com/422303771/web/blob/master/git/git10.md#1081-全局行为
+[10.8.1 全局行为]: #1081-全局行为
 
-[10.8.2 版本库位置]: https://github.com/422303771/web/blob/master/git/git10.md#1082-版本库位置
+[10.8.2 版本库位置]: #1082-版本库位置
 
-[10.8.3 路径规则]: https://github.com/422303771/web/blob/master/git/git10.md#1083-路径规则
+[10.8.3 路径规则]: #1083-路径规则
 
-[10.8.4 提交]: https://github.com/422303771/web/blob/master/git/git10.md#1084-提交
+[10.8.4 提交]: #1084-提交
 
-[10.8.5 网络]: https://github.com/422303771/web/blob/master/git/git10.md#1085-网络
+[10.8.5 网络]: #1085-网络
 
-[10.8.6 调试]: https://github.com/422303771/web/blob/master/git/git10.md#1086-调试
+[10.8.6 调试]: #1086-调试
 
-[10.8.7 其它]: https://github.com/422303771/web/blob/master/git/git10.md#1087-其它
+[10.8.7 其它]: #1087-其它
