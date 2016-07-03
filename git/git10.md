@@ -1328,20 +1328,108 @@ $ git commit -m 'oops - removed large tarball'
 
 ## 10.8 环境变量
 
+Git总是在一个`bash shell`中运行，并借助一些shell环境变量来决定他的运行方式。
+
+知道它们是什么以及它们如何让Git按照你希望的方式去运行会很有用。
+
+这里只说明最常用的部分。
+
+
 ### 10.8.1 全局行为
+
+**`GIT_EXEC_PATH`**
+
+**`HOME`**
+
+**`PREFIX`**
+
+**`GIT_CONFIG_NOSYSTEM`**
+
+**`GIT_PAGER`**
+
+**`GIT_EDITOR`**
 
 ### 10.8.2 版本库位置
 
+**`GIT_DIR`**
+
+**`GIT_CEILING_DIRECTORIES`**
+
+**`GIT_WORK_TREE`**
+
+**`GIT_INDEX_FILE`**
+
+**`GIT_OBJECT_DIRECTORY`**
+
+**`GIT_ALTERNATE_OBJECT_DIRECTORIES`**
+
 ### 10.8.3 路径规则
+
+**`GIT_GLOB_PATHSPECS`**&**`GIT_NOGLOB_PATHSPECS`**
+
+**`GIT_LITERAL_PATHSPECS`**
+
+**`GIT_ICASE_PATHSPECS`**
 
 ### 10.8.4 提交
 
+**`GIT_AUTHOR_NAME`**
+
+**`GIT_AUTHOR_EMAIL`**
+
+**`GIT_AUTHOR_DATE`**
+
+**`GIT_COMMITTER_NAME`**
+
+**`GIT_COMMITTER_EMALL`**
+
+**`GIT_COMMITTER_DATE`**
+
 ### 10.8.5 网络
 
-### 10.8.6 调试
+**`GIT_CURL_VERBOSE`**
 
-### 10.8.7 其它
+**`GIT_SSL_NO_VERIFY`**
 
+**`GIT_HTTP_LOW_SPEED_LIMIT`**
+
+**`GIT_HTTP_LOW_SPEED_TIME`**
+
+**`GIT_HTTP_USER_AGENT`**
+
+### 10.8.6 比较和合并
+
+**`GIT_DIFF_OPTS`**
+
+**`GIT_EXTERNAL_DIFF`**
+
+**`GIT_DIFF_PATH_COUNTER`**&**`GIT_DIFF_PATH_TOTAL`**
+
+**`GIT_MERGE_VERBOSITY`**
+
+### 10.8.7 调试
+
+**`GIT_TRACE`**
+
+**`GIT_TRACE_PACK_ACCESS`**
+
+**`GIT_TRACE_PACKET`**
+
+**`GIT_TRACE_PERFORMANCE`**
+
+**`GIT_TRACE_SETUP`**
+
+### 10.8.8 其它
+
+**`GIT_SSH`**
+
+**`GIT_ASKPASS`**
+
+**`GIT_NAMESPACE`**
+
+**`GIT_FLUSH`**
+
+**`GIT_REFLOG_ACTION`**
 
 
 ---------
@@ -1402,6 +1490,8 @@ $ git commit -m 'oops - removed large tarball'
 
 [10.8.5 网络]: #1085-网络
 
-[10.8.6 调试]: #1086-调试
+[10.8.6 比较和合并]: #1086-比较和合并
 
-[10.8.7 其它]: #1087-其它
+[10.8.7 调试]: #1087-调试
+
+[10.8.8 其它]: #1088-其它
