@@ -229,6 +229,12 @@
 需要额外的包python-support_1.0.15_all.deb [地址](https://launchpad.net/ubuntu/xenial/amd64/python-support/1.0.15)
 
 
+### 安装Numix Circle 图标
+
+	$ sudo add-apt-repository ppa:numix/ppa
+	$ sudo apt-get update
+	$ sudo apt-get install numix-icon-theme-circle
+
 
 ----
 
