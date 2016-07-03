@@ -1061,11 +1061,266 @@ Git会将开始时下载的HEAD引用指向`master`分支的工作目录。
 
 ### 10.7.1 维护
 
-Git会不定时地自动运行`auto gc`命令。大多数时候，
+Git会不定时地自动运行`auto gc`命令。大多数时候，这个命令并不会产生效果。然而，如果有太多的松散对象或者太多包文件，Git会运行一个完整的`git gc`命令。
+
+`gc`代表垃圾回收，这个命令会做下面的事情：收集所有松散对象并将它们放置到包文件中，将多个包文件合并为一个大的包文件，移除与任何提交都不相关的陈旧对象。
+
+也可以手动执行自动垃圾回收：
+
+	$ git gc --auto
+
+这个命令通过并不会产生效果。大约需要7000个以上的松散对象或超过50个的包文件才能让Git启动一次真正的`gc`命令。
+
+可以通过修改`gc.auto`与`gc.autopacklimit`的设置来改动这些数值。
+
+`gc`将会做的另一件事是打包你的引用到一个单独的文件。假设你的仓库包含以下分支与标签：
+
+		$ find .git/refs -type f
+		.git/refs/heads/experiment
+		.git/refs/heads/master
+		.git/refs/tags/v1.0
+		.git/refs/tags/v1.1
+	
+如果执行了`git gc`命令，`refs`目录中将不会再有这些文件。为了保证效率Git会将它们移动到名为`.git/packed-refs`的文件中，就像下方这样：
+
+	$ cat .git/packed-refs
+	# pack-refs with: peeled fully-peeled
+	cac0cab538b970a37ea1e769cbbde608743bc96d refs/heads/experiment
+	ab1afef80fac8e34258ff41fc1b867c702daa24b refs/heads/master
+	cac0cab538b970a37ea1e769cbbde608743bc96d refs/tags/v1.0
+	9585191f37f7b0fb9444f35a9bf50de191beadc2 refs/tags/v1.1
+	^1a410efbd13591db07496601ebc7a059dd55cfe9
+
+如果更新了引用，Git并不会修改这个文件，而是向`refs/heads`创建一个新的文件。为了获得指定引用的正确SHA-1值，Git会首先在`refs`目录中查找引用，然后再到`packed-refs`文件中查找。所以，如果你在`refs`目录中找不到一个引用，那么它或许在`packed-refs`文件中。
+
+注意这个文件的最后一行，它会以`^`开头，这个符号表示它上一行的标签是附注标签，那一行是附注标签指向的那个提交。
 
 ### 10.7.2 数据恢复
 
+在使用Git的时候，你可能会意外丢失一次提交。通常是因为你强制删除了正在工作的分支，但是最后却发现你还需要这个分支。也可能是硬重置了一次分支，放弃了你想要的提交。如果上述情况已经发生，该如何找回你的提交？
+
+下方例子将硬重置测试仓库中的master分支到一个旧提交，以恢复丢失的提交。
+
+首先，让看看仓库现在在什么地方：
+
+	$ git log --pretty=oneline
+	ab1afef80fac8e34258ff41fc1b867c702daa24b modified repo a bit
+	484a59275031909e19aadb7c92262719cfcdf19a added repo.rb
+	1a410efbd13591db07496601ebc7a059dd55cfe9 third commit
+	cac0cab538b970a37ea1e769cbbde608743bc96d second commit
+	fdf4fc3344e67ab068f836878b6c4951e3b15f3d first commit
+
+现在，我们将`master`分支硬重置到第三次提交：
+
+	$ git reset --hard 1a410efbd13591db07496601ebc7a059dd55cfe9
+	HEAD is now at 1a410ef third commit
+	$ git log --pretty=oneline
+	1a410efbd13591db07496601ebc7a059dd55cfe9 third commit
+	cac0cab538b970a37ea1e769cbbde608743bc96d second commit
+	fdf4fc3344e67ab068f836878b6c4951e3b15f3d first commit
+
+现在顶部的两个提交已经失去了，没有分支指向这些提交。你需要找出最后一次提交的SHA-1然后增加一个指向它的分支。
+
+方法是找到最后一次提交的SHA-1值。可以使用`git reflog`命令。
+
+当你正在工作时，Git会默默记录每一次你改变HEAD时的值。每一次提交或改变分支，引用日志都会被更新。引用日志也可以通过`git update-ref`命令更新。
+
+可以随时通过`git reflog`命令来了解你曾经做过什么：
+
+	$ git reflog
+	1a410ef HEAD@{0}: reset: moving to 1a410ef
+	ab1afef HEAD@{1}: commit: modified repo.rb a bit
+	484a592 HEAD@{2}: commit: added repo.rb
+
+这里可以看到已经检出的两次提交，然而并没有足够多的信息。为了信息更多的信息，可以使用`git log -g`，这个命令会以标准日志的格式输出引用日志。
+
+	$ git log -g
+	commit 1a410efbd13591db07496601ebc7a059dd55cfe9
+	Reflog: HEAD@{0} (Scott Chacon <schacon@gmail.com>)
+	Reflog message: updating HEAD
+	Author: Scott Chacon <schacon@gmail.com>
+	Date:   Fri May 22 18:22:37 2009 -0700
+	
+			third commit
+	
+	commit ab1afef80fac8e34258ff41fc1b867c702daa24b
+	Reflog: HEAD@{1} (Scott Chacon <schacon@gmail.com>)
+	Reflog message: updating HEAD
+	Author: Scott Chacon <schacon@gmail.com>
+	Date:   Fri May 22 18:15:24 2009 -0700
+	
+	       modified repo.rb a bit
+
+看起来下面的就是丢失的提交，可以通过创建一个新的分支指向这个提交来恢复它。
+
+例如，你可以创建一个名为`recover-branch`的分支指向这个提交：
+
+	$ git branch recover-branch ab1afef
+	$ git log --pretty=oneline recover-branch
+	ab1afef80fac8e34258ff41fc1b867c702daa24b modified repo a bit
+	484a59275031909e19aadb7c92262719cfcdf19a added repo.rb
+	1a410efbd13591db07496601ebc7a059dd55cfe9 third commit
+	cac0cab538b970a37ea1e769cbbde608743bc96d second commit
+	fdf4fc3344e67ab068f836878b6c4951e3b15f3d first commit
+
+现在`recover-branch`分支是`master`分支曾经指向的地方。提交记录成功找回。
+
+接下来，假设你丢失的提交因为某些原因不在引用日志中，通过移除`recover-branch`分支并删除引用日志来模拟这种情况。
+
+现在前两次提交又不被任何分支指向了：
+
+	$ git branch -D recover-branch
+	$ rm -Rf .git/logs/
+
+由于引用日志数据存放在`.git/logs/`目录中，现在你已经没有引用日志了。这时该如何恢复那次提交？
+
+使用`git fsck`实用工具，将会检查数据库的完整性。如果使用`--full`参数，它会显示出所有没有被其他对象指向的对象：
+
+$ git fsck --full
+Checking object directories: 100% (256/256), done.
+Checking objects: 100% (18/18), done.
+dangling blob d670460b4b4aece5915caf5c68d12f560a9fe3e4
+dangling commit ab1afef80fac8e34258ff41fc1b867c702daa24b
+dangling tree aea790b9a58f6cf6f2804eeac9f0abbe9631e4c9
+dangling blob 7108f7ecb345ee9d0084193f147cdad4d2998293
+
+现在添加一个分支并指向提交，这样数据就找回来了。
+
+
 ### 10.7.3 移除对象
+
+刚有人先仓库添加一个很大的文件，而后虽然删除了，但是Git的提交记录还在。别人克隆是还是要强制下载这个大文件。
+
+那么现在需要找到并移除这些大文件。
+
+*注意：这个操作对提交历史的修改是破环性的。*
+
+它会从必须修改或移除一个大文件引用最早的树对象开始重写每一次提交。
+
+如果在导入仓库后，在别人开始基于这些提交工作前执行这个操作，那么将不会有问题。否则，你必须通知所有的贡献者他们需要将他们的成果变基到你的新提交上。
+
+为了演示，我们将添加一个大文件到测试仓库中，并在下一次提交中删除它，之后我们需要找到它，并将它从仓库中永久删除。
+
+首先，添加一个大文件到仓库中：
+
+	$ curl https://www.kernel.org/pub/software/scm/git/git-2.1.0.tar.gz > git.tgz
+	$ git add git.tgz
+	$ git commit -m 'add git tarball'
+	[master 7b30847] add git tarball
+	 1 file changed, 0 insertions(+), 0 deletions(-)
+	 create mode 100644 git.tgz
+
+现在移除它：
+
+$ git rm git.tgz
+rm 'git.tgz'
+$ git commit -m 'oops - removed large tarball'
+[master dadf725] oops - removed large tarball
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+ delete mode 100644 git.tgz
+
+之后使用`git gc`清理一下。
+
+	$ git gc
+	Counting objects: 17, done.
+	Delta compression using up to 8 threads.
+	Compressing objects: 100% (13/13), done.
+	Writing objects: 100% (17/17), done.
+	Total 17 (delta 1), reused 10 (delta 0)
+
+现在执行`$ git count-objects -v`来查看下占用空间的大小：
+
+	$ git count-objects -v
+	count: 7
+	size: 32
+	in-pack: 17
+	packs: 1
+	size-pack: 4868
+	prune-packable: 0
+	garbage: 0
+	size-garbage: 0
+
+`size-pack`是包文件的大小，计量单位是KB。现在彻底的移除这个文件。
+
+首先必须找到它，没错假装不知道。
+
+查看包文件中内容可以使用`$ git verify-pack -v`然后对输出内容的第三列（文件大小）进行排序，找出大文件。
+
+	$ git verify-pack -v .git/objects/pack/pack-29…69.idx \
+	  | sort -k 3 -n \
+	  | tail -3
+	dadf7258d699da2c8d89b09ef6670edb7d5f91b4 commit 229 159 12
+	033b4468fa6b2a9547a70d88d1bbe8bf3f9ed0d5 blob   22044 5792 4977696
+	82c99a3e86bb1267b236a4b6eff7868d97489af1 blob   4975916 4976258 1438
+
+这时可以看到这个大对象出现在结果的最底部。
+
+为了找出具体是哪个文件，可以使用`rev-list`命令，加上`--objects`参数，它会列出所有提交的SHA-1，数据对象的SHA-1和它们相关联的文件路径。
+	
+	$ git rev-list --objects --all | grep 82c99a3
+	82c99a3e86bb1267b236a4b6eff7868d97489af1 git.tgz
+	
+现在，只需要从过去所有的树中移除这个文件。使用下方命令可以查看哪些提交对这个文件产生改动：
+
+	$ git log --oneline --branches -- git.tgz
+	dadf725 oops - removed large tarball
+	7b30847 add git tarball
+	
+现在，必须重写`7b30847`提交之后的所有提交来从Git历史中完成移除这个文件。为了执行这个操作，要使用`filter-branch`命令。
+	
+	$ git filter-branch --index-filter \
+	  'git rm --ignore-unmatch --cached git.tgz' -- 7b30847^..
+	Rewrite 7b30847d080183a1ab7d18fb202473b3096e9f34 (1/2)rm 'git.tgz'
+	Rewrite dadf7258d699da2c8d89b09ef6670edb7d5f91b4 (2/2)
+	Ref 'refs/heads/master' was rewritten
+	
+`--index-filter`选项类似于`--tree-filter`选择，不过这个选项并不会让命令修改在硬盘上检出的文件，而只是修改在暂存区或索引中的文件。
+
+同时必须使用`git rm --cached`命令来移除文件，而不是`rm file`命令。因为需要从索引中移除，而不是磁盘中。
+
+`--ignore-unmatch`选择告诉命令，如果尝试删除的模式不存在时，不提示错误。
+
+最后使用`filter-branch`选项来重写自`7b30847`提交以来的历史，也就是这个问题产生的地方。
+
+历史中将不再包含对那个文件的引用。不过，引用日志和`.git/refs/original`通过`filter-branch`选择添加的新引用中还存有对这个文件的引用，所以必须移除它们然后重新打包数据库。
+
+在重新打包前需要移除任何包含指向那些旧提交的指针文件：
+
+	$ rm -Rf .git/refs/original
+	$ rm -Rf .git/logs/
+	$ git gc
+	Counting objects: 15, done.
+	Delta compression using up to 8 threads.
+	Compressing objects: 100% (11/11), done.
+	Writing objects: 100% (15/15), done.
+	Total 15 (delta 1), reused 12 (delta 0)
+
+现在看看省了多少空间。
+
+	$ git count-objects -v
+	count: 11
+	size: 4904
+	in-pack: 15
+	packs: 1
+	size-pack: 8
+	prune-packable: 0
+	garbage: 0
+	size-garbage: 0
+	
+包的大小降到了8KB，可以从size的值看出，这个大文件还在松散对象中，并没有消失。但是它不会在推送或克隆中出现，这才是最重要的。
+
+如果真的想要删除它，可以通过`git prune --expire`选项来完全地移除那个对象：
+	
+	$ git prune --expire now
+	$ git count-objects -v
+	count: 0
+	size: 0
+	in-pack: 15
+	packs: 1
+	size-pack: 8
+	prune-packable: 0
+	garbage: 0
+	size-garbage: 0
 
 
 
