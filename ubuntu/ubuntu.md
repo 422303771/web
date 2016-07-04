@@ -236,6 +236,26 @@
 	$ sudo apt-get install numix-gtk-theme numix-icon-theme-circle
 
 
+### 安装inkscape
+
+用于将SVG图片转换为PNG图片
+
+	$ sudo apt-get install inkscape
+
+### 安装conky
+
+	$ sudo apt-get install conky-all
+
+### 安装JQ、curl
+
+	$ sudo apt-get install jq
+
+	$ sudo apt-get install curl
+
+### 安装conky插件
+
+[参考地址](https://github.com/zagortenay333/conky-Vision),替换图标颜色后不能正常加载。
+
 ----
 
 
