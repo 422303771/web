@@ -246,11 +246,68 @@
 
 ### 安装powerline
 
+最方便的方法是使用`pip`安装。[文档地址](https://powerline.readthedocs.io/en/latest/)
+
+安装`pip`
+
+	$ sudo apt-get install python-pip
+	$ reboot //pip安装包的位置正确
+	$ pip install powerline-status
+	$ pip show powerline-status  //查看包信息
+
+![](https://raw.githubusercontent.com/422303771/web/master/ubuntu/img/zsh2.png)
+
+文档中的`{repository_root}`就是`Location`指示的`/usr/local/lib/python2.7/dist-packages`
+
 #### powerline 与 zsh
+
+设置`~/.zshrc`文件
+
+添加
+
+	. /usr/local/lib/python2.7/dist-packages/powerline/bindings/zsh/powerline.zsh
+
+保存后，重新打开终端。
+
+效果如下图：
+
+![](https://raw.githubusercontent.com/422303771/web/master/ubuntu/img/zsh3.png)
 
 #### powerline 与 vim
 
+安装vim
+
+	$ sudo apt-get install vim
+
+在根目录下新建`.vimrc`文件，添加下方代码。
+
+	set rtp+=/usr/local/lib/python2.7/dist-packages/powerline/bindings/vim
+	set laststatus=2
+	set t_Co=256
+
+保存后，终端输入`vim`,查看效果。
+
+	$ vim
+
+运行效果如下
+
+![](https://raw.githubusercontent.com/422303771/web/master/ubuntu/img/zsh4.png)
+
 #### powerline 与 tmux 
+
+安装tmux
+
+	$ sudo apt-get install tmux
+
+根目录下新建`.tmux.conf`文件，添加下方代码。
+
+	source "/usr/local/lib/python2.7/dist-packages/powerline/bindings/tmux/powerline.conf"
+	set-option -g default-terminal "screen-256color"
+	set-option -g mouse on
+	
+保存并重启。运用`$ tmux`查看效果。
+
+![](https://raw.githubusercontent.com/422303771/web/master/ubuntu/img/zsh5.png)
 
 ****
 
