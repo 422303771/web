@@ -164,11 +164,85 @@
 
 ># 
 
->[参考文档](http://www.jianshu.com/p/546effd99c35)
+>[参考文档](http://www.jianshu.com/p/546effd99c35)  
+>[oh-my-zsh](https://github.com/robbyrussell/oh-my-zsh)
+
+安装完成后的默认效果
+
+
 
 ----
 
 ### 设置oh-my-zsh
+
+
+`~/.zshrc`为设置文件。
+
+* Plugins
+	
+	默认插件`plugins=(git)` 
+	
+	更多插件在`~/.oh-my-zsh/plugins`
+	
+	添加方法如`plugins=(git github ubuntu)`
+	
+	插件的使用方法在`plugins/插件名/README.md`
+	
+	下方表格为`ubuntu`插件
+	
+	|缩写|实际命令|
+	|:----|:---|
+	| acs | apt-cache search|
+	| afs | apt-file search --regexp|
+	| ags | apt-get source|   
+	| acp | apt-cache policy| 
+	| afu | sudo apt-file update|
+	| ppap | sudo ppa-purge|
+	| ag | sudo apt-get|    
+	| aga | sudo apt-get autoclean|
+	| agar | sudo apt-get autoremove|
+	| agb | sudo apt-get build-dep| 
+	| agc | sudo apt-get clean|    
+	| agd | sudo apt-get dselect-upgrade| 
+	| agi | sudo apt-get install|  
+	| agp | sudo apt-get purge|    
+	| agr | sudo apt-get remove|   
+	| agu | sudo apt-get update|   
+	| agud | sudo apt-get update && sudo apt-get dist-upgrade| 
+	| agug | sudo apt-get upgrade| 
+	| aguu | sudo apt-get update && sudo apt-get upgrade|     
+	| agar | sudo apt-get autoremove|
+	
+
+
+* THEME
+
+	默认风格为`robbyrussell`
+	
+	修改`ZSH_THEME="agnoster"`，比较有趣的一些，[更多风格](https://wiki.github.com/robbyrussell/oh-my-zsh/themes)
+
+	设置完成后的效果
+	
+	![](https://raw.githubusercontent.com/422303771/web/master/ubuntu/img/zsh1.png)
+	
+	*注意使用`agnoster`风格时，要做如下设置放置乱码。*
+	
+	使用下方命令测试
+	
+		$ echo "\ue0b0 \u00b1 \ue0a0 \u27a6 \u2718 \u26a1 \u2699"
+
+	* 如果有乱码需要安装字体补丁包(一般都会乱码)
+
+			$ git clone https://github.com/powerline/fonts.git
+			$ cd fonts
+			$ ./install.sh
+
+	* 之后要设置终端字体，不然依旧是乱码。
+
+		打开终端→编辑→配置文件首选项→常规→自定义字体。
+
+		字体要选择一个`powerline`修正的字体。字号随意。
+
 
 ### 安装powerline
 
