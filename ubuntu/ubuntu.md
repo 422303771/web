@@ -1,3 +1,43 @@
+# 目录
+
+* [ubuntu 安装与设置]  
+* [下载镜像包]
+* [VMware与实体机安装]
+* [安装vmware tools VWmare]
+* [安装shadowsocks]
+* [安装privoxy]
+* [安装google拼音]
+* [安装 unity-tweak-tool]
+* [删除火狐]
+* [删除libreoffice]
+* [安装新力得]
+* [安装gdebi]
+* [安装chromium]
+* [安装sublime text 3]
+* [安装与配置zsh与oh-my-zsh]
+	* [设置oh-my-zsh]
+* [安装powerline]
+	* [powerline 与 zsh]
+	* [powerline 与 vim]
+	* [powerline 与 tmux]
+* [安装ravefinity风格]
+* [安装my weather]
+* [安装网易云音乐]
+* [安装dropbox]
+* [安装爱壁纸HD]
+* [安装Numix Circle 图标与主题]
+* [安装inkscape]
+* [安装conky]
+* [安装JQ、curl]
+* [安装conky插件]
+* [安装plank]
+* [安装Netgare WNDA3100v2 USB]
+* [安装配置JDK与Android Studio]
+	* [安装JDK]
+	* [安装 Android Studio]
+
+
+
 # ubuntu 安装与设置
 ## 下载镜像包
 [Ubuntu下载地址](http://www.ubuntu.com/download/desktop)
@@ -430,6 +470,12 @@
 
 ----
 
+### 安装plank
+
+	$ sudo apt-get install plank
+
+----
+
 
 
 ### 安装Netgare WNDA3100v2 USB
@@ -470,69 +516,140 @@ Android Studio [下载](https://developer.android.com/studio/index.html)
 
 	$ java -version
 
-1. 安装JDK
+#### 安装JDK
 	
-	解压下载包，到根目录`~/`方便以后操作。
-	
-	在`/usr/lib`中创建`java`文件夹使用命令。
-		
-		$ cd /usr/lib/ 
-		$ sudo mkdir java 
-	
-	随后退回到根目录，移动`jdk1.8.0_91`到`/usr/lib/java/`。
-	
-		$ cd ~ 
-		$ sudo mv jdk1.8.0_91/ /usr/lib/java 
-	
-	之后设置JDK。
-	
-		$ sudo update-alternatives --install "/usr/bin/java" "java" "/usr/lib/java/jdk1.8.0_91/bin/java" 1
-		$ sudo update-alternatives --install "/usr/bin/javac" "javac" "/usr/lib/java/jdk1.8.0_91/bin/javac" 1
-		$ sudo update-alternatives --install "/usr/bin/javaws" "javaws" "/usr/lib/java/jdk1.8.0_91/bin/javaws" 1
-	
-	最后配置本机环境。在`~/.bashrc`文件中。
-	
-		$ sudo subl ~/.bashrc 
-	
-	`~/.bashrc`要写入的内容
-	
-		export JAVA_HOME=/usr/lib/java/jdk1.8.0_91
-		set PATH="$PATH:$JAVA_HOME/bin"
-		export PATH
-	
-	再次输入`$ java -version`可看到版本号如下。
-		
-		$ java -version
-		java version "1.8.0_91"
-		Java(TM) SE Runtime Environment (build 1.8.0_91-b14)
-		Java HotSpot(TM) 64-Bit Server VM (build 25.91-b14, mixed mode)
+解压下载包，到根目录`~/`方便以后操作。
 
-	*传说中快捷方法，自动安装。*
+在`/usr/lib`中创建`java`文件夹使用命令。
 	
-		$ sudo add-apt-repository ppa:webupd8team/java
-		$ sudo apt-get update
-		$ sudo apt-get install oracle-java8-installer
+	$ cd /usr/lib/ 
+	$ sudo mkdir java 
+
+随后退回到根目录，移动`jdk1.8.0_91`到`/usr/lib/java/`。
+
+	$ cd ~ 
+	$ sudo mv jdk1.8.0_91/ /usr/lib/java 
+
+之后设置JDK。
+
+	$ sudo update-alternatives --install "/usr/bin/java" "java" "/usr/lib/java/jdk1.8.0_91/bin/java" 1
+	$ sudo update-alternatives --install "/usr/bin/javac" "javac" "/usr/lib/java/jdk1.8.0_91/bin/javac" 1
+	$ sudo update-alternatives --install "/usr/bin/javaws" "javaws" "/usr/lib/java/jdk1.8.0_91/bin/javaws" 1
+
+最后配置本机环境。在`~/.bashrc`文件中。
+
+	$ sudo subl ~/.bashrc 
+
+`~/.bashrc`要写入的内容
+
+	export JAVA_HOME=/usr/lib/java/jdk1.8.0_91
+	set PATH="$PATH:$JAVA_HOME/bin"
+	export PATH
+
+再次输入`$ java -version`可看到版本号如下。
+	
+	$ java -version
+	java version "1.8.0_91"
+	Java(TM) SE Runtime Environment (build 1.8.0_91-b14)
+	Java HotSpot(TM) 64-Bit Server VM (build 25.91-b14, mixed mode)
+
+*传说中快捷方法，自动安装。*
+
+	$ sudo add-apt-repository ppa:webupd8team/java
+	$ sudo apt-get update
+	$ sudo apt-get install oracle-java8-installer
 
 
-2. 安装 Android Studio
+#### 安装 Android Studio
 	
-	下载Android Studio后解压到`/home`，进入`/home/new/android-studio/bin/`目录
-	
-		$ cd /home/new/android-studio/bin/
-		
-	对`studio.sh`文件提权后，运行。
-	
-		$ sudo chmod 777 -R studio.sh
-		$ ./studio.sh
-	
-	弹出窗口，询问导入配置，还是全新用户。选择全新。随后选择内容，安装。
+下载Android Studio后解压到`/home`，进入`/home/new/android-studio/bin/`目录
 
-	当出现`unable to run mksdcard sdk tool`时，安装32位包
+	$ cd /home/new/android-studio/bin/
+	
+对`studio.sh`文件提权后，运行。
+
+	$ sudo chmod 777 -R studio.sh
+	$ ./studio.sh
+
+弹出窗口，询问导入配置，还是全新用户。选择全新。随后选择内容，安装。
+
+当出现`unable to run mksdcard sdk tool`时，安装32位包
 
 	$ sudo apt-get install lib32z1 lib32ncurses5 lib32bz2-1.0 lib32stdc++6
 
-	*`lib32bz2-1.0`包没有找到，有手动安装[地址](http://packages.ubuntu.com/trusty/lib32bz2-1.0)*
+*`lib32bz2-1.0`包没有找到，有手动安装[地址](http://packages.ubuntu.com/trusty/lib32bz2-1.0)*
 
 
 ----
 
+[ubuntu 安装与设置]: #ubuntu-安装与设置
+
+[下载镜像包]:#下载镜像包
+
+[VMware与实体机安装]:#VMware与实体机安装
+
+[安装vmware tools VWmare]:#安装vmware-tools-VWmare
+
+[安装shadowsocks]:#安装shadowsocks
+
+[安装privoxy]:#安装privoxy-代理工具
+
+[安装google拼音]:#安装google拼音
+
+[安装 unity-tweak-tool]:#安装-unity-tweak-tool
+
+[删除火狐]:#删除火狐
+
+[删除libreoffice]:#删除libreoffice
+
+[安装新力得]:#安装新力得
+
+[安装gdebi]:#安装gdebi
+
+[安装chromium]:#安装chromium
+
+[安装sublime text 3]:#安装sublime-text-3
+
+[安装与配置zsh与oh-my-zsh]:#安装与配置zsh与oh-my-zsh
+
+[设置oh-my-zsh]:#设置oh-my-zsh
+
+[安装powerline]:#安装powerline
+
+[powerline 与 zsh]:#powerline-与-zsh
+
+[powerline 与 vim]:#powerline-与-vim
+
+[powerline 与 tmux]:#powerline-与-tmux
+
+[安装ravefinity风格]:#安装ravefinity风格
+
+[安装my weather]:#安装my-weather
+
+[安装网易云音乐]:#安装网易云音乐
+
+[安装dropbox]:#安装dropbox
+
+[安装爱壁纸HD]:#安装爱壁纸HD
+
+[安装Numix Circle 图标与主题]:#安装Numix-Circle-图标与主题
+
+[安装inkscape]:#安装inkscape
+
+[安装conky]:#安装conky
+
+[安装JQ、curl]:#安装jqcurl
+
+[安装conky插件]:#安装conky插件
+
+[安装plank]:#安装plank
+
+[安装Netgare WNDA3100v2 USB]:#安装Netgare-WNDA3100v2-USB
+
+[安装配置JDK与Android Studio]:#安装配置JDK与Android-Studio
+
+[安装JDK]:#安装JDK
+
+[安装 Android Studio]:#安装-Android-Studio
+
+-----
