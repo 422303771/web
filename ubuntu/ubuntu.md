@@ -166,6 +166,8 @@
 
 >[参考文档](http://www.jianshu.com/p/546effd99c35)
 
+----
+
 ### 设置oh-my-zsh
 
 ### 安装powerline
@@ -238,12 +240,20 @@
 
 需要额外的包python-support_1.0.15_all.deb [地址](https://launchpad.net/ubuntu/xenial/amd64/python-support/1.0.15)
 
+----
 
-### 安装Numix Circle 图标
+### 安装Numix Circle 图标与主题
 
 	$ sudo add-apt-repository ppa:numix/ppa
 	$ sudo apt-get update
 	$ sudo apt-get install numix-gtk-theme numix-icon-theme-circle
+
+图标使用效果
+
+![](https://raw.githubusercontent.com/422303771/web/master/ubuntu/img/Numix1.png)
+
+
+----
 
 
 ### 安装inkscape
@@ -274,7 +284,7 @@
 
 安装后效果
 
-<img src="img/conky1.png" id="conky">
+![](https://raw.githubusercontent.com/422303771/web/master/ubuntu/img/conky1.png)
 
 编辑`.conkyrc`文件
 
@@ -285,6 +295,7 @@
 `template8`为温度显示单位。`metric`为摄氏温度。
 
 `template9`为显示语言图中为`en_US.UTF8`,中文可以设置为`zh_CN.UTF-8`
+
 
 ----
 
@@ -394,4 +405,3 @@ Android Studio [下载](https://developer.android.com/studio/index.html)
 
 ----
 
-<img src="img/6ac8c5eagw1ew4ihqtd02j20rs18gh7x.jpg" id="preview">
