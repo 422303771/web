@@ -586,9 +586,9 @@ Android Studio [下载](https://developer.android.com/studio/index.html)
 
 [下载镜像包]:#下载镜像包
 
-[VMware与实体机安装]:#VMware与实体机安装
+[VMware与实体机安装]:#vmware与实体机安装
 
-[安装vmware tools VWmare]:#安装vmware-tools-VWmare
+[安装vmware tools VWmare]:#安装vmware-tools-vwmare虚假机需要安装
 
 [安装shadowsocks]:#安装shadowsocks
 
@@ -630,9 +630,9 @@ Android Studio [下载](https://developer.android.com/studio/index.html)
 
 [安装dropbox]:#安装dropbox
 
-[安装爱壁纸HD]:#安装爱壁纸HD
+[安装爱壁纸HD]:#安装爱壁纸hd
 
-[安装Numix Circle 图标与主题]:#安装Numix-Circle-图标与主题
+[安装Numix Circle 图标与主题]:#安装numix-circle-图标与主题
 
 [安装inkscape]:#安装inkscape
 
@@ -644,12 +644,12 @@ Android Studio [下载](https://developer.android.com/studio/index.html)
 
 [安装plank]:#安装plank
 
-[安装Netgare WNDA3100v2 USB]:#安装Netgare-WNDA3100v2-USB
+[安装Netgare WNDA3100v2 USB]:#安装netgare-wnda3100v2-usb
 
-[安装配置JDK与Android Studio]:#安装配置JDK与Android-Studio
+[安装配置JDK与Android Studio]:#安装配置jdk与android-studio
 
-[安装JDK]:#安装JDK
+[安装JDK]:#安装jdk
 
-[安装 Android Studio]:#安装-Android-Studio
+[安装 Android Studio]:#安装-android-studio
 
 -----
