@@ -166,6 +166,16 @@
 
 >[参考文档](http://www.jianshu.com/p/546effd99c35)
 
+### 设置oh-my-zsh
+
+### 安装powerline
+
+#### powerline 与 zsh
+
+#### powerline 与 vim
+
+#### powerline 与 tmux 
+
 ****
 
 >### 安装ravefinity风格  
@@ -252,9 +262,29 @@
 
 	$ sudo apt-get install curl
 
+	$ sudo apt-get install font-manager   //字体管理工具
+
 ### 安装conky插件
 
-[参考地址](https://github.com/zagortenay333/conky-Vision),替换图标颜色后不能正常加载。
+* 需要有OpenWeatherMap的API KEY
+
+* 需要用到的字体[Poiret One](https://www.google.com/fonts/specimen/Poiret+One)
+
+* [参考文档](https://github.com/zagortenay333/conky-Vision),替换图标颜色后不能正常加载。
+
+安装后效果
+
+<img src="img/conky1.png" id="conky">
+
+编辑`.conkyrc`文件
+
+`template6`为OpenWeatherMap API KEY
+
+`template7`为城市编号 [城市编号查找地址](http://openweathermap.org/help/city_list.txt)
+
+`template8`为温度显示单位。`metric`为摄氏温度。
+
+`template9`为显示语言图中为`en_US.UTF8`,中文可以设置为`zh_CN.UTF-8`
 
 ----
 
@@ -364,5 +394,4 @@ Android Studio [下载](https://developer.android.com/studio/index.html)
 
 ----
 
-
-
+<img src="img/6ac8c5eagw1ew4ihqtd02j20rs18gh7x.jpg" id="preview">
