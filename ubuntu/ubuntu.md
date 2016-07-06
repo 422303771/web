@@ -283,6 +283,10 @@
 
 		字体要选择一个`powerline`修正的字体。字号随意。
 
+	* 如果感觉`用户名机器名称`的显示方式太长可以修改`~/.oh-my-zsh/themes/agnoster.zsh-theme`文件。
+		
+		找到`### Prompt components`将`@%m`去掉后保存。
+
 
 ### 安装powerline
 
