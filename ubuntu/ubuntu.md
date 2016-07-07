@@ -584,6 +584,16 @@ Android Studio [下载](https://developer.android.com/studio/index.html)
 *`lib32bz2-1.0`包没有找到，有手动安装[地址](http://packages.ubuntu.com/trusty/lib32bz2-1.0)*
 
 
+-----
+
+### 安装kicad
+
+```ubuntu
+	sudo add-apt-repository --yes ppa:js-reynaud/kicad-4
+	sudo apt-get update
+	sudo apt-get install kicad kicad-loacle-zh
+```
+
 ----
 
 [ubuntu 安装与设置]: #ubuntu-安装与设置
