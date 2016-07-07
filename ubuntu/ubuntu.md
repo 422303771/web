@@ -35,7 +35,7 @@
 * [安装配置JDK与Android Studio]
 	* [安装JDK]
 	* [安装 Android Studio]
-
+* [安装kicad]
 
 
 # ubuntu 安装与设置
@@ -663,5 +663,7 @@ Android Studio [下载](https://developer.android.com/studio/index.html)
 [安装JDK]:#安装jdk
 
 [安装 Android Studio]:#安装-android-studio
+
+[安装kicad]:#安装kicad
 
 -----
