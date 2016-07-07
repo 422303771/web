@@ -588,11 +588,9 @@ Android Studio [下载](https://developer.android.com/studio/index.html)
 
 ### 安装kicad
 
-```ubuntu
-	sudo add-apt-repository --yes ppa:js-reynaud/kicad-4
-	sudo apt-get update
-	sudo apt-get install kicad kicad-loacle-zh
-```
+	$ sudo add-apt-repository --yes ppa:js-reynaud/kicad-4
+	$ sudo apt-get update
+	$ sudo apt-get install kicad kicad-loacle-zh
 
 ----
 
