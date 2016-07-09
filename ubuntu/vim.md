@@ -1,16 +1,16 @@
 # vim 使用指南
 
-## vim 插件管理器
+## 1.vim 插件管理器
 
-### Vundle [git仓库](https://github.com/VundleVim/Vundle.vim)
+### 1. 1 Vundle [git仓库](https://github.com/VundleVim/Vundle.vim)
 
 安装文档有中文指南。
 
-#### 第一步
+#### 1.2 第一步
 
 	$ git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 
-#### 第二步
+#### 1.3 第二步
 
 对`.vimrc`文件进行设置。
 	
@@ -32,13 +32,15 @@
 	call vundle#end()            
 	filetype plugin indent on 
 	
-#### 第三步 
-
+#### 1.4 第三步
+ 
 在vim中输入`:PluginInstall`来安装插件。
 
-## vim 常用插件指南
+-----
 
-### Command-t 
+## 2.vim 常用插件指南
+
+### 2.1 Command-t 
 
 插件[地址](https://github.com/wincent/command-t)
 
@@ -64,7 +66,10 @@
 
 `tab`为选择切换到文件选择。方向键用了选择文件。`enter`确认选择。
 
-## vim中编写markdown与预览
+
+-----
+
+### 2.2 vim中编写markdown与预览
 
 需要安装的插件有三个。
 
@@ -85,7 +90,10 @@
 
 ![](https://dl.dropboxusercontent.com/u/28956267/instant-markdown-demo.gif)
 
-### nerdTree
+
+------
+
+### 2.3 nerdTree
 
 参考[地址](https://github.com/scrooloose/nerdtree)
 
@@ -119,4 +127,8 @@
 	"左侧只有一个窗口时，随Vim一起关闭
 	
 	autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+
+
+------
+
 
