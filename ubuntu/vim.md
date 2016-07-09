@@ -64,3 +64,23 @@
 
 `tab`为选择切换到文件选择。方向键用了选择文件。`enter`确认选择。
 
+## vim中编写markdown与预览
+
+需要安装的插件有三个。
+
+	Plugin 'godlygeek/tabular'
+	Plugin 'plasticboy/vim-markdown'
+	Plugin 'suan/vim-instant-markdown'
+
+其中`vim-instant-markdown`需要安装`nodejs`、`npm`、`xdg-utils`、`nodejs-legacy`。
+
+	$ sudo apt-get install nodejs
+	$ sudo apt-get install npm
+	$ sudo apt-get install xdg-utils
+	$ sudo apt-get install nodejs-legacy
+
+实现的效果为`浏览器预览`与`markdown语法高亮`
+
+安装完成后效果如下图：
+
+![](https://dl.dropboxusercontent.com/u/28956267/instant-markdown-demo.gif)
