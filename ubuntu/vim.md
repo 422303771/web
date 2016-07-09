@@ -84,3 +84,39 @@
 安装完成后效果如下图：
 
 ![](https://dl.dropboxusercontent.com/u/28956267/instant-markdown-demo.gif)
+
+### nerdTree
+
+参考[地址](https://github.com/scrooloose/nerdtree)
+
+[nerdtree-git-plugin](https://github.com/Xuyuanp/nerdtree-git-plugin) git语法提示
+
+[vim-nerdtree-tabs](https://github.com/jistr/vim-nerdtree-tabs) NERDTree tag控制
+
+
+	Plugin 'scrooloose/nerdTree'
+	Plugin 'Xuyuanp/nerdtree-git-plugin'
+	Plugin 'jistr/vim-nerdtree-tabs'
+
+`vim`中输入`PluginInstall`，输入`NERDTree`检查是否运行
+
+在`.vimrc`中添加设置
+
+
+	" NERDTRee config NERDTree 设置
+	
+	autocmd vimenter * NERDTree  “ 当指定文件时，自动随VIM启动。
+	
+	"未指定文件时，加载NERDTree
+
+	autocmd StdinReadPre * let s:std_in=1
+	autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+	
+	"隐藏与显示快捷键[Ctrl+n] 
+
+	map <C-n> :NERDTreeToggle<CR>
+
+	"左侧只有一个窗口时，随Vim一起关闭
+	
+	autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+
