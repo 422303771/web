@@ -135,12 +135,16 @@ Git Bash中输入命令
 
 	$ vagrant halt
 
+------
+
 
 ## 2. 正常安装Laravel
 
 在ubuntu desktop环境下安装。
 
-### 安装nginx + php7 + mysql + redis 
+## 安装nginx + php7 + mysql + redis 
+
+-----
 
 ### 安装nginx 
 
@@ -174,6 +178,9 @@ Git Bash中输入命令
 网站目录在`var/www/html`
 
 根据情况修改`/etc/nginx/nginx.conf`中的`keepalive_timeout`值。
+
+------
+
 
 ### 安装php7.0-fpm
 
@@ -252,9 +259,15 @@ Git Bash中输入命令
 
 	service nginx reload
 
+------
+
+
 ### 安装MySql
 
 	$ sudo apt-get install mysql-server-5.7 php7.0-mysql
+
+------
+
 
 ### 安装composer
 
@@ -266,6 +279,9 @@ Git Bash中输入命令
 
 	$ sudo mv composer.phar /usr/local/bin/composer
 	$ sudo chmod +x /usr/local/bin/composer
+
+------
+
 
 ### 安装laravel 5 
 
@@ -292,3 +308,4 @@ Git Bash中输入命令
 [blog]可以为项目名
 
 *注意：需要梯子！需要梯子！需要梯子！*
+
