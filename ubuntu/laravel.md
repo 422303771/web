@@ -277,11 +277,17 @@ Git Bash中输入命令
 
 [blog]可以为项目名
 
-#### 方法2
+#### 方法2 
+
+需要使用`bash`。`zsh`测试无效
 
 	$ composer global require "laravel/installer"
 
-	composer laravel new [blog]
+	$ export PATH="~/.config/composer/vendor/bin:$PATH"
+
+进入想要创建项目的目录
+
+	$ laravel new [blog]
 
 [blog]可以为项目名
 
