@@ -139,3 +139,150 @@ Git Bash中输入命令
 ## 2. 正常安装Laravel
 
 在ubuntu desktop环境下安装。
+
+### 安装nginx + php7 + mysql + redis 
+
+### 安装nginx 
+
+	$ sudo apt-get update
+	$ sudo apt-get install nginx
+
+显示防护墙列表
+	
+	$ sudo ufw app list
+
+结果如下
+
+	可用应用程序：
+	  CUPS
+	  Nginx Full
+	  Nginx HTTP
+	  Nginx HTTPS
+
+* Nginx Full: This profile opens both port 80 (normal, unencrypted web traffic) and port 443 (TLS/SSL encrypted traffic)
+* Nginx HTTP: This profile opens only port 80 (normal, unencrypted web traffic)
+* Nginx HTTPS: This profile opens only port 443 (TLS/SSL encrypted traffic)
+
+设置防火墙规则
+
+	$ sudo ufw allow 'Nginx Full'
+
+查看防火墙状态
+
+	$ sudo ufw status
+
+网站目录在`var/www/html`
+
+根据情况修改`/etc/nginx/nginx.conf`中的`keepalive_timeout`值。
+
+### 安装php7.0-fpm
+
+[参考地址](https://www.howtoforge.com/tutorial/installing-nginx-with-php7-fpm-and-mysql-on-ubuntu-16.04-lts-lemp/)
+
+	$ sudo apt-get install php7.0-fpm
+
+现在还不能访问`.php`文件，要进行如下设置：
+
+	$ sudo nano /etc/nginx/sites-available/default
+
+* `server_name _ `服务器名，可以不填。
+* `root /var/www/html` 网站目录地址。可以手动修改。
+
+	增加`index.php`
+* `location ~ \.php$`php支持，需要解除注释。
+	
+	`fastcgi_pass 127.0.0.1:9000;`与 `fastcgi_pass unix:/run/php/php7.0-fpm.sock;`选一个否则冲突。
+
+之后重新读取`nginx`设置，
+
+	$ sudo service nginx reload
+
+修改`/etc/php/7.0/fpm/php.ini`
+
+	$ sudo nano /etc/php/7.0/fpm/php.ini
+
+设置` cgi.fix_pathinfo=1`
+
+重启`php7.0-fpm`服务
+
+	$ sudo service php7.0-fpm reload
+
+网站目录下建立任意`.php`文件测试。
+
+文件内容如下
+
+````php	
+	<?php
+	phpinfo();
+	?>
+````
+随后输入`127.0.0.1/[文件名].php`
+
+通过命令定位php7.0的其他包：
+
+	$ sudo apt-cache search php7.0
+
+选择安装的如下：
+
+	$ sudo apt-get install php7.0-cli php7.0-common php7.0 php7.0-mysql php7.0-curl php7.0-gd php7.0-bz2 php7.0-mcrypt php7.0-zip php7.0-mbstring php7.0-xml
+
+*其他让php7.0使用TCP连接*
+
+修改文件`/etc/php/7.0/fpm/pool.d/www.conf`与`/etc/nginx/sites-available/default`
+
+`/etc/php/7.0/fpm/pool.d/www.conf`文件
+
+	;listen = /var/run/php5-fpm.sock       //注释掉
+	listen = 127.0.0.1:9000					// 增加
+
+`/etc/nginx/sites-available/default`文件
+
+	[...]
+	        location ~ \.php$ {
+	 include snippets/fastcgi-php.conf;
+	
+	 # With php7.0-cgi alone:
+	 fastcgi_pass 127.0.0.1:9000;
+	 # With php7.0-fpm:
+	 # fastcgi_pass unix:/run/php/php7.0-fpm.sock;
+	 }
+	[...]
+
+重新读取`nginx`
+
+	service nginx reload
+
+### 安装MySql
+
+	$ sudo apt-get install mysql-server-5.7 php7.0-mysql
+
+### 安装composer
+
+[下载地址](https://getcomposer.org/download/)
+
+随后会得到一个`composer.phar`文件，可以直接放入任意目录，终端输入`composer`使用。
+
+当然为了方便可以设置为全局可以用。
+
+	$ sudo mv composer.phar /usr/local/bin/composer
+	$ sudo chmod +x /usr/local/bin/composer
+
+### 安装laravel 5 
+
+[文档地址](https://laravel.com/docs/5.2)
+
+#### 方法1
+
+	$ composer create-project --prefer-dist laravel/laravel [blog]
+
+[blog]可以为项目名
+
+#### 方法2
+
+	$ composer global require "laravel/installer"
+
+	composer laravel new [blog]
+
+[blog]可以为项目名
+
+*注意：需要梯子！需要梯子！需要梯子！*
