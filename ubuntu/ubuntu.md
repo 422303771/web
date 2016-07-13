@@ -353,6 +353,18 @@
 
 ![](https://raw.githubusercontent.com/422303771/web/master/ubuntu/img/zsh5.png)
 
+**更新：2016年7月13日18:33:13**
+
+为了方便管理为`.vimrc`、`.zshrc`、`.conkyrc`、`.tmux.conf`建立软连接
+	
+	ln -s ~/set/.conkyrc ~/.conyrc
+	ln -s ~/set/.tmux.conf ~/.tmux.conf
+	ln -s ~/set/.vimrc ~/.vimrc
+	ln -s ~/set/.zshrc ~/.zshrc
+
+
+
+
 ****
 
 >### 安装ravefinity风格  
