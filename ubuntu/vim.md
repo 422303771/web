@@ -79,6 +79,12 @@
 
 其中`vim-instant-markdown`需要安装`nodejs`、`npm`、`xdg-utils`、`nodejs-legacy`。
 
+安装`instant-markdown-d`
+
+	$ sudo npm -g install instant-markdown-d
+
+其他需要组件：
+
 	$ sudo apt-get install nodejs
 	$ sudo apt-get install npm
 	$ sudo apt-get install xdg-utils
