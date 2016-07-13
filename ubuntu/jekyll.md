@@ -48,7 +48,59 @@ build后网站文件在`_site`
 	layout: post
 	title: Blogging Like a Hacker
 	---
+
+### 1.3 增加分页
+
+[参考文档](http://jekyllcn.com/docs/pagination/)
+
+在`_config.yml`中设置分页
+
+	paginate: 7
+	paginate_path: "/page/:num"
+	gems: [jekyll-paginate]
 	
+在`_layouts/default.html`中添加分页代码
+
+```html
+
+<!-- 遍历分页后的文章 -->
+	{% for post in paginator.posts %}
+		<span class="post-meta">{{ post.date | date: "%b %-d, %Y " }}</span>
+		<h2><a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a></h2>
+     {% endfor %}
+<!-- fix page1 链接 -->
+	{% if paginator.total_pages > 1 %}
+		<div class="pagination">
+			{% if paginator.previous_page %}
+				<a href="{{ paginator.previous_page_path | prepend: site.baseurl | replace: '//', '/' }}">&laquo; Prev</a>
+			{% else %}
+				<span>&laquo; Prev</span>        
+			{% endif %}
+		
+			{% for page in (1..paginator.total_pages) %}
+				{% if page == paginator.page %}
+					<em>{{ page }}</em>
+				{% elsif page == 1 %}
+					<a href="{{ site.baseurl }}">{{ page }}</a>
+				{% else %}
+					<a href="{{ site.paginate_path | prepend: site.baseurl | replace: '//', '/' | replace: ':num', page }}">{{ page }}</a>
+				{% endif %}
+				{% endfor %}
+		
+				{% if paginator.next_page %}
+					<a href="{{ paginator.next_page_path | prepend: site.baseurl | replace: '//', '/' }}">Next &raquo;</a>
+				{% else %}
+					<span>Next &raquo;</span>
+				{% endif %}
+
+			</div>
+	{% endif %}
+
+
+```
+
+----
+
 ## 2. kramdown 语法说明
 
 ### 2.1 TOC连接[文章目录]
