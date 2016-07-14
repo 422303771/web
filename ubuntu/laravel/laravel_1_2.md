@@ -1,4 +1,4 @@
-# laravel 5 学习指南
+# laravel 5 学习指南 
 
 ## 1.部署Laravel Homestead
 
@@ -146,7 +146,7 @@ Git Bash中输入命令
 
 -----
 
-### 安装nginx 
+### 2.1 安装nginx 
 
 	$ sudo apt-get update
 	$ sudo apt-get install nginx
@@ -182,7 +182,7 @@ Git Bash中输入命令
 ------
 
 
-### 安装php7.0-fpm
+### 2.2 安装php7.0-fpm
 
 [参考地址](https://www.howtoforge.com/tutorial/installing-nginx-with-php7-fpm-and-mysql-on-ubuntu-16.04-lts-lemp/)
 
@@ -262,14 +262,14 @@ Git Bash中输入命令
 ------
 
 
-### 安装MySql
+### 2.3 安装MySql
 
 	$ sudo apt-get install mysql-server-5.7 php7.0-mysql
 
 ------
 
 
-### 安装composer
+### 2.4 安装composer
 
 [下载地址](https://getcomposer.org/download/)
 
@@ -283,17 +283,17 @@ Git Bash中输入命令
 ------
 
 
-### 安装laravel 5 
+### 2.5 安装laravel 5 
 
 [文档地址](https://laravel.com/docs/5.2)
 
-#### 方法1
+#### 2.5.1 方法1
 
 	$ composer create-project --prefer-dist laravel/laravel [blog]
 
 [blog]可以为项目名
 
-#### 方法2 
+#### 2.5.2 方法2 
 
 需要使用`bash`。`zsh`测试无效
 
@@ -308,4 +308,6 @@ Git Bash中输入命令
 [blog]可以为项目名
 
 *注意：需要梯子！需要梯子！需要梯子！*
+
+
 
