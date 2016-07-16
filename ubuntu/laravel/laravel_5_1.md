@@ -281,14 +281,81 @@ Route::group(['prefix' => 'accounts/{account_id}'], function () {
 
 ### 5.1.5 CSRF保护
 
-### 5.1.5.1 简介
+#### 5.1.5.1 简介
+
+CSRF指跨网站请求伪造。跨网站请求伪伪造是一种恶意攻击，透过经身份验证的使用者身份执行未经授权的命令。
+
+laravel会自动产生一个CSRF令牌给每个被应用管理的有效的用户，该令牌用于验证授权用户和发起请求者是否为同一个人。
+
+想要生成包含CSRF令牌的隐藏输入字段，可以使用`csrf_field`函数来实现：
+```php
+<?php echo csrf_field(); ?>
+```
+`csrf_field`函数会生成如下HTML：
+
+```html
+<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+```
+当然推荐使用`Blade`引擎模板提供的方式：
+```
+{!! csrf_field() !!}
+```
+不需要自己编写代码去验证POST、PUT或者DELETE请求的CSRF令牌，因为Laravel自带的HTTP中间件`VerfyCsrfToken`会完成这些工作。
+
+只要将请求中的输入`token`和Session中存储的`token`作对比来进行验证。
 
 ### 5.1.5.2 不受 CSRF 保护的 URIs
 
-### 5.1.5.3 X-CSRF-Token
+有时需要从CSRF保护中排除一些URL。比如，如果使用`Stripe`来处理支付并用到他们的webhook系统，这时就需要从laravel的CSRF保护中排除webhook处理路由。
 
-### 5.1.5.4 X-XSRF-Token
+要实现这一目的，需要在`VerifyCsrfToken`中间件中将要排除的URL添加到`$except`属性：
 
+```php
+<?php
+
+namespace App\Http\Middleware;
+
+use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken as BaseVerifier;
+
+class VerifyCsrfToken extends BaseVerifier
+{
+    /**
+     *从CSRF验证中排除的URL
+     *
+     * @var array
+     */
+    protected $except = [
+        'stripe/*',
+    ];
+}
+```
+
+#### 5.1.5.3 X-CSRF-Token
+
+除了检查当前POST参数的CDSRF令牌外，在laravel的`VerifyCsrfToken`中介层也会确认请求头部中的`X-CSRF-Token`。
+
+例如，可以将其存储在meta标签中：
+
+```html
+<meta name="csrf-token" content="{{ csrf_token() }}">
+```
+一旦建立了`meta`标签，就可以使用jQuery之类的函数库，将`令牌`加入到所有请求头部。
+
+这为基于AJAX的应用提供了简单、方便的方式来避免CSRF攻击。
+
+```js
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
+```
+
+#### 5.1.5.4 X-XSRF-Token
+
+laravel还会将CSRF令牌保存到名为`XSRF-TOKEN`的Cookie中，可以使用该Cookie值来设置`X-XSRF-TOKEN`请求头。
+
+一些javascript框架，比如Angular，会为你自动进行设置，基本上不太需要手动设置这个值。
 
 ----
 
@@ -296,11 +363,11 @@ Route::group(['prefix' => 'accounts/{account_id}'], function () {
 
 ### 5.1.6 路由模型绑定
 
-### 5.1.6.1 隐式绑定
+#### 5.1.6.1 隐式绑定
 
 * **自定义键名**
 
-### 5.1.6.2 显式绑定
+#### 5.1.6.2 显式绑定
 
 * **绑定参数到模型**
 	
