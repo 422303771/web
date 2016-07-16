@@ -183,19 +183,98 @@ Route::group(['as' => 'admin::'], function () {
 
 #### 5.1.3.2 为命名路由生成URL
 
+如果为给定路由进行了命名，就可以通过全局`route`函数为该命名路由生成对应URL，或者重新定向：
+
+
+
+```php
+$url = route('profile');		//产生URL
+$redirect = redirect()->route('profile');		//重新定向
+```
+如果命名路由定义了参数，可以将该参数作为第二个参数穿传递给`route`函数。路由参数会自动插入URL中。
+
+```php
+Route::get('user/{id}/profile', ['as' => 'profile', function ($id) {
+     //
+}]);
+$url = route('profile', ['id' => 1]);
+```
+
 -----
 
 
 ### 5.1.4 路由群组
 
+路由组允许共享路由属性，比如中间件与命名空间等。这样利用路由群组套用这些属性到多个路由，而不需要在每个路由都设定一次。
+
+共享属性被要求为数组格式。共享属性作为第一个参数被传递给`Route::group`方法。
+
 #### 5.1.4.1 中间件
+
+要给路由组中所有路由分配中间件，可以在群组属性中使用`middleware`。中间件将会按照数组中定义的顺序依次执行：
+
+```php
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('/', function () {
+        // 使用 Auth 中间件
+    });
+
+    Route::get('user/profile', function () {
+        // 使用 Auth 中间件
+    });
+});
+```
 
 #### 5.1.4.2 命名空间
 
+另一个例子，指定相同的PHP命名空间下多个控制器，可以在分组属性数组中使用`namespace`来指定群组中所有控制器的公共命名空间：
+
+```php
+Route::group(['namespace' => 'Admin'], function(){
+    // 控制器在 "App\Http\Controllers\Admin" 命名空间下
+
+    Route::group(['namespace' => 'User'], function(){
+        // 控制器在 "App\Http\Controllers\Admin\User" 命名空间下
+    });
+});
+```
+默认情况下，`RouteServiceProvider`会在命名空间群组内导入`routes.php`文件，让你不用指定完整`App/Http/Controllers`命令空间，就能注册控制器。所有，只需要指定在`App/Http/Controllers`之后的命名。
+
 #### 5.1.4.3 子域名路由
+
+子域名可以像URL一样被分配给路由参数，从而允许捕获子域名的部分用于路由或者控制器，子域名可以通过群组属性中的`domani`来指定：
+
+```php
+Route::group(['domain' => '{account}.myapp.com'], function () {
+    Route::get('user/{id}', function ($account, $id) {
+        //
+    });
+});
+```
+*注意：其中的{account}可以随意修改的。{id}也是可以随意更改的。*
+
 
 #### 5.1.4.4 路由前缀
 
+`prefix`群组属性，用来为群组中每个路由添加一个给定URL前缀。
+
+例如，你可以为所有路由URL添加`admin`前缀：
+```php
+Route::group(['prefix' => 'admin'], function () {
+    Route::get('users', function () {
+        // 匹配 "/admin/users" URL
+    });
+});
+```
+还可以使用`prefix`参数为路由组指定公共路由参数：
+
+```php
+Route::group(['prefix' => 'accounts/{account_id}'], function () {
+    Route::get('detail', function ($account_id) {
+        // 匹配 accounts/{account_id}/detail URL
+    });
+});
+```
 
 -----
 
