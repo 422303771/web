@@ -363,20 +363,105 @@ laravel还会将CSRF令牌保存到名为`XSRF-TOKEN`的Cookie中，可以使用
 
 ### 5.1.6 路由模型绑定
 
+laravel路由模型绑定提供了一个方便的方式来注入类至路由中。
+
+例如，可以将匹配到`ID`的整个User类注入到路由中，而不是直接注入用户ID。
+
 #### 5.1.6.1 隐式绑定
+
+laravel会自动解析定义在路由或控制器动作（变量名匹配路由片段）中的Eloquent模型类型声明，例如：
+
+```php
+Route::get('api/users/{user}', function (App\User $user) {
+    return $user->email;
+});
+```
+
+这个例子中，路由URL的`user`符合`$user`实例的ELoquent模型，所以laravel会自动注入与请求URL的ID对应的模型实例。
+
+如果找不到对应的模型实例，会自动生成HTTP404响应。
 
 * **自定义键名**
 
+	如果想要隐式模型绑定，使用数据表的其他字段，可以重写Eloquent模型类的`getRouteKeyName`方法：
+	
+	```php
+	/**
+	 * Get the route key for the model.
+	 *
+	 * @return string
+	 */
+	public function getRouteKeyName()
+	{
+	    return 'slug';
+	}
+	```
+	现在就可以使用`slug`作为键值了，可以用来`模糊关键字`。
+
 #### 5.1.6.2 显式绑定
+
+要注册显式绑定，需要使用路由的`model`方法来为给定参数指定绑定类。
+
+必须在`RouteServiceProvider::boot`方法中定义模型绑定。
 
 * **绑定参数到模型**
 	
-* **自定义解析逻辑**
+	```php
+	public function boot(Router $router)
+	{
+	    parent::boot($router);
+	    $router->model('user', 'App\User');
+	}
+	```
+	接下来，定义一个包含`user`参数的路由：
 	
+	```php
+	$router->get('profile/{user}', function(App\User $user) {
+	     //
+	});
+	```
+	由于已经绑定`{user}`参数到`App\User`模型，User实例会被注入到该路由。因此，如果请求URL是`profile/1`,就会注入一个用户ID为1的User实例。
+	
+	如果匹配的模型实例在数据库不存在，会自动生成并返回HTTP404响应。
+
+* **自定义解析逻辑**	
+	
+	如果想要使用自定义的解析逻辑需要使用`Route::bind`方法，传递到`bind`方法的闭关会获取到URL请求的参数中的值，并返回你想要在该路由中注入的类实例：
+	
+	```php
+	$router->bind('user', function($value) {
+	    return App\User::where('name', $value)->first();
+	});
+	```
 * **自定义"Not Found"**
 	
+	如果想要指定自己的`Not Found`行为，将封装该行为的闭包作为第三个参数传递给`model`方法
+	
+	```php
+	$router->model('user', 'App\User', function() {
+	    throw new NotFoundHttpException;
+	});
+	```
+
 ----
 
 ### 5.1.7 表单方法伪造
+
+HTML表单不支持PUT、PATCH或者DELETE请求方法。当使用这些路由时，需要添加一个隐藏的`_method`字段到表单中，其值被用作该表单的HTTP请求方法：
+
+```html
+<form action="/foo/bar" method="POST">
+    <input type="hidden" name="_method" value="PUT">
+    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+</form>
+```
+还可以使用辅助函数`method_field`来实现这一目的：
+
+```php
+<?php echo method_field('PUT'); ?>
+```
+当然，也支持Blade模板引擎：
+
+	{{ method——field('PUT') }}
 
 -----
