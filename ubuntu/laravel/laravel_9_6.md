@@ -99,17 +99,17 @@ $collection = collect([1, 2, 3]);
 	```
 * **combine()**
 
-`combine()`方法将数据写入数组的对应位置：
-
-```php
-$collection = collect(['name', 'age']);
-
-$combined = $collection->combine(['George', 29]);
-
-$combined->all();
-
-// ['name' => 'George', 'age' => 29]
-```
+	`combine()`方法将数据写入数组的对应位置：
+	
+	```php
+	$collection = collect(['name', 'age']);
+	
+	$combined = $collection->combine(['George', 29]);
+	
+	$combined->all();
+	
+	// ['name' => 'George', 'age' => 29]
+	```
 
 * **contains()**
 
