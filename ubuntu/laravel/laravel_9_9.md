@@ -254,6 +254,34 @@ public function boot(DispatcherContract $events)
 
 ### 9.10.3 定义事件
 
+事件类是一个处理与事件相关的简单数据容器，例如，假设我们生成的`PodcastWasPurchased`事件接收一个`Eloquent ORM`对象：
+
+```php
+<?php
+
+namespace App\Events;
+
+use App\Podcast;
+use App\Events\Event;
+use Illuminate\Queue\SerializesModels;
+
+class PodcastWasPurchased extends Event{
+    use SerializesModels;
+
+    public $podcast;
+
+    /**
+     * 创建新的事件实例
+     *
+     * @param  Podcast  $podcast
+     * @return void
+     */
+    public function __construct(Podcast $podcast)
+    {
+        $this->podcast = $podcast;
+    }
+}
+```
 
 -----
 

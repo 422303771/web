@@ -275,7 +275,7 @@ renamed:    README.md -> README
 如`$ git log --pretty=format:"%h - %an, %ar : %s"`    
 
 |命令|说明|  
-|:----:|:----:|  
+|:----:|:----|  
 |%H|提交对象（commit）的完整哈希字串|    
 |%h|提交对象的简短哈希字串|  
 |%T|树对象（tree）的完整哈希字串|  
