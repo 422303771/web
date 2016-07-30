@@ -606,6 +606,17 @@ Android Studio [下载](https://developer.android.com/studio/index.html)
 
 ----
 
+### 安装 terminix
+
+[地址](https://github.com/gnunn1/terminix)
+
+```
+$ sudo add-apt-repository ppa:webupd8team/terminix
+$ sudo apt-get update
+$ sudo apt-get install terminix
+```
+-----
+
 [ubuntu 安装与设置]: #ubuntu-安装与设置
 
 [下载镜像包]:#下载镜像包

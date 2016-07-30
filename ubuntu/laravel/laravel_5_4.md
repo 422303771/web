@@ -113,7 +113,9 @@ Route::get('/', function (ServerRequestInterface $request) {
 ```
 如果从路由或控制器返回的是PSR-7响应实例，则其将会自动转化为laravel响应实例并显示出来。
 
+
 -----
+
 
 ### 5.4.2 获取输入信息
 

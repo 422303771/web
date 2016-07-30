@@ -57,6 +57,8 @@
 [地址2](https://bbs.archlinuxcn.org/viewtopic.php?id=1037)
 
 自动化安装设置工具[Archlinux U Install](https://github.com/helmuthdu/aui)
+
+[自动显示修复](http://www.ituring.com.cn/article/120762)
  
 ## 2.	桌面化安装
 ## 3.	常用软件补全

@@ -287,3 +287,4 @@ class UserController extends Controller
 	php artisan route:clear
 
 ------
+
