@@ -617,6 +617,15 @@ $ sudo apt-get install terminix
 ```
 -----
 
+### 安装Gitg
+
+```
+$ sudo apt-get install gitg
+```
+
+-----
+
+
 [ubuntu 安装与设置]: #ubuntu-安装与设置
 
 [下载镜像包]:#下载镜像包
