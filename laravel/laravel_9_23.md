@@ -175,39 +175,441 @@ $this->uncheck($elementName)             | "Uncheck"复选框
 
 - **处理附件**
 
+  如果表单包含`file`输入类型，可以使用`attach`方法添加文件到表单：
+
+  ```php
+    public function testPhotoCanBeUploaded(){
+        $this->visit('/upload')
+             ->name('File Name', 'name')
+             ->attach($absolutePathToFile, 'photo')
+             ->press('Upload')
+             ->see('Upload Successful!');
+    }
+  ```
+
 ### 9.23.2.2 测试JSON API
+
+Laravel 还提供多个帮助函数用于测试 `JSON API`及其`响应`。
+
+例如，`get`, `post`, `put`, `patch`, 和 `delete`方法用于通过多种 `HTTP` 请求方式发出请求。你还可以轻松传递数据和头到这些方法。作为开始，我们编写测试来生成 `POST` 请求到 `` `/user`` 并断言返回的数据是否是 JSON 格式：
+
+```php
+<?php
+
+class ExampleTest extends TestCase{
+    /**
+     * 基本功能测试示例
+     *
+     * @return void
+     */
+    public function testBasicExample()
+    {
+        $this->post('/user', ['name' => 'Sally'])
+             ->seeJson([
+                 'created' => true,
+             ]);
+    }
+}
+```
+
+`seeJson`方法将给定数组转化为 JSON，然后验证应用返回的整个 JSON 响应中的 JSON 片段。因此，如果在 JSON 响应中有其他属性，只要给定片段存在的话测试依然会通过。
 
 - **验证JSON值匹配**
 
+  如果你想要验证给定数组和应用返回的JSON能够精确匹配，使用 `seeJsonEquals`方法：
+
+  ```php
+    <?php
+
+    class ExampleTest extends TestCase{
+        /**
+         * 基本功能测试示例
+         *
+         * @return void
+         */
+        public function testBasicExample()
+        {
+            $this->post('/user', ['name' => 'Sally'])
+                 ->seeJsonEquals([
+                     'created' => true,
+                 ]);
+        }
+    }
+  ```
+
 - **验证JSON数据结构匹配**
+
+  还可以验证JSON响应是否与指定数据结构匹配，我们使用 `seeJsonStructure` 方法来实现这一功能：
+
+  ```php
+    <?php
+
+    class ExampleTest extends TestCase{
+        /**
+         * A basic functional test example.
+         *
+         * @return void
+         */
+        public function testBasicExample()
+        {
+            $this->get('/user/1')
+                 ->seeJsonStructure([
+                     'name',
+                     'pet' => [
+                         'name', 'age'
+                     ]
+                 ]);
+        }
+    }
+  ```
+
+  上面的例子演示了期望获取一个包含`name`和嵌套`pet`对象（该对象包含 `name`和`age`属性）的`JSON`数据。如果 JSON 响应中包含其它额外键 `seeJsonStructure`也不会失败。
+
+  例如，如果`pet`对象包含`weight`属性测试仍将通过。
+
+  你可以使用*来断言返回JSON结构包含一个列表，该列表中的每个数据项都包含至少如下示例中列出的属性：
+
+  ```php
+    <?php
+
+    class ExampleTest extends TestCase{
+        /**
+         * A basic functional test example.
+         *
+         * @return void
+         */
+        public function testBasicExample()
+        {
+            // Assert that each user in the list has at least an id, name and email attribute.
+            $this->get('/users')
+                 ->seeJsonStructure([
+                     '*' => [
+                         'id', 'name', 'email'
+                     ]
+                 ]);
+        }
+    }
+  ```
+
+  你还可以使用嵌套的`*`，在这种场景中，我们可以断言JSON响应中的每个用户都包含一个给定属性集合，而且每个用户的每个`pet`都包含给定属性集合：
+
+  ```php
+    $this->get('/users')
+         ->seeJsonStructure([
+             '*' => [
+                 'id', 'name', 'email', `pets` => [
+                     '*' => [
+                         'name', 'age'
+                     ]
+                 ]
+             ]
+         ]);
+  ```
 
 ### 9.23.2.3 Session/认证
 
+Laravel提供了多个辅助函数用于在测试期间处理`Session`，首先，可以使用`withSession`方法设置`session`值到给定数组。这在测试请求前获取 `session`数据时很有用：
+
+```php
+<?php
+
+class ExampleTest extends TestCase{
+    public function testApplication()
+    {
+        $this->withSession(['foo' => 'bar'])
+             ->visit('/');
+    }
+}
+```
+
+当然，`session`的通常用于操作用户状态。
+
+例如认证用户。辅助函数`actingAs`提供了认证给定用户为当前用户的简单方法。
+
+例如，我们使用模型工厂生成和认证用户：
+
+```php
+<?php
+
+class ExampleTest extends TestCase{
+    public function testApplication()
+    {
+        $user = factory('App\User')->create();
+
+        $this->actingAs($user)
+             ->withSession(['foo' => 'bar'])
+             ->visit('/')
+             ->see('Hello, '.$user->name);
+    }
+}
+```
+
+还可以通过传递`guard`名称作为`actingAs`函数的第二个参数的方式来指定使用哪个`guard`来认证给定用户：
+
+```php
+$this->actingAs($user, 'backend')
+```
+
 ### 9.23.2.4 禁止中间件
+
+测试应用时，为某些测试禁止中间件很方便。这种机制允许你将路由和控制器与中间件孤立开来做测试，Laravel包含了一个简单的 `WithoutMiddleware` trait，可以使用该 trait 自动在测试类中禁止所有中间件：
+
+```php
+<?php
+
+use Illuminate\Foundation\Testing\WithoutMiddleware;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+
+class ExampleTest extends TestCase{
+    use WithoutMiddleware;
+    //
+}
+```
+
+如果你只想在某些方法中禁止中间件，可以在测试方法中调用 `withoutMiddleware` 方法：
+
+```php
+<?php
+
+class ExampleTest extends TestCase{
+    /**
+     * 基本功能测试示例
+     *
+     * @return void
+     */
+    public function testBasicExample()
+    {
+        $this->withoutMiddleware();
+
+        $this->visit('/')
+             ->see('Laravel 5');
+    }
+}
+```
 
 ### 9.23.2.5 自定义HTTP请求
 
+如果你想要在应用中生成自定义HTTP请求并获取完整的`Illuminate\Http\Response`对象，可以使用`call`方法：
+
+```php
+public function testApplication(){
+    $response = $this->call('GET', '/');
+    $this->assertEquals(200, $response->status());
+}
+```
+
+如果你要生成`POST`,`PUT`, 或者`PATCH`请求可以在请求中传入输入数据数组，在路由或控制器中可以通过`Request`实例访问请求数据：
+
+```php
+$response = $this->call('POST', '/user', ['name' => 'Taylor']);
+```
+
 ### 9.23.2.6 PHPUnit断言方法
+
+Laravel 为`PHPUnit`测试提供了额外的断言方法：
+
+方法                                                                 | 描述
+:----------------------------------------------------------------- | :-------------------
+->assertResponseOk();                                              | 断言客户端响应状态码是否为200
+->assertResponseStatus($code);                                     | 断言客户端响应状态码是否是给定$code
+->assertViewHas($key, $value = null);                              | 断言响应视图是否包含给定的绑定数据片段
+->assertViewHasAll(array $bindings);                               | 断言视图是否包含给定绑定数据列表
+->assertViewMissing($key);                                         | 断言响应视图缺失绑定数据片段
+->assertRedirectedTo($uri, $with = [ ]);                           | 断言客户端是否重定向到给定URI
+->assertRedirectedToRoute($name, $parameters = [ ], $with = [ ]);  | 断言客户端是否重定向到给定路由
+->assertRedirectedToAction($name, $parameters = [ ], $with = [ ]); | 断言客户端是否重定向到给定action
+->assertSessionHas($key, $value = null);                           | 断言session是否包含给定值
+->assertSessionHasAll(array $bindings);                            | 断言session是否保护眼给定值列表
+->assertSessionHasErrors($bindings = [ ], $format = null);         | 断言session是否包含错误绑定
+->assertHasOldInput();                                             | 断言sessio包含上次输入数据
 
 --------------------------------------------------------------------------------
 
 ## 9.23.3 处理数据库
 
+Laravel还提供了多种有用的工具让测试数据库驱动的应用更加简单。
+
+首先，你可以使用帮助函数`seeInDatabase`来断言数据库中的数据是否和给定数据集合匹配。
+
+例如，如果你想要通过`email`值为`sally@example.com`的条件去数据表`users`查询是否存在该记录 ，我们可以这样做：
+
+```php
+public function testDatabase(){
+    // 调用应用...
+    $this->seeInDatabase('users', ['email' => 'sally@foo.com']);
+}
+```
+
+当然，`seeInDatabase`方法和其它类似辅助方法都是为了方便起见进行的封装，你也可以使用其它`PHPUnit`内置的断言方法来进行测试。
+
 ### 9.23.3.1 每次测试后重置数据库
+
+每次测试后重置数据库通常很有用，这样的话上次测试的数据不会影响下一次测试。
 
 - **使用迁移**
 
+  一种方式是每次测试后回滚数据库并在下次测试前重新迁移。Laravel提供了一个简单的`DatabaseMigrations` trait来自动为你处理。
+
+  在测试类上简单使用该trait如下：
+
+  ```php
+    <?php
+
+    use Illuminate\Foundation\Testing\WithoutMiddleware;
+    use Illuminate\Foundation\Testing\DatabaseMigrations;
+    use Illuminate\Foundation\Testing\DatabaseTransactions;
+
+    class ExampleTest extends TestCase{
+        use DatabaseMigrations;
+
+        /**
+         * 基本功能测试示例
+         *
+         * @return void
+         */
+        public function testBasicExample()
+        {
+            $this->visit('/')
+                 ->see('Laravel 5');
+        }
+    }
+  ```
+
 - **使用事务**
+
+  另一种方式是将每一个测试用例包裹到一个数据库事务中，Laravel提供了方便的 `DatabaseTransactions` trait自动为你处理：
+
+  ```php
+    <?php
+
+    use Illuminate\Foundation\Testing\WithoutMiddleware;
+    use Illuminate\Foundation\Testing\DatabaseMigrations;
+    use Illuminate\Foundation\Testing\DatabaseTransactions;
+
+    class ExampleTest extends TestCase{
+        use DatabaseTransactions;
+
+        /**
+         * 基本功能测试示例
+         *
+         * @return void
+         */
+        public function testBasicExample()
+        {
+            $this->visit('/')
+                 ->see('Laravel 5');
+        }
+    }
+  ```
+
+  _注意：该trait只在事务中封装默认数据库连接。_
 
 ### 9.23.3.2 模型工厂
 
+测试时，通常需要在执行测试前插入新数据到数据库。在创建测试数据时，Laravel允许你使用`factories`为每个`Eloquent模型`定义默认的属性值集合，而不用手动为每一列指定值。
+
+作为开始，我们看一下`database/factories/ModelFactory.php`文件，该文件包含了一个工厂定义：
+
+```php
+$factory->define(App\User::class, function (Faker\Generator $faker) {
+    return [
+        'name' => $faker->name,
+        'email' => $faker->email,
+        'password' => bcrypt(str_random(10)),
+        'remember_token' => str_random(10),
+    ];
+});
+```
+
+在闭包中，作为工厂定义，我们返回该模型上所有属性默认测试值。该闭包接收`PHP库Faker`实例，从而允许你方便地为测试生成多种类型的随机数据。
+
+当然，你可以添加更多工厂到`ModelFactory.php`文件。
+
 - **多个工厂类型**
+
+  有时候你可能想要为同一个`Eloquent模型类`生成多个工厂，例如，除了正常用户外可能你想要为`管理员`用户生成一个工厂，你可以使用`defineAs`方法定义这些工厂：
+
+  ```php
+    $factory->defineAs(App\User::class, 'admin', function ($faker) {
+        return [
+            'name' => $faker->name,
+            'email' => $faker->email,
+            'password' => str_random(10),
+            'remember_token' => str_random(10),
+            'admin' => true,
+        ];
+    });
+  ```
+
+  你可以使用`raw`方法获取基本属性而不用重复基本用户工厂中的所有属性，获取这些属性后，只需将你要求的额外值增补进去即可：
+
+  ```php
+    $factory->defineAs(App\User::class, 'admin', function ($faker) use ($factory) {
+        $user = $factory->raw(App\User::class);
+        return array_merge($user, ['admin' => true]);
+    });
+  ```
 
 - **在测试中使用工厂**
 
+  定义好工厂后，可以在测试或数据库填充文件中通过全局的`factory`方法使用它们来生成模型实例，所以，让我们看一些生成模型的例子，首先，我们使用`make`方法，该方法创建模型但不将其保存到数据库：
+
+  ```php
+    public function testDatabase(){
+        $user = factory(App\User::class)->make();
+        // 用户模型测试...
+    }
+  ```
+
+  如果你想要覆盖模型的一些默认值，可以传递数组值到`make`方法。只有指定值被替换，其他数据保持不变：
+
+  ```php
+    $user = factory(App\User::class)->make([
+        'name' => 'Abigail',
+    ]);
+  ```
+
+  还可以创建多个模型集合或者创建给定类型的集合：
+
+  ```php
+    // 创建3个 App\User 实例...
+    $users = factory(App\User::class, 3)->make();
+    // 创建1个 App\User "admin" 实例...
+    $user = factory(App\User::class, 'admin')->make();
+    // 创建3个 App\User "admin" 实例...
+    $users = factory(App\User::class, 'admin', 3)->make();
+  ```
+
 - **持久化工厂模型**
 
+  `create`方法不仅能创建模型实例，还可以使用`Eloquent的save`方法将它们保存到数据库：
+
+  ```php
+    public function testDatabase(){
+        $user = factory(App\User::class)->create();
+        //用户模型测试...
+    }
+  ```
+
+  你仍然可以通过传递数组到create方法覆盖模型上的属性：
+
+  ```php
+    $user = factory(App\User::class)->create([
+        'name' => 'Abigail',
+    ]);
+  ```
+
 - **添加关联关系到模型**
+
+  你甚至可以持久化多个模型到数据库。在本例中，我们添加一个关联到创建的模型，使用`create`方法创建多个模型的时候，会返回一个`Eloquent`集合实例，从而允许你使用集合提供的所有便利方法，例如`each`：
+
+  ```php
+    $users = factory(App\User::class, 3)
+               ->create()
+               ->each(function($u) {
+                    $u->posts()->save(factory(App\Post::class)->make());
+                });
+  ```
 
 --------------------------------------------------------------------------------
 
@@ -215,8 +617,122 @@ $this->uncheck($elementName)             | "Uncheck"复选框
 
 ### 9.23.4.1 模拟事件
 
+如果你在重度使用Laravel的事件系统，可能想要在测试时模拟特定事件。
+
+例如，如果你在测试用户注册，你可能不想所有`UserRegistered`的事件处理器都被触发，因为这可能会发送欢迎邮件，等等。
+
+Laravel提供可一个方便的`expectsEvents`方法来验证期望的事件被触发，但同时阻止该事件的其它处理器运行：
+
+```php
+<?php
+
+class ExampleTest extends TestCase{
+    public function testUserRegistration()
+    {
+        $this->expectsEvents(App\Events\UserRegistered::class);
+        // 测试用户注册代码...
+    }
+}
+```
+
+可以使用`doesntExpectEvents`方法来验证给定事件没有被触发：
+
+```php
+<?php
+
+class ExampleTest extends TestCase{
+    public function testPodcastPurchase()
+    {
+        $this->expectsEvents(App\Events\PodcastWasPurchased::class);
+
+        $this->doesntExpectEvents(App\Events\PaymentWasDeclined::class);
+
+        // Test purchasing podcast...
+    }
+}
+```
+
+如果你想要阻止所有事件运行，可以使用`withoutEvents`方法：
+
+```php
+<?php
+
+class ExampleTest extends TestCase{
+    public function testUserRegistration()
+    {
+        $this->withoutEvents();
+        // 测试用户注册代码...
+    }
+}
+```
+
 ### 9.23.4.2 模拟队列任务
 
+有时候，你可能想要在请求时简单测试控制器分发的指定任务，这允许你孤立的测试路由/控制器----将其从任务逻辑中分离出去，当然，接下来你可以在一个独立测试类中测试任务本身。
+
+Laravel提供了一个方便的`expectsJobs`方法来验证期望的任务被分发，但该任务本身不会被测试：
+
+```php
+<?php
+
+class ExampleTest extends TestCase{
+    public function testPurchasePodcast()
+    {
+        $this->expectsJobs(App\Jobs\PurchasePodcast::class);
+        // 测试购买播客代码...
+    }
+}
+```
+
+_注意：这个方法只检查通过`DispatchesJobs` trait分发方法分发的任务，并不检查直接通过`Queue::push`分发的任务。_
+
 ### 9.23.4.3 模拟门面
+
+测试的时候，你可能经常想要模拟Laravel门面的调用，例如，看看下面的控制器动作：
+
+```php
+<?php
+
+namespace App\Http\Controllers;
+
+use Cache;
+use Illuminate\Routing\Controller;
+
+class UserController extends Controller{
+    /**
+     * 显示应用用户列表
+     *
+     * @return Response
+     */
+    public function index()
+    {
+        $value = Cache::get('key');
+
+        //
+    }
+}
+```
+
+我们可以通过使用`shouldReceive`方法模拟`Cache`门面的调用，该方法返回一个`Mockery`模拟的实例，由于门面通过`Laravel`服务容器解析和管理，它们比通常的静态类更具有可测试性。
+
+例如，我们来模拟Cache门面的调用：
+
+```php
+<?php
+
+class FooTest extends TestCase{
+    public function testGetIndex()
+    {
+        Cache::shouldReceive('get')
+                    ->once()
+                    ->with('key')
+                    ->andReturn('value');
+
+        $this->visit('/users')->see('value');
+    }
+}
+```
+
+_注意：不要模拟`Request`门面，取而代之地，在测试时传递输入到`HTTP`帮助函数如`call`和`post`。_
 
 --------------------------------------------------------------------------------
