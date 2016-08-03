@@ -1,4 +1,40 @@
-## 9.21 Envoy Task Runner
+<!-- toc -->
+
+- [9.21 Envoy Task Runner](#921-envoy-task-runner)
+
+  - [9.21.1 简介](#9211-简介)
+
+    - [9.21.1.1 安装](#92111-安装)
+
+  - [9.21.2 编写任务](#9212-编写任务)
+
+    - [9.21.2.1 任务变量](#92121-任务变量)
+    - [9.21.2.2 多个服务器](#92122-多个服务器)
+    - [9.21.2.3 任务宏](#92123-任务宏)
+
+  - [9.21.3 运行任务](#9213-运行任务)
+  - [9.21.4 通知](#9214-通知)
+
+    - [9.21.4.1 HipChat](#92141-hipchat)
+    - [9.21.4.2 Slack](#92142-slack)
+
+- [9.22 任务调度](#922-任务调度)
+
+  - [9.22.1 简介](#9221-简介)
+
+    - [9.22.1.1 开启调度](#92211-开启调度)
+
+  - [9.22.2 定义调度](#9222-定义调度)
+
+    - [9.22.2.1 调度常用选项](#92221-调度常用选项)
+    - [9.22.2.2 避免任务重叠](#92222-避免任务重叠)
+
+  - [9.22.3 任务输出](#9223-任务输出)
+  - [9.22.4 任务钩子](#9224-任务钩子)
+
+<!-- tocstop -->
+
+ ## 9.21 Envoy Task Runner
 
 ### 9.21.1 简介
 
@@ -11,9 +47,10 @@
 ```
 composer global require "laravel/envoy=~1.0"
 ```
+
 确保`~/.composer/vendor/bin`目录在系统路径`PATH`中否则在终端中由于找不到`envoy`而无法执行该命令。
 
-* **更新Envoy**
+- **更新Envoy**
 
 还可以使用`Composer`保持安装的`Envoy`是最新版本：
 
@@ -21,7 +58,7 @@ composer global require "laravel/envoy=~1.0"
 composer global update
 ```
 
-----
+--------------------------------------------------------------------------------
 
 ### 9.21.2 编写任务
 
@@ -34,36 +71,38 @@ composer global update
     ls -la
 @endtask
 ```
+
 正如你所看到的，`@servers`数组定义在文件顶部，从而允许你在任务声明中使用`on`选项引用这些服务器，在 `@task`声明中，应该放置将要在服务器上运行的`Bash`代码。
 
-* **启动**
+- **启动**
 
-	有时候，你需要在评估`Envoy`任务之前执行一些`PHP`代码，可以在`Envoy`文件中使用`@setup`指令来声明变量和要执行的PHP代码：
-	
-	```php
-	@setup
-	    $now = new DateTime();
-	    $environment = isset($env) ? $env : "testing";
-	@endsetup
-	```
-	还可以使用`@include`来引入外部PHP文件：
-	
-	```
-	@include('vendor/autoload.php');
-	```
+  有时候，你需要在评估`Envoy`任务之前执行一些`PHP`代码，可以在`Envoy`文件中使用`@setup`指令来声明变量和要执行的PHP代码：
 
-* **确认任务**
+  ```php
+    @setup
+        $now = new DateTime();
+        $environment = isset($env) ? $env : "testing";
+    @endsetup
+  ```
 
-	如果你想要在服务器上运行给定任务之前弹出弹出提示进行确认，可以在任务声明中使用`confirm`指令：
-	
-	```php
-	@task('deploy', ['on' => 'web', 'confirm' => true])
-	    cd site
-	    git pull origin {{ $branch }}
-	    php artisan migrate
-	@endtask
-	```
-	
+  还可以使用`@include`来引入外部PHP文件：
+
+  ```
+    @include('vendor/autoload.php');
+  ```
+
+- **确认任务**
+
+  如果你想要在服务器上运行给定任务之前弹出弹出提示进行确认，可以在任务声明中使用`confirm`指令：
+
+  ```php
+    @task('deploy', ['on' => 'web', 'confirm' => true])
+        cd site
+        git pull origin {{ $branch }}
+        php artisan migrate
+    @endtask
+  ```
+
 #### 9.21.2.1 任务变量
 
 如果需要的话，你可以使用命令行开关传递变量到`Envoy`文件，从而允许你自定义任务：
@@ -71,6 +110,7 @@ composer global update
 ```
 envoy run deploy --branch=master
 ```
+
 你可以在任务中通过`Blade`的`echo`语法使用该选项：
 
 ```php
@@ -96,21 +136,22 @@ envoy run deploy --branch=master
     php artisan migrate
 @endtask
 ```
+
 默认情况下，该任务将会依次在每个服务器上执行，这意味着，该任务在第一台服务器上运行完成后才会开始在第二台服务器运行。
 
-* **平行运行**
+- **平行运行**
 
-	如果你想要在多个服务器上平行运行，添加`parallel`选项到任务声明：
-	
-	```php
-	@servers(['web-1' => '192.168.1.1', 'web-2' => '192.168.1.2'])
-	
-	@task('deploy', ['on' => ['web-1', 'web-2'], 'parallel' => true])
-	    cd site
-	    git pull origin {{ $branch }}
-	    php artisan migrate
-	@endtask
-	```
+  如果你想要在多个服务器上平行运行，添加`parallel`选项到任务声明：
+
+  ```php
+    @servers(['web-1' => '192.168.1.1', 'web-2' => '192.168.1.2'])
+
+    @task('deploy', ['on' => ['web-1', 'web-2'], 'parallel' => true])
+        cd site
+        git pull origin {{ $branch }}
+        php artisan migrate
+    @endtask
+  ```
 
 #### 9.21.2.3 任务宏
 
@@ -132,14 +173,14 @@ envoy run deploy --branch=master
     composer install
 @endtask
 ```
+
 宏被定义好了之后，你就可以通过如下单个命令运行它：
 
 ```
 envoy run deploy
 ```
 
-
-------
+--------------------------------------------------------------------------------
 
 ### 9.21.3 运行任务
 
@@ -149,7 +190,7 @@ envoy run deploy
 envoy run task
 ```
 
------
+--------------------------------------------------------------------------------
 
 ### 9.21.4 通知
 
@@ -168,6 +209,7 @@ envoy run task
     @hipchat('token', 'room', 'Envoy')
 @endafter
 ```
+
 需要的话，你还可以传递自定义发送给`HipChat`房间的消息，所有在`Envoy`任务中有效的变量在构建消息时也有效：
 
 ```
@@ -185,19 +227,20 @@ envoy run task
     @slack('hook', 'channel', 'message')
 @endafter
 ```
+
 你可以通过创建集成到`Slack`网站的`Incoming WebHooks`来获取钩子URL，该`hook`参数是由`Incoming Webhooks Slack`集成提供的完整`webhook URL`，例如：
 
 ```
 https://hooks.slack.com/services/ZZZZZZZZZ/YYYYYYYYY/XXXXXXXXXXXXXXX
 ```
+
 你可以提供下面两种其中之一作为频道参数：
 
-* 发送消息到频道:`#channel`
+- 发送消息到频道:`#channel`
 
-* 发送消息到用户:`@user`
+- 发送消息到用户:`@user`
 
-
-----
+--------------------------------------------------------------------------------
 
 ## 9.22 任务调度
 
@@ -216,11 +259,10 @@ Laravel命令调度器允许你平滑而又富有表现力地在Laravel中定义
 ```
 * * * * * php /path/to/artisan schedule:run 1>> /dev/null 2>&1
 ```
+
 该`Cron`将会每分钟调用Laravel命令调度，然后，Laravel评估你的调度任务并运行到期的任务。
 
-
-----
-
+--------------------------------------------------------------------------------
 
 ### 9.22.2 定义调度
 
@@ -259,6 +301,7 @@ class Kernel extends ConsoleKernel{
     }
 }
 ```
+
 除了调度闭包调用外，还可以调度`Artisan`命令和`操作系统`命令。
 
 例如，可以使用`command`方法来调度一个`Artisan`命令：
@@ -266,6 +309,7 @@ class Kernel extends ConsoleKernel{
 ```
 $schedule->command('emails:send --force')->daily();
 ```
+
 `exec`命令可用于发送命令到操作系统：
 
 ```
@@ -276,21 +320,21 @@ $schedule->exec('node /home/forge/script.js')->daily();
 
 当然，你可以分配多种调度到任务：
 
-|方法|描述|
-|:---:|:---|
-|->cron('* * * * *');|在自定义Cron调度上运行任务|
-|->everyMinute();|每分钟运行一次任务|
-|->everyFiveMinutes();|每五分钟运行一次任务|
-|->everyTenMinutes();|每十分钟运行一次任务|
-|->everyThirtyMinutes();|每三十分钟运行一次任务|
-|->hourly();|每小时运行一次任务|
-|->daily();|每天凌晨零点运行任务|
-|->dailyAt('13:00');|每天13:00运行任务|
-|->twiceDaily(1, 13);|每天1:00 & 13:00运行任务|
-|->weekly();|每周运行一次任务|
-|->monthly();|每月运行一次任务|
-|->quarterly();|每个季度运行一次|
-|->yearly();|每年运行一次|
+方法                      | 描述
+:---------------------- | :-----------------
+->cron('_**_');         | 在自定义Cron调度上运行任务
+->everyMinute();        | 每分钟运行一次任务
+->everyFiveMinutes();   | 每五分钟运行一次任务
+->everyTenMinutes();    | 每十分钟运行一次任务
+->everyThirtyMinutes(); | 每三十分钟运行一次任务
+->hourly();             | 每小时运行一次任务
+->daily();              | 每天凌晨零点运行任务
+->dailyAt('13:00');     | 每天13:00运行任务
+->twiceDaily(1, 13);    | 每天1:00 & 13:00运行任务
+->weekly();             | 每周运行一次任务
+->monthly();            | 每月运行一次任务
+->quarterly();          | 每个季度运行一次
+->yearly();             | 每年运行一次
 
 这些方法可以和额外的约束一起联合起来创建一周特定时间运行的更加细粒度的调度。
 
@@ -301,37 +345,39 @@ $schedule->call(function () {
     // 每周星期一13:00运行一次...
 })->weekly()->mondays()->at('13:00');
 ```
+
 下面是额外的调度约束列表：
 
-|方法|描述|
-|:---:|:---|
-|->weekdays();|只在工作日运行任务|
-|->sundays();|每个星期天运行任务|
-|->mondays();|每个星期一运行任务|
-|->tuesdays();|每个星期二运行任务|
-|->wednesdays();|每个星期三运行任务|
-|->thursdays();|每个星期四运行任务|
-|->fridays();|每个星期五运行任务|
-|->saturdays();|每个星期六运行任务|
-|->when(Closure);|基于特定测试运行任务|
+方法               | 描述
+:--------------- | :---------
+->weekdays();    | 只在工作日运行任务
+->sundays();     | 每个星期天运行任务
+->mondays();     | 每个星期一运行任务
+->tuesdays();    | 每个星期二运行任务
+->wednesdays();  | 每个星期三运行任务
+->thursdays();   | 每个星期四运行任务
+->fridays();     | 每个星期五运行任务
+->saturdays();   | 每个星期六运行任务
+->when(Closure); | 基于特定测试运行任务
 
+- **基于测试的约束条件**
 
-* **基于测试的约束条件**
+  `when`方法用于限制任务在通过给定测试之后运行。换句话说，如果给定闭包返回`true`，只要没有其它约束条件阻止任务运行，该任务就会执行：
 
-`when`方法用于限制任务在通过给定测试之后运行。换句话说，如果给定闭包返回`true`，只要没有其它约束条件阻止任务运行，该任务就会执行：
+  ```php
+  $schedule->command('emails:send')->daily()->when(function () {
+      return true;
+  });
+  ```
 
-```
-$schedule->command('emails:send')->daily()->when(function () {
-    return true;
-});
-```
-`reject`方法和`when`相反，如果`reject`方法返回`true`，调度任务将不会执行：
+  `reject`方法和`when`相反，如果`reject`方法返回`true`，调度任务将不会执行：
 
-```
-$schedule->command('emails:send')->daily()->reject(function () {
-    return true;
-});
-```
+  ```
+  $schedule->command('emails:send')->daily()->reject(function () {
+      return true;
+  });
+  ```
+
 使用`when`方法链的时候，调度命令将只会执行返回`true`的`when`方法。
 
 #### 9.22.2.2 避免任务重叠
@@ -341,10 +387,10 @@ $schedule->command('emails:send')->daily()->reject(function () {
 ```
 $schedule->command('emails:send')->withoutOverlapping();
 ```
+
 在本例中，`Artisan`命令`emails:send`每分钟都会运行，如果该命令没有在运行的话。如果你的任务在执行时经常大幅度的变化，那么`withoutOverlapping`方法就非常有用，你不必再去预测给定任务到底要消耗多长时间。
 
-
-----
+--------------------------------------------------------------------------------
 
 ### 9.22.3 任务输出
 
@@ -355,6 +401,7 @@ $schedule->command('emails:send')
          ->daily()
          ->sendOutputTo($filePath);
 ```
+
 如果你想要追加输出到给定文件，可以使用`appendOutputTo`方法：
 
 ```
@@ -362,6 +409,7 @@ $schedule->command('emails:send')
          ->daily()
          ->appendOutputTo($filePath);
 ```
+
 使用`emailOutputTo`方法，你可以将输出发送到电子邮件，注意输出必须首先通过`sendOutputTo`方法发送到文件。还有，使用电子邮件发送任务输出之前，应该配置Laravel的电子邮件服务：
 
 ```
@@ -370,10 +418,10 @@ $schedule->command('foo')
          ->sendOutputTo($filePath)
          ->emailOutputTo('foo@example.com');
 ```
-*注意：`emailOutputTo`和`sendOutputTo`方法只对`command`方法有效，不支持`call`方法。*
 
+_注意：`emailOutputTo`和`sendOutputTo`方法只对`command`方法有效，不支持`call`方法。_
 
------
+--------------------------------------------------------------------------------
 
 ### 9.22.4 任务钩子
 
@@ -390,22 +438,23 @@ $schedule->command('emails:send')
          });
 ```
 
-* **ping URL**
+- **ping URL**
 
-	使用`pingBefore`和`thenPing`方法，调度器可以在任务完成之前和之后自动`ping`给定的URL。该方法在通知外部服务时很有用。
-	
-	例如`Laravel Envoyer`，在调度任务开始或完成的时候：
-	
-	```
-	$schedule->command('emails:send')
-	         ->daily()
-	         ->pingBefore($url)
-	         ->thenPing($url);
-	```
-	使用`pingBefore($url)`或`thenPing($url)`特性需要安装HTTP库`Guzzle`，可以在`composer.json`文件中添加如下行来安装`Guzzle`到项目：
-	
-	```
-	"guzzlehttp/guzzle": "~5.3|~6.0"
-	```
-	
-----
+  使用`pingBefore`和`thenPing`方法，调度器可以在任务完成之前和之后自动`ping`给定的URL。该方法在通知外部服务时很有用。
+
+  例如`Laravel Envoyer`，在调度任务开始或完成的时候：
+
+  ```
+    $schedule->command('emails:send')
+             ->daily()
+             ->pingBefore($url)
+             ->thenPing($url);
+  ```
+
+  使用`pingBefore($url)`或`thenPing($url)`特性需要安装HTTP库`Guzzle`，可以在`composer.json`文件中添加如下行来安装`Guzzle`到项目：
+
+  ```
+    "guzzlehttp/guzzle": "~5.3|~6.0"
+  ```
+
+--------------------------------------------------------------------------------

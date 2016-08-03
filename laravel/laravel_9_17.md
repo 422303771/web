@@ -2,9 +2,9 @@
 
 ### 9.17.1 简介
 
-在其他框架中，分页是件非常痛苦的事，`Laravel`则使其变得轻而易举。`Laravel`能够基于当前页智能生成一定范围的链接，且生成的`HTML`兼容`Bootstrap CSS`框架。 
+在其他框架中，分页是件非常痛苦的事，`Laravel`则使其变得轻而易举。`Laravel`能够基于当前页智能生成一定范围的链接，且生成的`HTML`兼容`Bootstrap CSS`框架。
 
------
+--------------------------------------------------------------------------------
 
 ### 9.17.2 基本使用
 
@@ -37,15 +37,16 @@ class UserController extends Controller{
     }
 }
 ```
-*注意：目前，使用`groupBy`的分页操作不能被Laravel有效执行，如果你需要在分页结果中使用`groupBy`，推荐你手动查询数据库然后创建分页器。*
 
-* **简单分页**
+_注意：目前，使用`groupBy`的分页操作不能被Laravel有效执行，如果你需要在分页结果中使用`groupBy`，推荐你手动查询数据库然后创建分页器。_
 
-	如果你只需要在分页视图中简单的显示`下一个`和`上一个`链接，可以使用`simplePaginate`方法来执行该查询。在渲染包含大数据集的视图且不需要显示每个页码时非常有用：
-	
-	```php
-	$users = DB::table('users')->simplePaginate(15);
-	```
+- **简单分页**
+
+  如果你只需要在分页视图中简单的显示`下一个`和`上一个`链接，可以使用`simplePaginate`方法来执行该查询。在渲染包含大数据集的视图且不需要显示每个页码时非常有用：
+
+  ```php
+    $users = DB::table('users')->simplePaginate(15);
+  ```
 
 #### 9.17.2.2 基于Eloquent模型分页
 
@@ -56,11 +57,13 @@ class UserController extends Controller{
 ```php
 $users = App\User::paginate(15);
 ```
+
 当然，你可以在设置其它约束调价之后调用`paginate`，比如`where`子句：
 
 ```php
 $users = User::where('votes', '>', 100)->paginate(15);
 ```
+
 你也可以使用`simplePaginate`方法：
 
 ```php
@@ -79,8 +82,7 @@ $users = User::where('votes', '>', 100)->simplePaginate(15);
 
 当手动创建分页器实例的时候，应该手动对传递到分页器的结果集进行`切片`，如果你不确定怎么做，查看PHP函数`array_slice`。
 
-
------
+--------------------------------------------------------------------------------
 
 ### 9.17.3 在视图中显示分页结果
 
@@ -101,58 +103,60 @@ $users = User::where('votes', '>', 100)->simplePaginate(15);
 
 {!! $users->links() !!}
 ```
+
 `links`方法将会将结果集中的其它页面链接渲染出来。每个链接已经包含了`?page`查询字符串变量。记住，`render`方法生成的HTML兼容`Bootstrap CS`框架。
 
-*注意：我们从`Blade`模板调用`render`方法时，确保使用`{!! !!}`语法以便HTML链接不被过滤。*
+_注意：我们从`Blade`模板调用`render`方法时，确保使用`{!! !!}`语法以便HTML链接不被过滤。_
 
-* **自定义分页链接**
+- **自定义分页链接**
 
-	`setPath`方法允许你生成分页链接时自定义分页器使用的URI。
-	
-	例如，如果你想要分页器生成形如`http://example.com/custom/url?page=N`的链接，应该传递`custom/url`到`setPath`方法：
-	
-	```php
-	Route::get('users', function () {
-	    $users = App\User::paginate(15);
-	    $users->setPath('custom/url');
-	    //
-	});
-	```
+  `setPath`方法允许你生成分页链接时自定义分页器使用的URI。
 
-* **添加参数到分页链接**
+  例如，如果你想要分页器生成形如`http://example.com/custom/url?page=N`的链接，应该传递`custom/url`到`setPath`方法：
 
-	你可以使用`appends`方法添加查询参数到分页链接查询字符串。
-	
-	例如，要添加`&sort=votes`到每个分页链接，应该像如下方式调用`appends`：
-	
-	```php
-	{!! $users->appends(['sort' => 'votes'])->links() !!}
-	```
-	如果你想要添加`哈希片段`到分页链接，可以使用`fragment`方法。
-	
-	例如，要添加`#foo`到每个分页链接的末尾，像这样调用`fragment`方法：
-	
-	```php
-	{!! $users->fragment('foo')->links() !!}
-	```
+  ```php
+    Route::get('users', function () {
+        $users = App\User::paginate(15);
+        $users->setPath('custom/url');
+        //
+    });
+  ```
 
-* **更多辅助方法**
+- **添加参数到分页链接**
 
-	你还可以通过如下分页器实例上的方法访问更多分页信息：
-	
-	* `$results->count()`
-	* `$results->currentPage()`
-	* `$results->firstItem()`
-	* `$results->hasMorePages()`
-	* `$results->lastItem()`
-	* `$results->lastPage()` (使用simplePaginate时无效)
-	* `$results->nextPageUrl()`
-	* `$results->perPage()`
-	* `$results->previousPageUrl()`
-	* `$results->total()` (使用simplePaginate时无效)
-	* `$results->url($page)`
+  你可以使用`appends`方法添加查询参数到分页链接查询字符串。
 
-------
+  例如，要添加`&sort=votes`到每个分页链接，应该像如下方式调用`appends`：
+
+  ```php
+    {!! $users->appends(['sort' => 'votes'])->links() !!}
+  ```
+
+  如果你想要添加`哈希片段`到分页链接，可以使用`fragment`方法。
+
+  例如，要添加`#foo`到每个分页链接的末尾，像这样调用`fragment`方法：
+
+  ```php
+    {!! $users->fragment('foo')->links() !!}
+  ```
+
+- **更多辅助方法**
+
+  你还可以通过如下分页器实例上的方法访问更多分页信息：
+
+  - `$results->count()`
+  - `$results->currentPage()`
+  - `$results->firstItem()`
+  - `$results->hasMorePages()`
+  - `$results->lastItem()`
+  - `$results->lastPage()` (使用simplePaginate时无效)
+  - `$results->nextPageUrl()`
+  - `$results->perPage()`
+  - `$results->previousPageUrl()`
+  - `$results->total()` (使用simplePaginate时无效)
+  - `$results->url($page)`
+
+--------------------------------------------------------------------------------
 
 ### 9.17.4 将结果转化为JSON
 
@@ -165,6 +169,7 @@ Route::get('users', function () {
     return App\User::paginate();
 });
 ```
+
 从分页器转化来的`JSON`包含了元信息如`total`, `current_page`,`last_page`等等，实际的结果对象数据可以通过该`JSON`数组中的`data`键访问。
 
 下面是一个通过从路由返回的分页器实例创建的`JSON`例子：
@@ -190,7 +195,7 @@ Route::get('users', function () {
 }
 ```
 
-----
+--------------------------------------------------------------------------------
 
 ## 9.18 Redis
 
@@ -215,15 +220,16 @@ Route::get('users', function () {
 
 ],
 ```
+
 默认服务器配置可以满足开发需要，然而，你可以基于环境随意修改该数组，只需要给每个`Redis`服务器一个名字并指定该`Redis`服务器使用的主机和接口。
 
 `cluster`选项告诉Laravel`Redis`客户端在多个`Redis`节点间执行客户端分片，从而形成节点池并创建大量有效的`RAM`。然而，客户端分片并不处理故障转移，所以，非常适合从另一个主数据存储那里获取有效的缓存数据。
 
 此外，你可以在`Redis`连接定义中定义`options`数组值，从而允许你指定一系列`Predis`客户端选项。
 
-*注意：如果你通过`PECL`安装`PHP`的`Redis`扩展，需要在`config/app.php`文件中修改`Redis`的别名。*
+_注意：如果你通过`PECL`安装`PHP`的`Redis`扩展，需要在`config/app.php`文件中修改`Redis`的别名。_
 
------
+--------------------------------------------------------------------------------
 
 ### 9.18.2 基本使用
 
@@ -253,30 +259,33 @@ class UserController extends Controller{
     }
 }
 ```
+
 当然，如上所述，可以在`Redis`门面上调用任何`Redis`命令。Laravel使用魔术方法将命令传递给`Redis`服务器，所以只需简单传递参数和`Redis`命令如下：
 
 ```php
 Redis::set('name', 'Taylor');
 $values = Redis::lrange('names', 5, 10);
 ```
+
 此外还可以使用`command`方法传递命令到服务器，该方法接收命令名作为第一个参数，参数值数组作为第二个参数：
 
 ```php
 $values = Redis::command('lrange', ['name', 5, 10]);
 ```
 
-* **使用多个Redis连接**
+- **使用多个Redis连接**
 
-	你可以通过调用`Redis::connection`方法获取`Redis`实例：
-	
-	```php
-	$redis = Redis::connection();
-	```
-	这将会获取默认`Redis`服务器实例，如果你没有使用服务器集群，可以传递服务器名到`connection`方法来获取指定`Redis`配置中定义的指定服务器：
-	
-	```php
-	$redis = Redis::connection('other');
-	```
+  你可以通过调用`Redis::connection`方法获取`Redis`实例：
+
+  ```php
+    $redis = Redis::connection();
+  ```
+
+  这将会获取默认`Redis`服务器实例，如果你没有使用服务器集群，可以传递服务器名到`connection`方法来获取指定`Redis`配置中定义的指定服务器：
+
+  ```php
+    $redis = Redis::connection('other');
+  ```
 
 #### 9.18.2.1 管道命令
 
@@ -290,7 +299,7 @@ Redis::pipeline(function ($pipe) {
 });
 ```
 
------
+--------------------------------------------------------------------------------
 
 ### 9.18.3 发布/订阅
 
@@ -334,6 +343,7 @@ class RedisSubscribe extends Command{
     }
 }
 ```
+
 现在，我们可以使用`publish`发布消息到该频道：
 
 ```php
@@ -343,18 +353,18 @@ Route::get('publish', function () {
 });
 ```
 
-* **通配符订阅**
-	
-	使用`psubscribe`方法，你可以订阅到一个通配符定义的频道，这在所有相应频道上获取所有消息时很有用。`$channel`名将会作为第二个参数传递给提供的回调闭包：
-	
-	```php
-	Redis::psubscribe(['*'], function($message, $channel) {
-	    echo $message;
-	});
-	
-	Redis::psubscribe(['users.*'], function($message, $channel) {
-	    echo $message;
-	});
-	```
+- **通配符订阅**
 
------
+  使用`psubscribe`方法，你可以订阅到一个通配符定义的频道，这在所有相应频道上获取所有消息时很有用。`$channel`名将会作为第二个参数传递给提供的回调闭包：
+
+  ```php
+    Redis::psubscribe(['*'], function($message, $channel) {
+        echo $message;
+    });
+
+    Redis::psubscribe(['users.*'], function($message, $channel) {
+        echo $message;
+    });
+  ```
+
+--------------------------------------------------------------------------------
