@@ -1,3 +1,21 @@
+<!--toc-->
+
+- [vim 使用指南](#vim-使用指南)
+	- [1.vim 插件管理器](#1vim-插件管理器)
+		- [1\. 1 Vundle git仓库](#1-1-vundle-git仓库httpsgithubcomvundlevimvundlevim)
+			- [1.2 第一步](#12-第一步)
+			- [1.3 第二步](#13-第二步)
+			- [1.4 第三步](#14-第三步)
+	- [2.vim 常用插件指南](#2vim-常用插件指南)
+		- [2.1 Command-t](#21-command-t)
+		- [2.2 vim中编写markdown与预览](#22-vim中编写markdown与预览)
+		- [2.3 nerdTree](#23-nerdtree)
+			- [NERDTRee config NERDTree 设置](#nerdtree-config-nerdtree-设置)
+
+<!-- tocstop -->
+
+----
+
 # vim 使用指南
 
 ## 1.vim 插件管理器

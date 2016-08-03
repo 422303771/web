@@ -1,3 +1,22 @@
+<!--toc-->
+
+- [Atom](#atom)
+	- [安装atom](#安装atom)
+	- [atom packages](#atom-packages)
+		- [atom-chrome](#atom-chrome)
+		- [git-plus](#git-plus)
+		- [markdown-pdf](#markdown-pdf)
+		- [markdown-preview-plus](#markdown-preview-plus)
+		- [markdown-writer](#markdown-writer)
+		- [tidy-markdown](#tidy-markdown)
+		- [emmet](#emmet)
+		- [jshint](#jshint)
+		- [minimap](#minimap)
+
+<!-- tocstop -->
+
+----
+
 # Atom
 
 [官网](atom.io)

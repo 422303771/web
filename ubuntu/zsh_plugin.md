@@ -1,3 +1,18 @@
+<!--toc-->
+
+- [zsh plugin](#zsh-plugin)
+	- [zsh tmux](#zsh-tmux)
+	- [zsh git](#zsh-git)
+	- [zsh laravel](#zsh-laravel)
+	- [zsh ubuntu](#zsh-ubuntu)
+	- [zsh npm](#zsh-npm)
+	- [zsh ruby](#zsh-ruby)
+	- [zsh bundler](#zsh-bundler)
+
+<!-- tocstop -->
+
+----
+
 # zsh plugin
 
 ## zsh tmux

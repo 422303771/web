@@ -1,3 +1,28 @@
+<!--toc-->
+
+- [laravel 5 学习指南](#laravel-5-学习指南)
+	- [1.部署Laravel Homestead](#1部署laravel-homestead)
+		- [1.1\. 必要软件安装](#11-必要软件安装)
+		- [1.2.下载Laravel Homestead虚拟机文件](#12下载laravel-homestead虚拟机文件)
+		- [1.3\. 安装Laravel Homestead](#13-安装laravel-homestead)
+		- [1.4\. 设置Laravel Homestead](#14-设置laravel-homestead)
+		- [1.5.运行Laravel Homestead](#15运行laravel-homestead)
+		- [1.6.安装laravel到目录](#16安装laravel到目录)
+		- [1.7\. 关机](#17-关机)
+	- [2\. 正常安装Laravel](#2-正常安装laravel)
+	- [安装nginx + php7 + mysql + redis](#安装nginx-php7-mysql-redis)
+		- [2.1 安装nginx](#21-安装nginx)
+		- [2.2 安装php7.0-fpm](#22-安装php70-fpm)
+		- [2.3 安装MySql](#23-安装mysql)
+		- [2.4 安装composer](#24-安装composer)
+		- [2.5 安装laravel 5](#25-安装laravel-5)
+			- [2.5.1 方法1](#251-方法1)
+			- [2.5.2 方法2](#252-方法2)
+
+<!-- tocstop -->
+
+----
+
 # laravel 5 学习指南
 
 ## 1.部署Laravel Homestead

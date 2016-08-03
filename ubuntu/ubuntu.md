@@ -1,51 +1,49 @@
-# 目录
+<!--toc-->
 
-- [ubuntu 安装与设置]
-- [下载镜像包]
-- [VMware与实体机安装]
-- [安装vmware tools VWmare]
-- [安装shadowsocks]
-- [安装privoxy]
-- [安装google拼音]
-- [安装 unity-tweak-tool]
-- [删除火狐]
-- [删除libreoffice]
-- [安装新力得]
-- [安装gdebi]
-- [安装chromium]
-- [安装sublime text 3]
-- [安装与配置zsh与oh-my-zsh]
+- [ubuntu 安装与设置](#ubuntu-安装与设置)
+	- [下载镜像包](#下载镜像包)
+	- [VMware与实体机安装](#vmware与实体机安装)
+	- [安装之后](#安装之后)
+		- [安装vmware tools _VWmare虚假机需要安装_](#安装vmware-tools-_vwmare虚假机需要安装_)
+		- [安装shadowsocks](#安装shadowsocks)
+		- [安装privoxy //代理工具](#安装privoxy-代理工具)
+		- [安装google拼音](#安装google拼音)
+		- [安装 unity-tweak-tool](#安装-unity-tweak-tool)
+		- [删除火狐](#删除火狐)
+		- [删除libreoffice](#删除libreoffice)
+		- [安装新力得](#安装新力得)
+		- [安装gdebi](#安装gdebi)
+		- [安装chromium](#安装chromium)
+		- [安装sublime text 3](#安装sublime-text-3)
+		- [安装与配置zsh与oh-my-zsh](#安装与配置zsh与oh-my-zsh)
+		- [设置oh-my-zsh](#设置oh-my-zsh)
+		- [安装powerline](#安装powerline)
+			- [powerline 与 zsh](#powerline-与-zsh)
+			- [powerline 与 vim](#powerline-与-vim)
+			- [powerline 与 tmux](#powerline-与-tmux)
+		- [安装ravefinity风格](#安装ravefinity风格)
+		- [安装my weather](#安装my-weather)
+		- [安装网易云音乐](#安装网易云音乐)
+		- [安装dropbox](#安装dropbox)
+		- [安装爱壁纸HD](#安装爱壁纸hd)
+		- [安装Numix Circle 图标与主题](#安装numix-circle-图标与主题)
+		- [安装inkscape](#安装inkscape)
+		- [安装conky](#安装conky)
+		- [安装JQ、curl](#安装jq-curl)
+		- [安装conky插件](#安装conky插件)
+		- [安装plank](#安装plank)
+		- [安装Netgare WNDA3100v2 USB](#安装netgare-wnda3100v2-usb)
+		- [安装配置JDK与Android Studio](#安装配置jdk与android-studio)
+			- [安装JDK](#安装jdk)
+			- [安装 Android Studio](#安装-android-studio)
+		- [安装kicad](#安装kicad)
+		- [安装 terminix](#安装-terminix)
+		- [安装Gitg](#安装gitg)
+		- [安装atom](#安装atom)
 
-  - [设置oh-my-zsh]
+<!-- tocstop -->
 
-- [安装powerline]
-
-  - [powerline 与 zsh]
-  - [powerline 与 vim]
-  - [powerline 与 tmux]
-
-- [安装ravefinity风格]
-
-- [安装my weather]
-
-- [安装网易云音乐]
-
-- [安装dropbox]
-
-- [安装爱壁纸HD]
-- [安装Numix Circle 图标与主题]
-- [安装inkscape]
-- [安装conky]
-- [安装JQ、curl]
-- [安装conky插件]
-- [安装plank]
-- [安装Netgare WNDA3100v2 USB]
-- [安装配置JDK与Android Studio]
-
-  - [安装JDK]
-  - [安装 Android Studio]
-
-- [安装kicad]
+----
 
 # ubuntu 安装与设置
 
@@ -682,40 +680,3 @@ $ sudo apt-get install atom
 ```
 
 --------------------------------------------------------------------------------
-
-[powerline 与 tmux]: #powerline-与-tmux
-[powerline 与 vim]: #powerline-与-vim
-[powerline 与 zsh]: #powerline-与-zsh
-[ubuntu 安装与设置]: #ubuntu-安装与设置
-[vmware与实体机安装]: #vmware与实体机安装
-[下载镜像包]: #下载镜像包
-[删除libreoffice]: #删除libreoffice
-[删除火狐]: #删除火狐
-[安装 android studio]: #安装-android-studio
-[安装 unity-tweak-tool]: #安装-unity-tweak-tool
-[安装chromium]: #安装chromium
-[安装conky]: #安装conky
-[安装conky插件]: #安装conky插件
-[安装dropbox]: #安装dropbox
-[安装gdebi]: #安装gdebi
-[安装google拼音]: #安装google拼音
-[安装inkscape]: #安装inkscape
-[安装jdk]: #安装jdk
-[安装jq、curl]: #安装jqcurl
-[安装kicad]: #安装kicad
-[安装my weather]: #安装my-weather
-[安装netgare wnda3100v2 usb]: #安装netgare-wnda3100v2-usb
-[安装numix circle 图标与主题]: #安装numix-circle-图标与主题
-[安装plank]: #安装plank
-[安装powerline]: #安装powerline
-[安装privoxy]: #安装privoxy-代理工具
-[安装ravefinity风格]: #安装ravefinity风格
-[安装shadowsocks]: #安装shadowsocks
-[安装sublime text 3]: #安装sublime-text-3
-[安装vmware tools vwmare]: #安装vmware-tools-vwmare虚假机需要安装
-[安装与配置zsh与oh-my-zsh]: #安装与配置zsh与oh-my-zsh
-[安装新力得]: #安装新力得
-[安装爱壁纸hd]: #安装爱壁纸hd
-[安装网易云音乐]: #安装网易云音乐
-[安装配置jdk与android studio]: #安装配置jdk与android-studio
-[设置oh-my-zsh]: #设置oh-my-zsh

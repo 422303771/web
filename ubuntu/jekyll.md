@@ -1,7 +1,19 @@
----
-layout: post
-title: jekyll
----
+<!--toc-->
+
+- [jekyll](#jekyll)
+	- [1\. 安装jekyll必要组件](#1-安装jekyll必要组件)
+	- [1.1 安装jekyll](#11-安装jekyll)
+	- [1.2 jekyll使用](#12-jekyll使用)
+		- [1.3 增加分页](#13-增加分页)
+	- [2\. kramdown 语法说明](#2-kramdown-语法说明)
+		- [2.1 TOC连接](#21-toc连接)
+		- [2.2 删除线](#22-删除线)
+		- [2.3 数学公式](#23-数学公式)
+	- [3\. disqus](#3-disqus)
+
+<!-- tocstop -->
+
+----
 
 # jekyll
 
@@ -114,7 +126,7 @@ gems: [jekyll-paginate]
 
 ## 2\. kramdown 语法说明
 
-### 2.1 TOC连接[文章目录]
+### 2.1 TOC连接
 
 ```
 * TOC

@@ -1,3 +1,14 @@
+<!--toc-->
+
+- [Ubuntu Server 16.04 LTS](#ubuntu-server-1604-lts)
+	- [更新：](#更新)
+	- [安装Gitlab](#安装gitlab)
+	- [安装laravel](#安装laravel)
+
+<!-- tocstop -->
+
+----
+
 # Ubuntu Server 16.04 LTS
 
 ## 更新：
