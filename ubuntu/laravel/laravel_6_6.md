@@ -1,6 +1,6 @@
-## 6.6 合约
+# 6.6 合约
 
-### 6.6.1 简介
+## 6.6.1 简介
 
 Laravel的合约是一组由框架(framework)提供的核心服务接口。
 
@@ -20,7 +20,7 @@ Laravel提供一个列队实现方法与各种驱动，和一个由`SwiftMailer`
 
 [Github参考点](https://github.com/illuminate/contracts)。
 
-#### 6.6.1.1 合约Vs.门面
+### 6.6.1.1 合约Vs.门面
 
 Laravel的门面提供一种简单的方法，利用Laravel服务无须输入和提示。这好于使用需要服务容器的合约方法。
 
@@ -28,13 +28,13 @@ Laravel的门面提供一种简单的方法，利用Laravel服务无须输入和
 
 但是，如果你真有的需要额外的松耦合，合约就可以提供，阅读下面的了解更多。
 
-### 6.6.2 为什么用合约？
+## 6.6.2 为什么用合约？
 
 关于合约你可能有几个问题要问。为什么全部使用接口？不使用接口会更复杂？
 
 下方是使用接口的重要原因：`松耦合`与`简洁性`
 
-#### 6.6.2.1  松耦合
+### 6.6.2.1 松耦合
 
 首先，让我们来看一个使用紧耦合缓存实现方法的代码：
 
@@ -75,6 +75,7 @@ class Repository
     }
 }
 ```
+
 这这个类中，代码是使用紧耦合，到给定的缓存实现方法。
 
 因为是从一个包中取得缓存，所以这是一个紧耦合。
@@ -113,9 +114,10 @@ class Repository
     }
 }
 ```
+
 现在代码没有连接任何的服务提供者，甚至Laravel。由于合约包中没有实现方法也没有依赖关系，你可以很容易的替换合约，更换缓存技术，而无需修改代码。
 
-#### 6.6.2.2 简洁性
+### 6.6.2.2 简洁性
 
 当所有的Laravel的服务，在简单接口中整洁的定义，就可以很容易的给定服务提供的功能。
 
@@ -123,45 +125,45 @@ class Repository
 
 当你使用简单接口时，你的代码更容易理解和维护。
 
-### 6.6.3 合约参考
+## 6.6.3 合约参考
 
-|合约|参考的门面|
-|:---|:----|
-|[Illuminate\Contracts\Auth\Factory](https://github.com/illuminate/contracts/blob/master/Auth/Factory.php)|Auth|
-|[Illuminate\Contracts\Auth\PasswordBroker](https://github.com/illuminate/contracts/blob/master/Auth/PasswordBroker.php)|Password|
-|[Illuminate\Contracts\Bus\Dispatcher](https://github.com/illuminate/contracts/blob/master/Bus/Dispatcher.php)|Bus|
-|[Illuminate\Contracts\Broadcasting\Broadcaster](https://github.com/illuminate/contracts/blob/master/Broadcasting/Broadcaster.php)||
-|[Illuminate\Contracts\Cache\Repository](https://github.com/illuminate/contracts/blob/master/Cache/Repository.php)|Cache|
-|[Illuminate\Contracts\Cache\Factory](https://github.com/illuminate/contracts/blob/master/Cache/Factory.php)|Cache::driver()|
-|[Illuminate\Contracts\Config\Repository](https://github.com/illuminate/contracts/blob/master/Config/Repository.php)|Config|
-|[Illuminate\Contracts\Container\Container](https://github.com/illuminate/contracts/blob/master/Container/Container.php)|App|
-|[Illuminate\Contracts\Cookie\Factory](https://github.com/illuminate/contracts/blob/master/Cookie/Factory.php)|Cookie|
-|[Illuminate\Contracts\Cookie\QueueingFactory](https://github.com/illuminate/contracts/blob/master/Cookie/QueueingFactory.php)|Cookie::queue()|
-|[Illuminate\Contracts\Encryption\Encrypter](https://github.com/illuminate/contracts/blob/master/Encryption/Encrypter.php)|Crypt|
-|[Illuminate\Contracts\Events\Dispatcher](https://github.com/illuminate/contracts/blob/master/Events/Dispatcher.php)|Event|
-|[Illuminate\Contracts\Filesystem\Cloud](https://github.com/illuminate/contracts/blob/master/Filesystem/Cloud.php)||
-|[Illuminate\Contracts\Filesystem\Factory](https://github.com/illuminate/contracts/blob/master/Filesystem/Factory.php)|File|
-|[Illuminate\Contracts\Filesystem\Filesystem](https://github.com/illuminate/contracts/blob/master/Filesystem/Filesystem.php)|File|
-|[Illuminate\Contracts\Foundation\Application](https://github.com/illuminate/contracts/blob/master/Foundation/Application.php)|App|
-|[Illuminate\Contracts\Hashing\Hasher](https://github.com/illuminate/contracts/blob/master/Hashing/Hasher.php)|Hash|
-|[Illuminate\Contracts\Logging\Log](https://github.com/illuminate/contracts/blob/master/Logging/Log.php)|	Log|
-|[Illuminate\Contracts\Mail\MailQueue](https://github.com/illuminate/contracts/blob/master/Mail/MailQueue.php)|Mail::queue()|
-|[Illuminate\Contracts\Mail\Mailer](https://github.com/illuminate/contracts/blob/master/Mail/Mailer.php)|Mail|
-|[Illuminate\Contracts\Queue\Factory](https://github.com/illuminate/contracts/blob/master/Queue/Factory.php)|	Queue::driver()|
-|[Illuminate\Contracts\Queue\Queue](https://github.com/illuminate/contracts/blob/master/Queue/Queue.php)|Queue|
-|[Illuminate\Contracts\Redis\Database](https://github.com/illuminate/contracts/blob/master/Redis/Database.php)|Redis|
-|[Illuminate\Contracts\Routing\Registrar](https://github.com/illuminate/contracts/blob/master/Routing/Registrar.php)|Route|
-|[Illuminate\Contracts\Routing\ResponseFactory](https://github.com/illuminate/contracts/blob/master/Routing/ResponseFactory.php)|Response|
-|[Illuminate\Contracts\Routing\UrlGenerator](https://github.com/illuminate/contracts/blob/master/Routing/UrlGenerator.php)|URL|
-|[Illuminate\Contracts\Support\Arrayable](https://github.com/illuminate/contracts/blob/master/Support/Arrayable.php)||
-|[Illuminate\Contracts\Support\Jsonable](https://github.com/illuminate/contracts/blob/master/Support/Jsonable.php)||
-|[Illuminate\Contracts\Support\Renderable](https://github.com/illuminate/contracts/blob/master/Support/Renderable.php)||
-|[Illuminate\Contracts\Validation\Factory](https://github.com/illuminate/contracts/blob/master/Validation/Factory.php)|Validator::make()|
-|[Illuminate\Contracts\Validation\Validator](https://github.com/illuminate/contracts/blob/master/Validation/Validator.php)||
-|[Illuminate\Contracts\View\Factory](https://github.com/illuminate/contracts/blob/master/View/Factory.php)|	View::make()|
-|[Illuminate\Contracts\View\View](https://github.com/illuminate/contracts/blob/master/View/View.php)||
+合约                                                                                                                                | 参考的门面
+:-------------------------------------------------------------------------------------------------------------------------------- | :----------------
+[Illuminate\Contracts\Auth\Factory](https://github.com/illuminate/contracts/blob/master/Auth/Factory.php)                         | Auth
+[Illuminate\Contracts\Auth\PasswordBroker](https://github.com/illuminate/contracts/blob/master/Auth/PasswordBroker.php)           | Password
+[Illuminate\Contracts\Bus\Dispatcher](https://github.com/illuminate/contracts/blob/master/Bus/Dispatcher.php)                     | Bus
+[Illuminate\Contracts\Broadcasting\Broadcaster](https://github.com/illuminate/contracts/blob/master/Broadcasting/Broadcaster.php) |
+[Illuminate\Contracts\Cache\Repository](https://github.com/illuminate/contracts/blob/master/Cache/Repository.php)                 | Cache
+[Illuminate\Contracts\Cache\Factory](https://github.com/illuminate/contracts/blob/master/Cache/Factory.php)                       | Cache::driver()
+[Illuminate\Contracts\Config\Repository](https://github.com/illuminate/contracts/blob/master/Config/Repository.php)               | Config
+[Illuminate\Contracts\Container\Container](https://github.com/illuminate/contracts/blob/master/Container/Container.php)           | App
+[Illuminate\Contracts\Cookie\Factory](https://github.com/illuminate/contracts/blob/master/Cookie/Factory.php)                     | Cookie
+[Illuminate\Contracts\Cookie\QueueingFactory](https://github.com/illuminate/contracts/blob/master/Cookie/QueueingFactory.php)     | Cookie::queue()
+[Illuminate\Contracts\Encryption\Encrypter](https://github.com/illuminate/contracts/blob/master/Encryption/Encrypter.php)         | Crypt
+[Illuminate\Contracts\Events\Dispatcher](https://github.com/illuminate/contracts/blob/master/Events/Dispatcher.php)               | Event
+[Illuminate\Contracts\Filesystem\Cloud](https://github.com/illuminate/contracts/blob/master/Filesystem/Cloud.php)                 |
+[Illuminate\Contracts\Filesystem\Factory](https://github.com/illuminate/contracts/blob/master/Filesystem/Factory.php)             | File
+[Illuminate\Contracts\Filesystem\Filesystem](https://github.com/illuminate/contracts/blob/master/Filesystem/Filesystem.php)       | File
+[Illuminate\Contracts\Foundation\Application](https://github.com/illuminate/contracts/blob/master/Foundation/Application.php)     | App
+[Illuminate\Contracts\Hashing\Hasher](https://github.com/illuminate/contracts/blob/master/Hashing/Hasher.php)                     | Hash
+[Illuminate\Contracts\Logging\Log](https://github.com/illuminate/contracts/blob/master/Logging/Log.php)                           | Log
+[Illuminate\Contracts\Mail\MailQueue](https://github.com/illuminate/contracts/blob/master/Mail/MailQueue.php)                     | Mail::queue()
+[Illuminate\Contracts\Mail\Mailer](https://github.com/illuminate/contracts/blob/master/Mail/Mailer.php)                           | Mail
+[Illuminate\Contracts\Queue\Factory](https://github.com/illuminate/contracts/blob/master/Queue/Factory.php)                       | Queue::driver()
+[Illuminate\Contracts\Queue\Queue](https://github.com/illuminate/contracts/blob/master/Queue/Queue.php)                           | Queue
+[Illuminate\Contracts\Redis\Database](https://github.com/illuminate/contracts/blob/master/Redis/Database.php)                     | Redis
+[Illuminate\Contracts\Routing\Registrar](https://github.com/illuminate/contracts/blob/master/Routing/Registrar.php)               | Route
+[Illuminate\Contracts\Routing\ResponseFactory](https://github.com/illuminate/contracts/blob/master/Routing/ResponseFactory.php)   | Response
+[Illuminate\Contracts\Routing\UrlGenerator](https://github.com/illuminate/contracts/blob/master/Routing/UrlGenerator.php)         | URL
+[Illuminate\Contracts\Support\Arrayable](https://github.com/illuminate/contracts/blob/master/Support/Arrayable.php)               |
+[Illuminate\Contracts\Support\Jsonable](https://github.com/illuminate/contracts/blob/master/Support/Jsonable.php)                 |
+[Illuminate\Contracts\Support\Renderable](https://github.com/illuminate/contracts/blob/master/Support/Renderable.php)             |
+[Illuminate\Contracts\Validation\Factory](https://github.com/illuminate/contracts/blob/master/Validation/Factory.php)             | Validator::make()
+[Illuminate\Contracts\Validation\Validator](https://github.com/illuminate/contracts/blob/master/Validation/Validator.php)         |
+[Illuminate\Contracts\View\Factory](https://github.com/illuminate/contracts/blob/master/View/Factory.php)                         | View::make()
+[Illuminate\Contracts\View\View](https://github.com/illuminate/contracts/blob/master/View/View.php)                               |
 
-### 6.6.4 如何使用合约
+## 6.6.4 如何使用合约
 
 那么，如果使用一个合约的实现方法？这其实很简单。
 
@@ -210,4 +212,5 @@ class CacheUserInformation
     }
 }
 ```
+
 当事件监听器运行完成，服务容器将读取构造函数的类型提示，并注入相应的值。

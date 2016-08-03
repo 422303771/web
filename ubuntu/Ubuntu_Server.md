@@ -2,14 +2,18 @@
 
 ## 更新：
 
-	$ sudo apt-get update   //更新软件源
-	$ sudo apt-get upgrade  //升级软件
-	$ sudo apt-get dist-upgrade  //升级系统
-	
+```
+$ sudo apt-get update   //更新软件源
+$ sudo apt-get upgrade  //升级软件
+$ sudo apt-get dist-upgrade  //升级系统
+```
+
 对于出现：
-		   
-	x packages can be updated.
-    y updates are security updates.
+
+```
+x packages can be updated.
+y updates are security updates.
+```
 
 只是每日提示日记。如果想要移除，修改`/etc/update-motd.d/90-updates-available`文件。
 
@@ -23,22 +27,27 @@
 
 安装以社区版为例。
 
-*注意：需要梯子*
+_注意：需要梯子_
 
 1. 安装与配置必要依赖
 
-		sudo apt-get install curl openssh-server ca-certificates postfix
+  ```
+   sudo apt-get install curl openssh-server ca-certificates postfix
+  ```
 
 2. 安装Gitlab源与软件包
 
-		curl -sS https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh | sudo bash
-		sudo apt-get install gitlab-ce
+  ```
+   curl -sS https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh | sudo bash
+   sudo apt-get install gitlab-ce
+  ```
 
 3. 设置并启动Gitlab
 
-		sudo gitlab-ctl reconfigure
+  ```
+   sudo gitlab-ctl reconfigure
+  ```
 
 默认登陆的用户名是root，密码在第一次登陆时设置。
 
 ## 安装laravel
-

@@ -35,9 +35,9 @@
 	# reboot                                                   // 重启
 
 备注：
-	
+
 	# mkdir /mnt/home && mount /dev/sda9 /mnt/home     //创建/home 并挂载硬盘。
-	
+
 在创建硬盘分区后执行，如果有需要。
 
 要添加的软件源： 参考官方 最新[地址](https://wiki.archlinux.org/index.php/Mirrors#China)
@@ -59,9 +59,8 @@
 自动化安装设置工具[Archlinux U Install](https://github.com/helmuthdu/aui)
 
 [自动显示修复](http://www.ituring.com.cn/article/120762)
- 
+
 ## 2.	桌面化安装
 ## 3.	常用软件补全
 ## 4.	美化
 ## 5.	开发环境搭建
-

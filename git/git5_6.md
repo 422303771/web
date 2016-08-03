@@ -1,4 +1,4 @@
-# 5. 分布式 Git
+# 5\. 分布式 Git
 
 ## 5.1 分布式工作流程
 
@@ -6,74 +6,69 @@
 
 ![](https://git-scm.com/book/en/v2/book/05-distributed-git/images/centralized_workflow.png)
 
-> *说明：两个开发者从中心仓库克隆代码下来，同时作了一些修改，那么只有第一个开发者可以顺利地把数据推送回共享服务器。 第二个开发者在推送修改之前，必须先将第一个人的工作合并进来，这样才不会覆盖第一个人的修改。*
+> _说明：两个开发者从中心仓库克隆代码下来，同时作了一些修改，那么只有第一个开发者可以顺利地把数据推送回共享服务器。 第二个开发者在推送修改之前，必须先将第一个人的工作合并进来，这样才不会覆盖第一个人的修改。_
 
 ### 5.1.2 集成管理者工作流
 
 ![](https://git-scm.com/book/en/v2/book/05-distributed-git/images/integration-manager.png)
 
-> *说明：每个开发者拥有自己仓库的写权限和其他所有人仓库的读权限。 这种情形下通常会有个代表“官方”项目的权威的仓库。 要为这个项目做贡献，你需要从该项目克隆出一个自己的公开仓库，然后将自己的修改推送上去。 接着你可以请求官方仓库的维护者拉取更新合并到主项目。 维护者可以将你的仓库作为远程仓库添加进来，在本地测试你的变更，将其合并入他们的分支并推送回官方仓库*
->
->>1. 项目维护者推送到主仓库。
->>2. 贡献者克隆此仓库，做出修改。
->>3. 贡献者将数据推送到自己的公开仓库。
->>4. 贡献者给维护者发送邮件，请求拉取自己的更新。
->>5. 维护者在自己本地的仓库中，将贡献者的仓库加为远程仓库并合并修改。
->>6. 维护者将合并后的修改推送到主仓库。
+> _说明：每个开发者拥有自己仓库的写权限和其他所有人仓库的读权限。 这种情形下通常会有个代表"官方"项目的权威的仓库。 要为这个项目做贡献，你需要从该项目克隆出一个自己的公开仓库，然后将自己的修改推送上去。 接着你可以请求官方仓库的维护者拉取更新合并到主项目。 维护者可以将你的仓库作为远程仓库添加进来，在本地测试你的变更，将其合并入他们的分支并推送回官方仓库_
 
-
+> > 1. 项目维护者推送到主仓库。
+> > 2. 贡献者克隆此仓库，做出修改。
+> > 3. 贡献者将数据推送到自己的公开仓库。
+> > 4. 贡献者给维护者发送邮件，请求拉取自己的更新。
+> > 5. 维护者在自己本地的仓库中，将贡献者的仓库加为远程仓库并合并修改。
+> > 6. 维护者将合并后的修改推送到主仓库。
 
 ### 5.1.3 司令官与副官工作流
 
 ![](https://git-scm.com/book/en/v2/book/05-distributed-git/images/benevolent-dictator.png)
 
->*说明：一般拥有数百位协作开发者的超大型项目才会用到这样的工作方式，例如著名的 Linux 内核项目。 被称为副官（lieutenant）的各个集成管理者分别负责集成项目中的特定部分。 所有这些副官头上还有一位称为司令官（dictator）的总集成管理者负责统筹。 司令官维护的仓库作为参考仓库，为所有协作者提供他们需要拉取的项目代码。*
-> 
->>1. 普通开发者在自己的特性分支上工作，并根据 master 分支进行变基。 这里是司令官的master分支。
->>2. 副官将普通开发者的特性分支合并到自己的 master 分支中。
->>3. 司令官将所有副官的 master 分支并入自己的 master 分支中。
->>4. 司令官将集成后的 master 分支推送到参考仓库中，以便所有其他开发者以此为基础进行变基。
->
->
+> _说明：一般拥有数百位协作开发者的超大型项目才会用到这样的工作方式，例如著名的 Linux 内核项目。 被称为副官（lieutenant）的各个集成管理者分别负责集成项目中的特定部分。 所有这些副官头上还有一位称为司令官（dictator）的总集成管理者负责统筹。 司令官维护的仓库作为参考仓库，为所有协作者提供他们需要拉取的项目代码。_
 
----
+> > 1. 普通开发者在自己的特性分支上工作，并根据 master 分支进行变基。 这里是司令官的master分支。
+> > 2. 副官将普通开发者的特性分支合并到自己的 master 分支中。
+> > 3. 司令官将所有副官的 master 分支并入自己的 master 分支中。
+> > 4. 司令官将集成后的 master 分支推送到参考仓库中，以便所有其他开发者以此为基础进行变基。
 
-## 5.2 向一个项目贡献 
+--------------------------------------------------------------------------------
 
-> 决定贡献的因素  
+## 5.2 向一个项目贡献
+
+> 决定贡献的因素
+
 > 1. 活跃贡献者的数量
 > 2. 项目的使用流程
 > 3. 用户的提交权限
 
 ### 5.2.1 提交准则
 
->**提交信息的快速说明** 在 Git 源代码中的 `Documentation/SubmittingPatches` 文件中阅读 [地址](https://github.com/git/git/blob/master/Documentation/SubmittingPatches)
->
->在提交前，运行 git diff --check，它将会找到可能的空白错误并将它们为你列出来。 
-> 
->接着，让每一个提交独立，每一个问题独立。
->
->最后，提交信息要简介。
->
+> **提交信息的快速说明** 在 Git 源代码中的 `Documentation/SubmittingPatches` 文件中阅读 [地址](https://github.com/git/git/blob/master/Documentation/SubmittingPatches)
+
+> 在提交前，运行 git diff --check，它将会找到可能的空白错误并将它们为你列出来。
+
+> 接着，让每一个提交独立，每一个问题独立。
+
+> 最后，提交信息要简介。
 
 ### 5.2.2 私有小型团队
 
->这里的`私有`指的是闭源。
->
->通常在一个特性分支工作一会儿，当它准备好整合时合并回你的 master 分支。 当想要共享工作时，将其合并回你自己的 master 分支，如果有改动的话然后抓取并合并 origin/master，最终推送到服务器上的 master 分支。
->
->**通常顺序像这样:**
->
->![](https://git-scm.com/book/en/v2/book/05-distributed-git/images/small-team-flow.png)
->
+> 这里的`私有`指的是闭源。
+
+> 通常在一个特性分支工作一会儿，当它准备好整合时合并回你的 master 分支。 当想要共享工作时，将其合并回你自己的 master 分支，如果有改动的话然后抓取并合并 origin/master，最终推送到服务器上的 master 分支。
+
+> **通常顺序像这样:**
+
+> ![](https://git-scm.com/book/en/v2/book/05-distributed-git/images/small-team-flow.png)
 
 ### 5.2.3 私有管理团队
 
 >
->许多团队切换到 Git 是因为这一允许多个团队并行工作、并在之后合并不同工作的能力。 团队中更小一些的子小组可以通过远程分支协作而不必影响或妨碍整个团队的能力是 Git 的一个巨大优势。 在这儿看到的工作流程顺序类似这样:
->
->![](https://git-scm.com/book/en/v2/book/05-distributed-git/images/managed-team-flow.png)
->
+
+> 许多团队切换到 Git 是因为这一允许多个团队并行工作、并在之后合并不同工作的能力。 团队中更小一些的子小组可以通过远程分支协作而不必影响或妨碍整个团队的能力是 Git 的一个巨大优势。 在这儿看到的工作流程顺序类似这样:
+
+> ![](https://git-scm.com/book/en/v2/book/05-distributed-git/images/managed-team-flow.png)
 
 ### 5.2.4 派生的公开项目
 
@@ -83,228 +78,257 @@
 
 许多项目建立了接受补丁的流程 - 需要检查每一个项目的特定规则，因为它们之间有区别。 因为有几个历史悠久的、大型的项目会通过一个开发者的邮件列表接受补丁，现在我们将会通过一个例子来演示。
 
-工作流程与之前的用例是类似的 - 你为工作的每一个补丁序列创建特性分支。 区别是如何提交它们到项目中。 生成每一个提交序列的电子邮件版本然后邮寄它们到开发者邮件列表，而不是派生项目然后推送到你自己的可写版本。  
+工作流程与之前的用例是类似的 - 你为工作的每一个补丁序列创建特性分支。 区别是如何提交它们到项目中。 生成每一个提交序列的电子邮件版本然后邮寄它们到开发者邮件列表，而不是派生项目然后推送到你自己的可写版本。
 
-	$ git checkout -b topicA
-	# (work)
-	$ git commit
-	# (work)
-	$ git commit
+```
+$ git checkout -b topicA
+# (work)
+$ git commit
+# (work)
+$ git commit
+```
 
-现在有两个提交要发送到邮件列表。 使用 `git format-patch` 来生成可以邮寄到列表的` mbox` 格式的文件 - 它将每一个提交转换为一封电子邮件，提交信息的第一行作为主题，剩余信息与提交引入的补丁作为正文。 它有一个好处是是使用 `format-patch `生成的一封电子邮件应用的提交正确地保留了所有的提交信息。
+现在有两个提交要发送到邮件列表。 使用 `git format-patch` 来生成可以邮寄到列表的`mbox` 格式的文件 - 它将每一个提交转换为一封电子邮件，提交信息的第一行作为主题，剩余信息与提交引入的补丁作为正文。 它有一个好处是是使用 `format-patch`生成的一封电子邮件应用的提交正确地保留了所有的提交信息。
 
-	$ git format-patch -M origin/master
-	0001-add-limit-to-log-function.patch
-	0002-changed-log-output-to-30-from-25.patch
+```
+$ git format-patch -M origin/master
+0001-add-limit-to-log-function.patch
+0002-changed-log-output-to-30-from-25.patch
+```
 
 `format-patch` 命令打印出它创建的补丁文件名字。 `-M` 开关告诉 Git 查找重命名。 文件最后看起来像这样：
 
-	$ cat 0001-add-limit-to-log-function.patch
-	From 330090432754092d704da8e76ca5c05c198e71a8 Mon Sep 17 00:00:00 2001
-	From: Jessica Smith <jessica@example.com>
-	Date: Sun, 6 Apr 2008 10:17:23 -0700
-	Subject: [PATCH 1/2] add limit to log function
+```
+$ cat 0001-add-limit-to-log-function.patch
+From 330090432754092d704da8e76ca5c05c198e71a8 Mon Sep 17 00:00:00 2001
+From: Jessica Smith <jessica@example.com>
+Date: Sun, 6 Apr 2008 10:17:23 -0700
+Subject: [PATCH 1/2] add limit to log function
 
-	Limit log functionality to the first 20
+Limit log functionality to the first 20
 
-	---
- 	lib/simplegit.rb |    2 +-
- 	1 files changed, 1 insertions(+), 1 deletions(-)
+---
+ lib/simplegit.rb |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-	diff --git a/lib/simplegit.rb b/lib/simplegit.rb
-	index 76f47bc..f9815f1 100644
-	--- a/lib/simplegit.rb
-	+++ b/lib/simplegit.rb
-	@@ -14,7 +14,7 @@ class SimpleGit
-   		end
+diff --git a/lib/simplegit.rb b/lib/simplegit.rb
+index 76f47bc..f9815f1 100644
+--- a/lib/simplegit.rb
++++ b/lib/simplegit.rb
+@@ -14,7 +14,7 @@ class SimpleGit
+       end
 
-   		def log(treeish = 'master')
-	-    command("git log #{treeish}")
-	+    command("git log -n 20 #{treeish}")
-   		end
+       def log(treeish = 'master')
+-    command("git log #{treeish}")
++    command("git log -n 20 #{treeish}")
+       end
 
-   		def ls_tree(treeish = 'master')
-	--
-	2.1.0
+       def ls_tree(treeish = 'master')
+--
+2.1.0
+```
 
 也可以编辑这些补丁文件为邮件列表添加更多不想要在提交信息中显示出来的信息。 如果在 --- 行与补丁开头（`diff --git` 行）之间添加文本，那么开发者就可以阅读它；但是应用补丁时会排除它。
 
-为了将其邮寄到邮件列表，你既可以将文件粘贴进电子邮件客户端，也可以通过命令行程序发送它。 粘贴文本经常会发生格式化问题，特别是那些不会合适地保留换行符与其他空白的 “更聪明的” 客户端。 幸运的是，Git 提供了一个工具帮助你通过 IMAP 发送正确格式化的补丁，这可能对你更容易些。 我们将会演示如何通过 Gmail 发送一个补丁，它正好是我们所知最好的邮件代理；可以在之前提到的 Git 源代码中的 `Documentation/SubmittingPatches` 文件的最下面了解一系列邮件程序的详细指令。
+为了将其邮寄到邮件列表，你既可以将文件粘贴进电子邮件客户端，也可以通过命令行程序发送它。 粘贴文本经常会发生格式化问题，特别是那些不会合适地保留换行符与其他空白的 "更聪明的" 客户端。 幸运的是，Git 提供了一个工具帮助你通过 IMAP 发送正确格式化的补丁，这可能对你更容易些。 我们将会演示如何通过 Gmail 发送一个补丁，它正好是我们所知最好的邮件代理；可以在之前提到的 Git 源代码中的 `Documentation/SubmittingPatches` 文件的最下面了解一系列邮件程序的详细指令。
 
 首先，需要在 ~/.gitconfig 文件中设置 imap 区块。 可以通过一系列的 `git config` 命令来分别设置每一个值，或者手动添加它们，不管怎样最后配置文件应该看起来像这样：
 
-	[imap]
-	  folder = "[Gmail]/Drafts"
-	  host = imaps://imap.gmail.com
-	  user = user@gmail.com
-	  pass = p4ssw0rd
- 	  port = 993
-	  sslverify = false
+```
+[imap]
+  folder = "[Gmail]/Drafts"
+  host = imaps://imap.gmail.com
+  user = user@gmail.com
+  pass = p4ssw0rd
+   port = 993
+  sslverify = false
+```
 
-如果 IMAP 服务器不使用 SSL，最后两行可能没有必要，host 的值会是 `imap://` 而不是` imaps://`。 当那些设置完成后，可以使用 `git imap-send` 将补丁序列放在特定 IMAP 服务器的 Drafts 文件夹中：
+如果 IMAP 服务器不使用 SSL，最后两行可能没有必要，host 的值会是 `imap://` 而不是`imaps://`。 当那些设置完成后，可以使用 `git imap-send` 将补丁序列放在特定 IMAP 服务器的 Drafts 文件夹中：
 
-	$ cat *.patch |git imap-send
-	Resolving imap.gmail.com... ok
-	Connecting to [74.125.142.109]:993... ok
-	Logging in...
-	sending 2 messages
-	100% (2/2) done
+```
+$ cat *.patch |git imap-send
+Resolving imap.gmail.com... ok
+Connecting to [74.125.142.109]:993... ok
+Logging in...
+sending 2 messages
+100% (2/2) done
+```
 
 在这个时候，你应该能够到 Drafts 文件夹中，修改收件人字段为想要发送补丁的邮件列表，可能需要抄送给维护者或负责那个部分的人，然后发送。
 
 你也可以通过一个 SMTP 服务器发送补丁。 同之前一样，你可以通过一系列的 git config 命令来分别设置选项，或者你可以手动地将它们添加到你的 ~/.gitconfig 文件的 sendmail 区块：
 
-	[sendemail]
-  		smtpencryption = tls
-  		smtpserver = smtp.gmail.com
- 		smtpuser = user@gmail.com
- 		smtpserverport = 587
+```
+[sendemail]
+      smtpencryption = tls
+      smtpserver = smtp.gmail.com
+     smtpuser = user@gmail.com
+     smtpserverport = 587
+```
 
 当这完成后，你可以使用 `git send-email` 发送你的补丁：
 
-	$ git send-email *.patch
-	0001-added-limit-to-log-function.patch
-	0002-changed-log-output-to-30-from-25.patch
-	Who should the emails appear to be from? [Jessica Smith <jessica@example.com>]
-	Emails will be sent from: Jessica Smith <jessica@example.com>
-	Who should the emails be sent to? jessica@example.com
-	Message-ID to be used as In-Reply-To for the first email? y
+```
+$ git send-email *.patch
+0001-added-limit-to-log-function.patch
+0002-changed-log-output-to-30-from-25.patch
+Who should the emails appear to be from? [Jessica Smith <jessica@example.com>]
+Emails will be sent from: Jessica Smith <jessica@example.com>
+Who should the emails be sent to? jessica@example.com
+Message-ID to be used as In-Reply-To for the first email? y
+```
 
 然后，对于正在发送的每一个补丁，Git 会吐出这样的一串日志信息：
 
-	(mbox) Adding cc: Jessica Smith <jessica@example.com> from
-	  \line 'From: Jessica Smith <jessica@example.com>'
-	OK. Log says:
-	Sendmail: /usr/sbin/sendmail -i jessica@example.com
-	From: Jessica Smith <jessica@example.com>
-	To: jessica@example.com
-	Subject: [PATCH 1/2] added limit to log function
-	Date: Sat, 30 May 2009 13:29:15 -0700
-	Message-Id: <1243715356-61726-1-git-send-email-jessica@example.com>
-	X-Mailer: git-send-email 1.6.2.rc1.20.g8c5b.dirty
-	In-Reply-To: <y>
-	References: <y>
-	
-	Result: OK
+```
+(mbox) Adding cc: Jessica Smith <jessica@example.com> from
+  \line 'From: Jessica Smith <jessica@example.com>'
+OK. Log says:
+Sendmail: /usr/sbin/sendmail -i jessica@example.com
+From: Jessica Smith <jessica@example.com>
+To: jessica@example.com
+Subject: [PATCH 1/2] added limit to log function
+Date: Sat, 30 May 2009 13:29:15 -0700
+Message-Id: <1243715356-61726-1-git-send-email-jessica@example.com>
+X-Mailer: git-send-email 1.6.2.rc1.20.g8c5b.dirty
+In-Reply-To: <y>
+References: <y>
 
+Result: OK
+```
 
----
+--------------------------------------------------------------------------------
 
 ## 5.3 维护项目
 
 ### 5.3.1 在特性分支中工作
 
-如果你想向项目中整合一些新东西，最好将这些尝试局限在特性分支——一种通常用来尝试新东西的临时分支中。   
+如果你想向项目中整合一些新东西，最好将这些尝试局限在特性分支----一种通常用来尝试新东西的临时分支中。
 
 为特性分支创建一个简单的名字，方便找回。也可以添加贡献者名字的缩写。
 
 >
->`$ git branch [sc/ruby_client master]`  [sc/ruby_client master]为分支名称。
->
->`$ git checkout -b sc/ruby_client master` 或者切到新分支上。
->
+
+> `$ git branch [sc/ruby_client master]` [sc/ruby_client master]为分支名称。
+
+> `$ git checkout -b sc/ruby_client master` 或者切到新分支上。
 
 ### 5.3.2 应用来自邮件的补丁
 
 如果你通过电子邮件收到了一个需要整合进入项目的补丁，你需要将其应用到特性分支中进行评估。 有两种应用该种补丁的方法：使用 `git apply`，或者使用 `git am`。
 
-**使用 apply 命令应用补丁**
->
->如果你收到了一个使用 git diff 或 Unix diff 命令（不推荐使用这种方式，具体见下一节）创建的补丁，可以使用 git apply 命令来应用。 假设你将补丁保存在了 /tmp/patch-ruby-client.patch 中，可以这样应用补丁：
->
->		$ git apply /tmp/patch-ruby-client.patch  
+**使用 apply 命令应用补丁** >
 
->这会修改工作目录中的文件。 它与运行 patch -p1 命令来应用补丁几乎是等效的，但是这种方式更加严格，相对于 patch 来说，它能够接受的模糊匹配更少。 它也能够处理 git diff 格式文件所描述的文件添加、删除和重命名操作，而 patch 则不会。 最后，git apply 命令采用了一种“全部应用，否则就全部撤销（apply all or abort all）”的模型，即补丁只有全部内容都被应用和完全不被应用两个状态，而 patch 可能会导致补丁文件被部分应用，最后使你的工作目录保持在一个比较奇怪的状态。 总体来看，git apply 命令要比 patch 谨慎得多。 并且，它不会为你创建提交——在运行之后，你需要手动暂存并提交补丁所引入的更改。
->
->在实际应用补丁前，你还可以使用 git apply 来检查补丁是否可以顺利应用——即对补丁运行 git apply --check 命令：
->
->		$ git apply --check 0001-seeing-if-this-helps-the-gem.patch
->		error: patch failed: ticgit.gemspec:1
->		error: ticgit.gemspec: patch does not apply
->
->如果没有产生输出，则该补丁可以顺利应用。 如果检查失败了，该命令还会以一个非零的状态退出，所以需要时你也可以在脚本中使用它。
->
->
+> 如果你收到了一个使用 git diff 或 Unix diff 命令（不推荐使用这种方式，具体见下一节）创建的补丁，可以使用 git apply 命令来应用。 假设你将补丁保存在了 /tmp/patch-ruby-client.patch 中，可以这样应用补丁：
+
+> ```
+>    $ git apply /tmp/patch-ruby-client.patch  
+> ```
+
+> 这会修改工作目录中的文件。 它与运行 patch -p1 命令来应用补丁几乎是等效的，但是这种方式更加严格，相对于 patch 来说，它能够接受的模糊匹配更少。 它也能够处理 git diff 格式文件所描述的文件添加、删除和重命名操作，而 patch 则不会。 最后，git apply 命令采用了一种"全部应用，否则就全部撤销（apply all or abort all）"的模型，即补丁只有全部内容都被应用和完全不被应用两个状态，而 patch 可能会导致补丁文件被部分应用，最后使你的工作目录保持在一个比较奇怪的状态。 总体来看，git apply 命令要比 patch 谨慎得多。 并且，它不会为你创建提交----在运行之后，你需要手动暂存并提交补丁所引入的更改。
+
+> 在实际应用补丁前，你还可以使用 git apply 来检查补丁是否可以顺利应用----即对补丁运行 git apply --check 命令：
+
+> ```
+>    $ git apply --check 0001-seeing-if-this-helps-the-gem.patch
+>    error: patch failed: ticgit.gemspec:1
+>    error: ticgit.gemspec: patch does not apply
+> ```
+
+> 如果没有产生输出，则该补丁可以顺利应用。 如果检查失败了，该命令还会以一个非零的状态退出，所以需要时你也可以在脚本中使用它。
 
 **使用 am 命令应用补丁**
 
->如果补丁的贡献者也是一个 Git 用户，并且其能熟练使用 format-patch 命令来生成补丁，这样的话你的工作会变得更加轻松，因为这种补丁中包含了作者信息和提交信息供你参考。 如果可能的话，请鼓励贡献者使用 format-patch 而不是 diff 来为你生成补丁。 而只有对老式的补丁，你才必须使用 git apply 命令。
+> 如果补丁的贡献者也是一个 Git 用户，并且其能熟练使用 format-patch 命令来生成补丁，这样的话你的工作会变得更加轻松，因为这种补丁中包含了作者信息和提交信息供你参考。 如果可能的话，请鼓励贡献者使用 format-patch 而不是 diff 来为你生成补丁。 而只有对老式的补丁，你才必须使用 git apply 命令。
 
->要应用一个由 format-patch 命令生成的补丁，你应该使用 git am 命令。 从技术的角度看，git am 是为了读取 mbox 文件而构建的，mbox 是一种用来在单个文本文件中存储一个或多个电子邮件消息的简单纯文本格式。 其大致格式如下所示：
->
->		From 330090432754092d704da8e76ca5c05c198e71a8 Mon Sep 17 00:00:00 2001
->		From: Jessica Smith <jessica@example.com>
->		Date: Sun, 6 Apr 2008 10:17:23 -0700
->		Subject: [PATCH 1/2] add limit to log function
->
->		Limit log functionality to the first 20
->
->这其实就是你前面看到的 `format-patch` 命令输出的开始几行。 而同时它也是有效的 mbox 电子邮件格式。 如果有人使用 `git send-email` 命令将补丁以电子邮件的形式发送给你，你便可以将它下载为 mbox 格式的文件，之后将 `git am` 命令指向该文件，它会应用其中包含的所有补丁。 如果你所使用的邮件客户端能够同时将多封邮件保存为 mbox 格式的文件，你甚至能够将一系列补丁打包为单个 mbox 文件，并利用 `git am` 命令将它们一次性全部应用。
+> 要应用一个由 format-patch 命令生成的补丁，你应该使用 git am 命令。 从技术的角度看，git am 是为了读取 mbox 文件而构建的，mbox 是一种用来在单个文本文件中存储一个或多个电子邮件消息的简单纯文本格式。 其大致格式如下所示：
 
->然而，如果贡献者将 `format-patch` 生成的补丁文件上传到类似 Request Ticket 的任务处理系统，你可以先将其保存到本地，之后通过 git am 来应用补丁：
->
->		$ git am 0001-limit-log-function.patch
->		Applying: add limit to log function
->
->你会看到补丁被顺利地应用，并且为你自动创建了一个新的提交。 其中的作者信息来自于电子邮件头部的 From 和 Date 字段，提交消息则取自 Subject 和邮件正文中补丁之前的内容。 比如，应用上面那个 mbox 示例后生成的提交是这样的：
->
->		$ git log --pretty=fuller -1
->		commit 6c5e70b984a60b3cecd395edd5b48a7575bf58e0
->		Author:     Jessica Smith <jessica@example.com>
->		AuthorDate: Sun Apr 6 10:17:23 2008 -0700
->		Commit:     Scott Chacon <schacon@gmail.com>
->		CommitDate: Thu Apr 9 09:19:06 2009 -0700
->
->   		add limit to log function
->
->   		Limit log functionality to the first 20
->
->其中 Commit 信息表示的是应用补丁的人和应用补丁的时间。 Author 信息则表示补丁的原作者和原本的创建时间。
+> ```
+>    From 330090432754092d704da8e76ca5c05c198e71a8 Mon Sep 17 00:00:00 2001
+>    From: Jessica Smith <jessica@example.com>
+>    Date: Sun, 6 Apr 2008 10:17:23 -0700
+>    Subject: [PATCH 1/2] add limit to log function
 
->但是，有时候无法顺利地应用补丁。 这也许是因为你的主分支和创建补丁的分支相差较多，也有可能是因为这个补丁依赖于其他你尚未应用的补丁。 这种情况下，`git am` 进程将会报错并且询问你要做什么：
->
->		$ git am 0001-seeing-if-this-helps-the-gem.patch
->		Applying: seeing if this helps the gem
->		error: patch failed: ticgit.gemspec:1
->		error: ticgit.gemspec: patch does not apply
->		Patch failed at 0001.
->		When you have resolved this problem run "git am --resolved".
->		If you would prefer to skip this patch, instead run "git am --skip".
->		To restore the original branch and stop patching run "git am --abort".
->
->该命令将会在所有出现问题的文件内加入冲突标记，就和发生冲突的合并或变基操作一样。 而你解决问题的手段很大程度上也是一样的——即手动编辑那些文件来解决冲突，暂存新的文件，之后运行 git am --resolved 继续应用下一个补丁：
->
->		$ (fix the file)
->		$ git add ticgit.gemspec
->		$ git am --resolved
->		Applying: seeing if this helps the gem
->
->如果你希望 Git 能够尝试以更加智能的方式解决冲突，你可以对其传递 `-3` 选项来使 Git 尝试进行三方合并。 该选项默认并没有打开，因为如果用于创建补丁的提交并不在你的版本库内的话，这样做是没有用处的。 而如果你确实有那个提交的话——比如补丁是基于某个公共提交的——那么通常 `-3` 选项对于应用有冲突的补丁是更加明智的选择。
->
->		$ git am -3 0001-seeing-if-this-helps-the-gem.patch
->		Applying: seeing if this helps the gem
->		error: patch failed: ticgit.gemspec:1
->		error: ticgit.gemspec: patch does not apply
->		Using index info to reconstruct a base tree...
->		Falling back to patching base and 3-way merge...
->		No changes -- Patch already applied.
->
->比如上面这种情况，我在之前已经应用过同样的补丁。 如果没有 -3 选项的话，这看起来就像是存在一个冲突。
->
->如果你正在利用一个 mbox 文件应用多个补丁，也可以在交互模式下运行 am 命令，这样在每个补丁之前，它会停住询问你是否要应用该补丁：
->
->		$ git am -3 -i mbox
->		Commit Body is:
->		-------------------------
->		seeing if this helps the gem
->		--------------------------
->		Apply? [y]es/[n]o/[e]dit/[v]iew patch/[a]ccept all
->
->这在你保存的补丁较多时很好用，因为你可以在应用之前查看忘掉内容的补丁，并且跳过已经应用过的补丁。
->
->当与你的特性相关的所有补丁都被应用并提交到分支中之后，你就可以选择是否以及如何将其整合到更长期的分支中去了。
->
+>    Limit log functionality to the first 20
+> ```
 
+> 这其实就是你前面看到的 `format-patch` 命令输出的开始几行。 而同时它也是有效的 mbox 电子邮件格式。 如果有人使用 `git send-email` 命令将补丁以电子邮件的形式发送给你，你便可以将它下载为 mbox 格式的文件，之后将 `git am` 命令指向该文件，它会应用其中包含的所有补丁。 如果你所使用的邮件客户端能够同时将多封邮件保存为 mbox 格式的文件，你甚至能够将一系列补丁打包为单个 mbox 文件，并利用 `git am` 命令将它们一次性全部应用。
+
+> 然而，如果贡献者将 `format-patch` 生成的补丁文件上传到类似 Request Ticket 的任务处理系统，你可以先将其保存到本地，之后通过 git am 来应用补丁：
+
+> ```
+>    $ git am 0001-limit-log-function.patch
+>    Applying: add limit to log function
+> ```
+
+> 你会看到补丁被顺利地应用，并且为你自动创建了一个新的提交。 其中的作者信息来自于电子邮件头部的 From 和 Date 字段，提交消息则取自 Subject 和邮件正文中补丁之前的内容。 比如，应用上面那个 mbox 示例后生成的提交是这样的：
+
+> ```
+>    $ git log --pretty=fuller -1
+>    commit 6c5e70b984a60b3cecd395edd5b48a7575bf58e0
+>    Author:     Jessica Smith <jessica@example.com>
+>    AuthorDate: Sun Apr 6 10:17:23 2008 -0700
+>    Commit:     Scott Chacon <schacon@gmail.com>
+>    CommitDate: Thu Apr 9 09:19:06 2009 -0700
+
+>       add limit to log function
+
+>       Limit log functionality to the first 20
+> ```
+
+> 其中 Commit 信息表示的是应用补丁的人和应用补丁的时间。 Author 信息则表示补丁的原作者和原本的创建时间。
+
+> 但是，有时候无法顺利地应用补丁。 这也许是因为你的主分支和创建补丁的分支相差较多，也有可能是因为这个补丁依赖于其他你尚未应用的补丁。 这种情况下，`git am` 进程将会报错并且询问你要做什么：
+
+> ```
+>    $ git am 0001-seeing-if-this-helps-the-gem.patch
+>    Applying: seeing if this helps the gem
+>    error: patch failed: ticgit.gemspec:1
+>    error: ticgit.gemspec: patch does not apply
+>    Patch failed at 0001.
+>    When you have resolved this problem run "git am --resolved".
+>    If you would prefer to skip this patch, instead run "git am --skip".
+>    To restore the original branch and stop patching run "git am --abort".
+> ```
+
+> 该命令将会在所有出现问题的文件内加入冲突标记，就和发生冲突的合并或变基操作一样。 而你解决问题的手段很大程度上也是一样的----即手动编辑那些文件来解决冲突，暂存新的文件，之后运行 git am --resolved 继续应用下一个补丁：
+
+> ```
+>    $ (fix the file)
+>    $ git add ticgit.gemspec
+>    $ git am --resolved
+>    Applying: seeing if this helps the gem
+> ```
+
+> 如果你希望 Git 能够尝试以更加智能的方式解决冲突，你可以对其传递 `-3` 选项来使 Git 尝试进行三方合并。 该选项默认并没有打开，因为如果用于创建补丁的提交并不在你的版本库内的话，这样做是没有用处的。 而如果你确实有那个提交的话----比如补丁是基于某个公共提交的----那么通常 `-3` 选项对于应用有冲突的补丁是更加明智的选择。
+
+> ```
+>    $ git am -3 0001-seeing-if-this-helps-the-gem.patch
+>    Applying: seeing if this helps the gem
+>    error: patch failed: ticgit.gemspec:1
+>    error: ticgit.gemspec: patch does not apply
+>    Using index info to reconstruct a base tree...
+>    Falling back to patching base and 3-way merge...
+>    No changes -- Patch already applied.
+> ```
+
+> 比如上面这种情况，我在之前已经应用过同样的补丁。 如果没有 -3 选项的话，这看起来就像是存在一个冲突。
+
+> 如果你正在利用一个 mbox 文件应用多个补丁，也可以在交互模式下运行 am 命令，这样在每个补丁之前，它会停住询问你是否要应用该补丁：
+
+> ```
+>    $ git am -3 -i mbox
+>    Commit Body is:
+>    -------------------------
+>    seeing if this helps the gem
+>    --------------------------
+>    Apply? [y]es/[n]o/[e]dit/[v]iew patch/[a]ccept all
+> ```
+
+> 这在你保存的补丁较多时很好用，因为你可以在应用之前查看忘掉内容的补丁，并且跳过已经应用过的补丁。
+
+> 当与你的特性相关的所有补丁都被应用并提交到分支中之后，你就可以选择是否以及如何将其整合到更长期的分支中去了。
 
 ### 5.3.3 检出远程分支
 
@@ -312,23 +336,26 @@
 
 比如 Jessica 向你发送了一封电子邮件，内容是在她的版本库中的 ruby-client 分支中有一个很不错的新功能，为了测试该功能，你可以将其添加为一个远程分支，并在本地检出：
 
-	$ git remote add jessica git://github.com/jessica/myproject.git
-	$ git fetch jessica
-	$ git checkout -b rubyclient jessica/ruby-client
+```
+$ git remote add jessica git://github.com/jessica/myproject.git
+$ git fetch jessica
+$ git checkout -b rubyclient jessica/ruby-client
+```
 
 如果她再次发邮件说另一个分支中包含另一个优秀功能，因为之前已经设置好远程分支了，你就可以直接进行抓取及检出操作。
 
-这对于与他人长期合作工作来说很有用。 而对于提交补丁频率较小的贡献者，相对于每个人维护自己的服务器，不断增删远程分支的做法，使用电子邮件来接收可能会比较省时。 况且你也不会想要加入数百个只提供一两个补丁的远程分支。 然而，脚本和托管服务在一定程度上可以简化这些工作——这很大程度上依赖于你和你的贡献者开发的方式。
+这对于与他人长期合作工作来说很有用。 而对于提交补丁频率较小的贡献者，相对于每个人维护自己的服务器，不断增删远程分支的做法，使用电子邮件来接收可能会比较省时。 况且你也不会想要加入数百个只提供一两个补丁的远程分支。 然而，脚本和托管服务在一定程度上可以简化这些工作----这很大程度上依赖于你和你的贡献者开发的方式。
 
 这种方式的另一种优点是你可以同时得到提交历史。 虽然代码合并中可能会出现问题，但是你能获知他人的工作是基于你的历史中的具体哪一个位置；所以Git 会默认进行三方合并，不需要提供 -3 选项，你也不需要担心补丁是基于某个你无法访问的提交生成的。
 
 对于非持续性的合作，如果你依然想要以这种方式拉取数据的话，你可以对远程版本库的 URL 调用 `git pull` 命令。 这会执行一个一次性的抓取，而不会将该 URL 存为远程引用：
 
-	$ git pull https://github.com/onetimeguy/project
-	From https://github.com/onetimeguy/project
-    	* branch            HEAD       -> FETCH_HEAD
-	Merge made by recursive.
-
+```
+$ git pull https://github.com/onetimeguy/project
+From https://github.com/onetimeguy/project
+    * branch            HEAD       -> FETCH_HEAD
+Merge made by recursive.
+```
 
 ### 5.3.4 确定引入了哪些东西
 
@@ -336,40 +363,48 @@
 
 一般来说，你应该对该分支中所有 master 分支尚未包含的提交进行检查。 通过在分支名称前加入 `--not` 选项，你可以排除 master 分支中的提交。 这和我们之前使用的 `master..contrib` 格式是一样的。 假设贡献者向你发送了两个补丁，为此你创建了一个名叫 contrib 的分支并在其上应用补丁，你可以运行：
 
-	$ git log contrib --not master
-	commit 5b6235bd297351589efc4d73316f0a68d484f118
-	Author: Scott Chacon <schacon@gmail.com>
-	Date:   Fri Oct 24 09:53:59 2008 -0700
+```
+$ git log contrib --not master
+commit 5b6235bd297351589efc4d73316f0a68d484f118
+Author: Scott Chacon <schacon@gmail.com>
+Date:   Fri Oct 24 09:53:59 2008 -0700
 
-  	  seeing if this helps the gem
+    seeing if this helps the gem
 
-	commit 7482e0d16d04bea79d0dba8988cc78df655f16a0
-	Author: Scott Chacon <schacon@gmail.com>
-	Date:   Mon Oct 22 19:38:36 2008 -0700
+commit 7482e0d16d04bea79d0dba8988cc78df655f16a0
+Author: Scott Chacon <schacon@gmail.com>
+Date:   Mon Oct 22 19:38:36 2008 -0700
 
-  	  updated the gemspec to hopefully work better
+    updated the gemspec to hopefully work better
+```
 
 如果要查看每次提交所引入的具体修改，你应该记得可以给 `git log` 命令传递 `-p` 选项，这样它会在每次提交后面附加对应的差异（diff）。
 
 而要查看将该特性分支与另一个分支合并的完整 diff，你可能需要使用一个有些奇怪的技巧来得到正确的结果。 你可能会想到这种方式：
 
-	$ git diff master
+```
+$ git diff master
+```
 
 这个命令会输出一个 diff，但它可能并不是我们想要的。 如果在你创建特性分支之后，master 分支向前移动了，你获得的结果就会显得有些不对。 这是因为 Git 会直接将该特性分支与 master 分支的最新提交快照进行比较。 比如说你在 master 分支中向某个文件添加了一行内容，那么直接比对最新快照的结果看上去就像是你在特性分支中将这一行删除了。
 
 如果 master 分支是你的特性分支的直接祖先，其实是没有任何问题的；但是一旦两个分支的历史产生了分叉，上述比对产生的 diff 看上去就像是将特性分支中所有的新东西加入，并且将 master 分支所独有的东西删除。
 
-而你真正想要检查的东西，实际上仅仅是特性分支所添加的更改——也就是该分支与 master 分支合并所要引入的工作。 要达到此目的，你需要让 Git 对特性分支上最新的提交与该分支与 master 分支的首个公共祖先进行比较。
+而你真正想要检查的东西，实际上仅仅是特性分支所添加的更改----也就是该分支与 master 分支合并所要引入的工作。 要达到此目的，你需要让 Git 对特性分支上最新的提交与该分支与 master 分支的首个公共祖先进行比较。
 
 从技术的角度讲，你可以以手工的方式找出公共祖先，并对其显式运行 diff 命令：
 
-	$ git merge-base contrib master
-	36c7dba2c95e6bbb78dfa822519ecfec6e1ca649
-	$ git diff 36c7db
+```
+$ git merge-base contrib master
+36c7dba2c95e6bbb78dfa822519ecfec6e1ca649
+$ git diff 36c7db
+```
 
 然而，这种做法比较麻烦，所以 Git 提供了一种比较便捷的方式：三点语法。 对于 d`iff` 命令来说，你可以通过把 `...` 置于另一个分支名后来对该分支的最新提交与两个分支的共同祖先进行比较：
 
-	$ git diff master...contrib
+```
+$ git diff master...contrib
+```
 
 该命令仅会显示自当前特性分支与 master 分支的共同祖先起，该分支中的工作。 这个语法很有用，应该牢记。
 
@@ -379,25 +414,21 @@
 
 #### 5.3.5.1 合并工作流
 
-一种非常简单的工作流会直接将工作合并进入 master 分支。 在这种情况下，master 分支包含的代码是基本稳定的。 当你完成某个特性分支的工作，或审核通过了其他人所贡献的工作时，你会将其合并进入 master 分支，之后将特性分支删除，如此反复。 如果我们的版本库包含类似 Figure 5-20 的两个名称分别为 `ruby_client` 和 `php_client` 的分支，并且我们先合并 `ruby_client` 分支，之后合并 `php_client` 分支，那么提交历史最后会变成下图的样子。
-**包含若干特性分支的提交历史。**
-![](https://git-scm.com/book/en/v2/book/05-distributed-git/images/merging-workflows-1.png)
-**合并特性分支之后**
-![](https://git-scm.com/book/en/v2/book/05-distributed-git/images/merging-workflows-2.png)
+一种非常简单的工作流会直接将工作合并进入 master 分支。 在这种情况下，master 分支包含的代码是基本稳定的。 当你完成某个特性分支的工作，或审核通过了其他人所贡献的工作时，你会将其合并进入 master 分支，之后将特性分支删除，如此反复。 如果我们的版本库包含类似 Figure 5-20 的两个名称分别为 `ruby_client` 和 `php_client` 的分支，并且我们先合并 `ruby_client` 分支，之后合并 `php_client` 分支，那么提交历史最后会变成下图的样子。 **包含若干特性分支的提交历史。** ![](https://git-scm.com/book/en/v2/book/05-distributed-git/images/merging-workflows-1.png) **合并特性分支之后** ![](https://git-scm.com/book/en/v2/book/05-distributed-git/images/merging-workflows-2.png)
 
 这也许是最简单的工作流了，但是当项目更大，或更稳定，你对自己所引入的工作更加在意时，它可能会带来问题。
 
-如果你的项目非常重要，你可能会使用两阶段合并循环。 在这种情况下，你会维护两个长期分支，分别是 master 和 develop，master 分支只会在一个非常稳定的版本发布时才会更新，而所有的新代码会首先整合进入 develop 分支。 你定期将这两个分支推送到公共版本库中。 每次需要合并新的特性分支时*图1*，你都应该合并进入 develop 分支*图2*；当打标签发布的时候，你会将 master 分支快进到已经稳定的 develop 分支*图3*。  
+如果你的项目非常重要，你可能会使用两阶段合并循环。 在这种情况下，你会维护两个长期分支，分别是 master 和 develop，master 分支只会在一个非常稳定的版本发布时才会更新，而所有的新代码会首先整合进入 develop 分支。 你定期将这两个分支推送到公共版本库中。 每次需要合并新的特性分支时_图1_，你都应该合并进入 develop 分支_图2_；当打标签发布的时候，你会将 master 分支快进到已经稳定的 develop 分支_图3_。
 
-**合并特性分支前**  
+**合并特性分支前**
 
 ![](https://git-scm.com/book/en/v2/book/05-distributed-git/images/merging-workflows-3.png)
 
-**合并特性分支后**  
+**合并特性分支后**
 
 ![](https://git-scm.com/book/en/v2/book/05-distributed-git/images/merging-workflows-4.png)
 
-**一次发布之后**  
+**一次发布之后**
 
 ![](https://git-scm.com/book/en/v2/book/05-distributed-git/images/merging-workflows-5.png)
 
@@ -407,7 +438,7 @@
 
 Git 项目包含四个长期分支：master、next，用于新工作的 pu（proposed updates）和用于维护性向后移植工作（maintenance backports）的 maint 分支。 贡献者的新工作会以类似之前所介绍的方式收入特性分支中。 之后对特性分支进行测试评估，检查其是否已经能够合并，或者仍需要更多工作。 安全的特性分支会被合并入 next 分支，之后该分支会被推送使得所有人都可以尝试整合到一起的特性。
 
-**管理复杂的一系列接收贡献的平行特性分支**  
+**管理复杂的一系列接收贡献的平行特性分支**
 
 ![](https://git-scm.com/book/en/v2/book/05-distributed-git/images/large-merges-1.png)
 
@@ -419,12 +450,11 @@ Git 项目包含四个长期分支：master、next，用于新工作的 pu（pro
 
 当特性分支最终被并入 `master` 分支后，便会被从版本库中删除掉。 Git 项目还有一个从上一次发布中派生出来的 `maint` 分支来提供向后移植过来的补丁以供发布维护更新。 因此，当你克隆 Git 的版本库之后，就会有四个可分别评估该项目开发的不同阶段的可检出的分支，检出哪个分支，取决于你需要多新的版本，或者你想要如何进行贡献；对于维护者来说，这套结构化的工作流能帮助它们审查新的贡献。
 
-
 #### 5.3.5.3 变基与拣选工作流
 
 为了保持线性的提交历史，有些维护者更喜欢在 master 分支上对贡献过来的工作进行变基和拣选，而不是直接将其合并。 当你完成了某个特性分支中的工作，并且决定要将其整合的时候，你可以在该分支中运行变基命令，在当前 master 分支（或者是 develop 等分支）的基础上重新构造修改。 如果结果理想的话，你可以快进 master 分支，最后得到一个线性的项目提交历史。
 
-另一种将引入的工作转移到其他分支的方法是拣选。 Git 中的拣选类似于对特定的某次提交的变基。 它会提取该提交的补丁，之后尝试将其重新应用到当前分支上。 这种方式在你只想引入特性分支中的某个提交，或者特性分支中只有一个提交，而你不想运行变基时很有用。 举个例子，假设你的项目提交历史类似：  
+另一种将引入的工作转移到其他分支的方法是拣选。 Git 中的拣选类似于对特定的某次提交的变基。 它会提取该提交的补丁，之后尝试将其重新应用到当前分支上。 这种方式在你只想引入特性分支中的某个提交，或者特性分支中只有一个提交，而你不想运行变基时很有用。 举个例子，假设你的项目提交历史类似：
 
 **拣选之前的示例历史**
 
@@ -432,14 +462,16 @@ Git 项目包含四个长期分支：master、next，用于新工作的 pu（pro
 
 如果你希望将提交 e43a6 拉取到 master 分支，你可以运行：
 
-	$ git cherry-pick e43a6fd3e94888d76779ad79fb568ed180e5fcdf
-	Finished one cherry-pick.
-	[master]: created a0a41a9: "More friendly message when locking the index fails."
- 	3 files changed, 17 insertions(+), 3 deletions(-)
+```
+$ git cherry-pick e43a6fd3e94888d76779ad79fb568ed180e5fcdf
+Finished one cherry-pick.
+[master]: created a0a41a9: "More friendly message when locking the index fails."
+ 3 files changed, 17 insertions(+), 3 deletions(-)
+```
 
 这样会拉取和 e43a6 相同的更改，但是因为应用的日期不同，你会得到一个新的提交 SHA-1 值。 现在你的历史会变成这样：
 
-**拣选特性分支中的一个提交后的历史**  
+**拣选特性分支中的一个提交后的历史**
 
 ![](https://git-scm.com/book/en/v2/book/05-distributed-git/images/rebasing-2.png)
 
@@ -447,13 +479,15 @@ Git 项目包含四个长期分支：master、next，用于新工作的 pu（pro
 
 #### 5.3.5.4 Rerere
 
-如果你在进行大量的合并或变基，或维护一个长期的特性分支，Git 提供的一个叫做“rerere”的功能会有一些帮助。
+如果你在进行大量的合并或变基，或维护一个长期的特性分支，Git 提供的一个叫做"rerere"的功能会有一些帮助。
 
-Rerere 是“重用已记录的冲突解决方案（reuse recorded resolution）”的意思——它是一种简化冲突解决的方法。 当启用 rerere 时，Git 将会维护一些成功合并之前和之后的镜像，当 Git 发现之前已经修复过类似的冲突时，便会使用之前的修复方案，而不需要你的干预。
+Rerere 是"重用已记录的冲突解决方案（reuse recorded resolution）"的意思----它是一种简化冲突解决的方法。 当启用 rerere 时，Git 将会维护一些成功合并之前和之后的镜像，当 Git 发现之前已经修复过类似的冲突时，便会使用之前的修复方案，而不需要你的干预。
 
 这个功能包含两个部分：一个配置选项和一个命令。 其中的配置选项是`rerere.enabled`，把它放在全局配置中就可以了：
 
-	$ git config --global rerere.enabled true
+```
+$ git config --global rerere.enabled true
+```
 
 现在每当你进行一次需要解决冲突的合并时，解决方案都会被记录在缓存中，以备之后使用。
 
@@ -462,43 +496,55 @@ Rerere 是“重用已记录的冲突解决方案（reuse recorded resolution）
 ### 5.3.6 为发布打标签
 
 当你决定进行一次发布时，你可能想要留下一个标签，这样在之后的任何一个提交点都可以重新创建该发布。 你在 Git 基础 中已经了解了创建新标签的过程。 作为一个维护者，如果你决定要为标签签名的话，打标签的过程应该是这样子的：
-	
-	$ git tag -s v1.5 -m 'my signed 1.5 tag'
-	You need a passphrase to unlock the secret key for
-	user: "Scott Chacon <schacon@gmail.com>"
-	1024-bit DSA key, ID F721C45A, created 2009-02-09
+
+```
+$ git tag -s v1.5 -m 'my signed 1.5 tag'
+You need a passphrase to unlock the secret key for
+user: "Scott Chacon <schacon@gmail.com>"
+1024-bit DSA key, ID F721C45A, created 2009-02-09
+```
 
 如果你为标签签名了，你可能会遇到分发用来签名的 PGP 公钥的问题。 Git 项目的维护者已经解决了这一问题，其方法是在版本库中以 blob 对象的形式包含他们的公钥，并添加一个直接指向该内容的标签。 要完成这一任务，首先你可以通过运行 `gpg --list-keys` 找出你所想要的 key：
 
-	$ gpg --list-keys
-	/Users/schacon/.gnupg/pubring.gpg
-	---------------------------------
-	pub   1024D/F721C45A 2009-02-09 [expires: 2010-02-09]
-	uid                  Scott Chacon <schacon@gmail.com>
-	sub   2048g/45D02282 2009-02-09 [expires: 2010-02-09]
-	
+```
+$ gpg --list-keys
+/Users/schacon/.gnupg/pubring.gpg
+---------------------------------
+pub   1024D/F721C45A 2009-02-09 [expires: 2010-02-09]
+uid                  Scott Chacon <schacon@gmail.com>
+sub   2048g/45D02282 2009-02-09 [expires: 2010-02-09]
+```
+
 之后你可以通过导出 key 并通过管道传递给 `git hash-object` 来直接将 key 导入到 Git 的数据库中，`git hash-object` 命令会向 Git 中写入一个包含其内容的新 blob 对象，并向你返回该 blob 对象的 SHA-1 值：
-	
-	$ gpg -a --export F721C45A | git hash-object -w --stdin
-	659ef797d181633c87ec71ac3f9ba29fe5775b92
+
+```
+$ gpg -a --export F721C45A | git hash-object -w --stdin
+659ef797d181633c87ec71ac3f9ba29fe5775b92
+```
 
 既然 Git 中已经包含你的 key 的内容了，你就可以通过指定由 `hash-object` 命令给出的新 SHA-1 值来创建一个直接指向它的标签：
 
-	$ git tag -a maintainer-pgp-pub 659ef797d181633c87ec71ac3f9ba29fe5775b92
+```
+$ git tag -a maintainer-pgp-pub 659ef797d181633c87ec71ac3f9ba29fe5775b92
+```
 
 如果你运行 git push --tags 命令，那么 maintainer-pgp-pub 标签将会被共享给所有人。 需要校验标签的人可以通过从数据库中直接拉取 blob 对象并导入到 GPG 中来导入 PGP key：
 
-	$ git show maintainer-pgp-pub | gpg --import
+```
+$ git show maintainer-pgp-pub | gpg --import
+```
 
 人们可以使用这个 key 来校验所有由你签名的标签。 另外，如果你在标签信息中包含了一些操作说明，用户可以通过运行 `git show <tag>` 来获取更多关于标签校验的说明。
 
 ### 5.3.7 生成一个构建号
 
-Git 中不存在随每次提交递增的“v123”之类的数字序列，如果你想要为提交附上一个可读的名称，可以对其运行 `git describe` 命令。 Git 将会给出一个字符串，它由最近的标签名、自该标签之后的提交数目和你所描述的提交的部分 SHA-1 值构成：
+Git 中不存在随每次提交递增的"v123"之类的数字序列，如果你想要为提交附上一个可读的名称，可以对其运行 `git describe` 命令。 Git 将会给出一个字符串，它由最近的标签名、自该标签之后的提交数目和你所描述的提交的部分 SHA-1 值构成：
 
-	$ git describe master
-	v1.6.2-rc1-20-g8c5b85c
-	
+```
+$ git describe master
+v1.6.2-rc1-20-g8c5b85c
+```
+
 这样你在导出一个快照或构建时，可以给出一个便于人们理解的命名。 实际上，如果你的 Git 是从 Git 自己的版本库克隆下来并构建的，那么 `git --version` 命令给出的结果是与此类似的。 如果你所描述的提交自身就有一个标签，那么它将只会输出标签名，没有后面两项信息。
 
 注意 `git describe` 命令只适用于有注解的标签（即使用 `-a` 或 `-s` 选项创建的标签,指`git tag -a`），所以如果你在使用 `git describe` 命令的话，为了确保能为标签生成合适的名称，打发布标签时都应该采用加注解的方式。 你也可以使用这个字符串来调用 `checkout` 或 show 命令，但是这依赖于其末尾的简短 SHA-1 值，因此不一定一直有效。 比如，最近 Linux 内核为了保证 SHA-1 值对象的唯一性，将其位数由 8 位扩展到了 10 位，导致以前的 `git describe` 输出全部失效。
@@ -507,44 +553,50 @@ Git 中不存在随每次提交递增的“v123”之类的数字序列，如果
 
 现在你可以发布一个构建了。 其中一件事情就是为那些不使用 Git 的可怜包们创建一个最新的快照归档。 使用 `git archive` 命令完成此工作：
 
-	$ git archive master --prefix='project/' | gzip > `git describe master`.tar.gz
-	$ ls *.tar.gz
-	v1.6.2-rc1-20-g8c5b85c.tar.gz
-	
+```
+$ git archive master --prefix='project/' | gzip > `git describe master`.tar.gz
+$ ls *.tar.gz
+v1.6.2-rc1-20-g8c5b85c.tar.gz
+```
+
 如果有人将这个压缩包解压，他就可以得到你的项目文件夹的最新快照。 你也可以以类似的方式创建一个 zip 压缩包，但此时你应该向 `git archive` 命令传递 `--format=zip` 选项：
 
-	$ git archive master --prefix='project/' --format=zip > `git describe master`.zip
+```
+$ git archive master --prefix='project/' --format=zip > `git describe master`.zip
+```
 
 现在你有了本次发布的一个 tar 包和一个 zip 包，可以将其上传到网站或以电子邮件的形式发送给人们。
 
-**说明：使用`git archive master --prefix='project/'`命令打包 ，`| gzip `打包为`tar.gz` , `--format=zip`打包为`zip` ，`>` 后为文件名。**
+**说明：使用`git archive master --prefix='project/'`命令打包 ，`| gzip`打包为`tar.gz` , `--format=zip`打包为`zip` ，`>` 后为文件名。**
 
 ### 5.3.9 制作提交简报
 
 **例子：显示出自v1.0.1以来全都的所以的提交总结**
 
 现在是时候通知邮件列表里那些好奇你的项目发生了什么的人了。 使用 `git shortlog` 命令可以快速生成一份包含从上次发布之后项目新增内容的修改日志（changelog）类文档。 它会对你给定范围内的所有提交进行总结；比如，你的上一次发布名称是 v1.0.1，那么下面的命令可以给出上次发布以来所有提交的总结：
-	
-	$ git shortlog --no-merges master --not v1.0.1
-	Chris Wanstrath (8):
-	      Add support for annotated tags to Grit::Tag
-	      Add packed-refs annotated tag support.
-	      Add Grit::Commit#to_patch
-	      Update version and History.txt
-	      Remove stray `puts`
-	      Make ls_tree ignore nils
-	
-	Tom Preston-Werner (4):
-	      fix dates in history
-	      dynamic version method
-	      Version bump to 1.0.2
-	      Regenerated gemspec for version 1.0.2
+
+```
+$ git shortlog --no-merges master --not v1.0.1
+Chris Wanstrath (8):
+      Add support for annotated tags to Grit::Tag
+      Add packed-refs annotated tag support.
+      Add Grit::Commit#to_patch
+      Update version and History.txt
+      Remove stray `puts`
+      Make ls_tree ignore nils
+
+Tom Preston-Werner (4):
+      fix dates in history
+      dynamic version method
+      Version bump to 1.0.2
+      Regenerated gemspec for version 1.0.2
+```
 
 这份整洁的总结包括了自 v1.0.1 以来的所有提交，并且已经按照作者分好组，你可以通过电子邮件将其直接发送到列表中。
 
-----
+--------------------------------------------------------------------------------
 
-# 6. GitHub
+# 6\. GitHub
 
 GitHub 是最大的 Git 版本库托管商
 
@@ -556,58 +608,54 @@ GitHub 是最大的 Git 版本库托管商
 
 在用户设置`Settings`中找到`SSH keys`。
 
-* 添加一个公钥
+- 添加一个公钥
 
 复制`.pub`文件内的内容，到`key`区域，后点击`Add key`
 
 `Title` 没有什么意义，主要是方便识别`Key`。
 
-*参考图如下*
+_参考图如下_
 
 ![](https://git-scm.com/book/en/v2/book/06-github/images/ssh-keys.png)
 
-* 头像
+- 头像
 
 内容忽略，详情见[文档](https://git-scm.com/book/zh/v2/GitHub-%E8%B4%A6%E6%88%B7%E7%9A%84%E5%88%9B%E5%BB%BA%E5%92%8C%E9%85%8D%E7%BD%AE)
 
-* 邮件地址
+- 邮件地址
 
-	对于使用多电子邮箱提交，需要添加多电子邮件。
+  对于使用多电子邮箱提交，需要添加多电子邮件。
 
-* 两步验证
+- 两步验证
 
-为了安全性，应当设置两步验证，简写为“2FA”。
+为了安全性，应当设置两步验证，简写为"2FA"。
 
 开启两步验证，GitHub会要求用两种不同的验证方式。
 
 在`Account settings`页中，`Two-factor Authentication`设置。
 
-可以选择使用APP生产辅助码（一种“基于时间的一次性密码”），还是要GitHub通过SMS发送辅助码。
+可以选择使用APP生产辅助码（一种"基于时间的一次性密码"），还是要GitHub通过SMS发送辅助码。
 
-----
+--------------------------------------------------------------------------------
 
 ## 6.2 对项目做出贡献
 
 查看用户[文档](https://git-scm.com/book/zh/v2/GitHub-%E5%AF%B9%E9%A1%B9%E7%9B%AE%E5%81%9A%E5%87%BA%E8%B4%A1%E7%8C%AE)
 
-----
+--------------------------------------------------------------------------------
 
 ## 6.3 维护项目
 
 查看用户[文档](https://git-scm.com/book/zh/v2/GitHub-%E7%BB%B4%E6%8A%A4%E9%A1%B9%E7%9B%AE)
 
-----
+--------------------------------------------------------------------------------
 
 ## 6.4 管理组织
 
-
 查看用户[文档](https://git-scm.com/book/zh/v2/GitHub-%E7%AE%A1%E7%90%86%E7%BB%84%E7%BB%87)
 
------
+--------------------------------------------------------------------------------
 
 ## 6.5 脚本 GitHub
 
-
-
 查看用户[文档](https://git-scm.com/book/zh/v2/GitHub-%E8%84%9A%E6%9C%AC-GitHub)
-

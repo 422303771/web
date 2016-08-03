@@ -1,9 +1,6 @@
+# 5.2 中间件
 
-## 5.2 中间件
-
-
-### 5.2.1 简介
-
+## 5.2.1 简介
 
 laravel中间件提供一个方便的机制来过滤进入web应用的HTTP请求。
 
@@ -15,13 +12,15 @@ laravel中间件提供一个方便的机制来过滤进入web应用的HTTP请求
 
 laravel框架自带了一些中间件，包括维护模式、认证、CSRF等等。所有的中间件都位于`App/Http/Middleware`目录中。
 
-------
+--------------------------------------------------------------------------------
 
-### 5.2.2 定义中间件
+## 5.2.2 定义中间件
 
 可以使用Artisan命令`make:middleware`创建一个新的中间件
 
-	php artisan make:middleware OldMiddleware
+```
+php artisan make:middleware OldMiddleware
+```
 
 其中的`OldMiddleware`可以为任意名称。
 
@@ -54,11 +53,12 @@ class OldMiddleware
 
 }
 ```
+
 如果`age<=200`,中间件会返回一个HTTP重定向到客户端；否则，请求会被传统下去。将请求往下传递可以通过调用回调函数`$next`并传入`$request`。
 
 理解中间件最好的方式是将中间件看做HTTP请求，到达目标动作之前必须经过的`层`，每一层都会检查请求并且可以完全拒绝它。
 
-#### 5.2.2.1 中间件之前/之后
+### 5.2.2.1 中间件之前/之后
 
 一个中间件，在请求前执行还是请求后执行取决于中间件本身。
 
@@ -114,15 +114,15 @@ class AfterMiddleware
 }
 ```
 
-------
+--------------------------------------------------------------------------------
 
-### 5.2.3 注册中间件
+## 5.2.3 注册中间件
 
-#### 5.2.3.1 全局中间件
+### 5.2.3.1 全局中间件
 
 如果想要中间件放在每个HTTP请求期间被执行，只需要将相应的中间件类，设置到`app/Http/Kernel.php`的`$middleware`属性中。
 
-#### 5.2.3.2 为路由指派中间件
+### 5.2.3.2 为路由指派中间件
 
 如果想要分配中间件到指定路由，先要在`app/Http/Kernel.php`文件中分配给中间件一个简写的`key`,默认情况下，该类的`$routeMiddleware`属性包含了laravel内置的入口中间件，添加自己的中间件只需要将其追加到后面并为其分配一个`key`:
 
@@ -135,14 +135,15 @@ protected $routeMiddleware = [
     'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
 ];
 ```
+
 中间件在 HTTP Kernel 中被定义后，可以在路由选项数组中使用 `$middleware` 键来指定该中间件：
 
 ```php
 Route::get('admin/profile', ['middleware' => 'auth', function () {
     //
 }]);
-
 ```
+
 使用数组分配多个中间件到路由,使用数组方式排列:
 
 ```php
@@ -150,6 +151,7 @@ Route::get('/', ['middleware' => ['first', 'second'], function () {
     //
 }]);
 ```
+
 处理使用数组外，还可以使用`middleware`方法链方式定义路由：
 
 ```php
@@ -158,7 +160,7 @@ Route::get('/', function () {
 })->middleware(['first', 'second']);
 ```
 
-#### 5.2.3.3 中间件群组
+### 5.2.3.3 中间件群组
 
 有时你可能想将多个中间件组成单一的键，让它可以简单的指派给路由。
 
@@ -198,9 +200,9 @@ Route::group(['middleware' => ['web']], function () {
 });
 ```
 
--------
+--------------------------------------------------------------------------------
 
-### 5.2.4 中间件参数
+## 5.2.4 中间件参数
 
 中间件还可以接收额外的自定义参数。
 
@@ -210,7 +212,7 @@ Route::group(['middleware' => ['web']], function () {
 
 额外的中间件参数会在`$next`参数之后传入中间件:
 
-*注意：下方代价中指` Closure $next`后*
+_注意：下方代价中指`Closure $next`后_
 
 ```php
 <?php
@@ -250,9 +252,9 @@ Route::put('post/{id}', ['middleware' => 'role:editor', function ($id) {
 }]);
 ```
 
--------
+--------------------------------------------------------------------------------
 
-### 5.2.5 可终止的中间件
+## 5.2.5 可终止的中间件
 
 有时中间件需要在HTTP响应发送到浏览器后做一些工作。
 
@@ -280,6 +282,7 @@ class StartSession
     }
 }
 ```
+
 这个`terminate`方法要接受`$request`和`$response`。一旦使用终止中间，应将其添加到`Http Kernel`作为全局变量使用。
 
 当调用中间件中的`terminate`方法时，laravel将从服务器容器中取出这个中间件的新实例。
@@ -287,4 +290,3 @@ class StartSession
 如果想在调用`handle`和`terminate`使用同一中间件实例，需要使用`container(容器)`的`singleton`方法将中间注入到容器。
 
 这里`实例`可以理解为数据包。
-

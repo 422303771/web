@@ -1,4 +1,4 @@
-## 3. 跟随快速入门
+# 3\. 跟随快速入门
 
 [官方地址](https://laravel.com/docs/5.2/quickstart)
 
@@ -8,62 +8,73 @@
 
 开始前先创建一个新的数据库，并添加到.`env`文件中。
 
-### 3.1 创建quickstart项目
+## 3.1 创建quickstart项目
 
-#### 3.1.1 使用composer
+### 3.1.1 使用composer
 
-	$ composer create-project laravel/laravel quickstart --prefer-dist
+```
+$ composer create-project laravel/laravel quickstart --prefer-dist
+```
 
-#### 3.1.2 克隆整个快速入门文档
+### 3.1.2 克隆整个快速入门文档
 
-	$ git clone https://github.com/laravel/quickstart-basic quickstart
-	$ cd quickstart
-	$ composer install
-	$ php artisan migrate
+```
+$ git clone https://github.com/laravel/quickstart-basic quickstart
+$ cd quickstart
+$ composer install
+$ php artisan migrate
+```
 
-### 3.2 准备数据库
+## 3.2 准备数据库
 
 laravel有一种简单的定义与修改数据表的方法。
 
 现在使用`make:migration`生成`tasks`新的数据表：
 
-	$ php artisan make:migration create_tasks_table --create=tasks
+```
+$ php artisan make:migration create_tasks_table --create=tasks
+```
 
 `make:migration`自动添加了`id`与`时间戳`。
 
 手动增加一个条码：
 
-```php 
-	$table->string('name');
-``` 
+```php
+    $table->string('name');
+```
+
 随后使用下方命令将`tasks`写入数据表。
 
-	$ php artisan migrate
+```
+$ php artisan migrate
+```
 
-*注意：如果数据库中以及存在`tasks`数据表，会报错。*
+_注意：如果数据库中以及存在`tasks`数据表，会报错。_
 
-### 3.3 Eloquent ORM模型
+## 3.3 Eloquent ORM模型
 
 laravel 使用默认ORM是Eloquent，[ORM：物件关联对应]，每一个Eloquent模型都有一个对应的数据表。
 
 所有创建`tasks`对应的`Task`模型，使用`Artisan`命令来生成模型。
 
-	$ php artisan make:model Task
+```
+$ php artisan make:model Task
+```
 
 模型在`app`目录下，默认情况下，模型类是空的。不需要说明Eloquent模型要对应哪张数据表，它会假设数据表是模型的复数形态。
 
 这里`Task`对应的是`tasks`。
 
-### 3.4 路由
+## 3.4 路由
 
-#### 3.4.1 建置路由
+### 3.4.1 建置路由
 
 默认情况下，所有的路由都定义在`app/Http/routes.php`
 
 这个需要至少三个路由：显示所有任务的路由，添加新任务的路由，以及删除己存在任务的路由。
 
 下面再`app/Http/routse.php`中创建这三个路由。
-	
+
 ```php
 <?php
 
@@ -91,7 +102,7 @@ Route::delete('/task/{id}', function ($id) {
     //
 ```
 
-#### 3.4.2 显示视图
+### 3.4.2 显示视图
 
 laravel的全部，HTML模板都存放在`resources/view`目录下，使用`view`函数从路由中返回一个模板。
 
@@ -103,13 +114,13 @@ Route::get('/', function () {
 
 现在要在创建一个对应的视图模板`resources/views/tasks.blade.php`作为`View`对象。
 
-### 3.5 创建布局&视图
+## 3.5 创建布局&视图
 
 下图中使用了`Bootstrap CSS`样式
 
 ![](https://raw.githubusercontent.com/422303771/web/master/ubuntu/laravel/img/basic-overview.png)
 
-#### 3.5.1 定义布局
+### 3.5.1 定义布局
 
 **几乎所有的web应用都在不同的页面中共享同一个布局。**
 
@@ -143,9 +154,10 @@ laravel通过在每个页面中使用Blade布局让共享这些公共特性变�
     </body>
 </html>
 ```
+
 布局中的`@yield('content')`部分，是一个Blade指令，用于指定继承布局的子页面，在这里可以注入自己的内容。
 
-#### 3.5.2 定义子视图
+### 3.5.2 定义子视图
 
 现在定义`resources/views/tasks.blade.php`视图。`Bootstrap CSS`的样本文件可以到[github](https://github.com/laravel/quickstart-basic)下载
 
@@ -198,7 +210,7 @@ laravel通过在每个页面中使用Blade布局让共享这些公共特性变�
 
 在`@section('content')`与`@endsection`之间的内容会被注入到`app.blade.php`的`@yield('contents')`位置。
 
-` @include('common.errors')`指令将会加载`resources/views/common/errors.blade.php`中的内容，目前还没有定义。
+`@include('common.errors')`指令将会加载`resources/views/common/errors.blade.php`中的内容，目前还没有定义。
 
 现在可以设置路由：
 
@@ -208,9 +220,9 @@ Route::get('/', function () {
 });
 ```
 
-### 3.6 添加任务
+## 3.6 添加任务
 
-#### 3.6.1 验证
+### 3.6.1 验证
 
 验证表单，在`POST /task`路由中编写代码，处理表单请求，我们需要验证表单输入，然后才能创建一个新任务。
 
@@ -231,11 +243,10 @@ Route::post('/task', function (Request $request) {
     // Create The Task...
 });
 ```
+
 **$errors**
 
 `->withErrors($validator)`将验证错误信息存放在一次性的session中，以便视图通过`$errors`访问。
-
-
 
 `errors.blade.php`文件
 
@@ -262,7 +273,7 @@ Route::post('/task', function (Request $request) {
 
 `errors`变量可用于每个laravel的视图中。如果没有验证错误信息存在，那么他就是一个空的`ViewErroeBag`实例。
 
-#### 3.6.2 创建任务
+### 3.6.2 创建任务
 
 接下来开始创建一个新任务。一旦新任务创建成功，页面会跳转到`/`。要创建任务，可以有`Eloquent`模式提供的`save`方法：
 
@@ -286,7 +297,7 @@ Route::post('/task', function (Request $request) {
 });
 ```
 
-#### 3.6.3 显示己存在的任务
+### 3.6.3 显示己存在的任务
 
 添加代码到视图来显示所有任务列表。
 
@@ -323,7 +334,7 @@ Route::get('/', function () {
                     <!-- Table Headings -->
                     <thead>
                         <th>Task</th>
-                        <th>&nbsp;</th>
+                        <th> </th>
                     </thead>
 
                     <!-- Table Body -->
@@ -348,13 +359,13 @@ Route::get('/', function () {
 @endsection
 ```
 
-### 3.7 删除任务
+## 3.7 删除任务
 
-#### 3.7.1 添加删除按钮
+### 3.7.1 添加删除按钮
 
-我们在`tasks.blade.php`视图中留了一个“TODO”注释用于放置删除按钮。当删除按钮被点击时，`DELETE /task`请求被发送到应用后台：
+我们在`tasks.blade.php`视图中留了一个"TODO"注释用于放置删除按钮。当删除按钮被点击时，`DELETE /task`请求被发送到应用后台：
 
-```HTML
+```html
 <tr>
     <!-- Task Name -->
     <td class="table-text">
@@ -372,6 +383,7 @@ Route::get('/', function () {
     </td>
 </tr>
 ```
+
 **方法伪造**
 
 尽管我们使用的路由是`Route::delete`，但我们在删除按钮表单中使用的请求方法为`POST`，HTML表单只支持`GET`和`POST`两种请求方式，因此我们需要使用某种方式来伪造DELETE请求。
@@ -380,7 +392,7 @@ Route::get('/', function () {
 
 <input type="hidden" name="_method" value="DELETE">
 
-#### 3.7.2 删除任务
+### 3.7.2 删除任务
 
 最后，让我们添加业务逻辑到路由中执行删除操作，我们可以使用`Eloquent`提供的`findOrFail`方法从数据库通过ID获取模型实例，如果不存在则抛出404异常。获取到模型后，我们使用模型的`delete`方法删除该模型在数据库中对应的记录。记录被删除后，跳转到`/`页面:
 
@@ -390,4 +402,3 @@ Route::delete('/task/{id}', function ($id) {
     return redirect('/');
 });
 ```
-

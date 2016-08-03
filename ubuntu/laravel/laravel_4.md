@@ -1,21 +1,25 @@
-## 4 快速入门进阶版
+# 4 快速入门进阶版
 
-### 4.1. 安装
+## 4.1\. 安装
 
-#### 4.1.1 使用composer
+### 4.1.1 使用composer
 
-	$ composer create-project laravel/laravel quickstart --prefer-dist
+```
+$ composer create-project laravel/laravel quickstart --prefer-dist
+```
 
-#### 4.1.2 使用git克隆完整包
+### 4.1.2 使用git克隆完整包
 
-	$ git clone https://github.com/laravel/quickstart-intermediate quickstart
-	$ cd quickstart
-	$ composer install
-	$ php artisan migrate
+```
+$ git clone https://github.com/laravel/quickstart-intermediate quickstart
+$ cd quickstart
+$ composer install
+$ php artisan migrate
+```
 
-### 4.2 准备数据库
+## 4.2 准备数据库
 
-#### 4.2.1  数据迁移
+### 4.2.1 数据迁移
 
 需要用到users表与tasks表。
 
@@ -23,7 +27,9 @@ users表的已经在`database/migratiions`目录下。
 
 tasks表，需要使用命令创建一个：
 
-	$ php artisan make:migration create_tasks_table --create=tasks
+```
+$ php artisan make:migration create_tasks_table --create=tasks
+```
 
 在生成的文件中加入
 
@@ -36,10 +42,11 @@ $table->string('name');
 
 使用下方命令导入数据库
 
-	$ php artisan migrate
+```
+$ php artisan migrate
+```
 
-
-#### 4.2.2 Eloquent模型
+### 4.2.2 Eloquent模型
 
 user模型
 
@@ -49,7 +56,9 @@ Task模型
 
 使用下方命令创建`task`模型。
 
-	$ php artisan make:model Task
+```
+$ php artisan make:model Task
+```
 
 在`Task`模型中,声明`name`属性支持`批量赋值`。
 
@@ -59,9 +68,11 @@ laravel有两种`批量赋值`属性，一种是`$fillable`可以通过批量赋
 
 添加到`app/Task.php`
 
-	protected $fillable = ['name'];
+```
+protected $fillable = ['name'];
+```
 
-#### 4.2.3 Eloquent关联关系
+### 4.2.3 Eloquent关联关系
 
 tasks关联关系
 
@@ -69,12 +80,14 @@ tasks关联关系
 
 在`app/user.php`文件中添加：
 
-	use App\Task;
+```
+use App\Task;
 
-    public function tasks()
-    {
-        return $this->hasMany(Task::class);
-    }
+public function tasks()
+{
+    return $this->hasMany(Task::class);
+}
+```
 
 user关联关系
 
@@ -82,18 +95,20 @@ user关联关系
 
 添加到`app/Task.php`
 
-	use App\User;
+```
+use App\User;
 
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
+public function user()
+{
+    return $this->belongsTo(User::class);
+}
+```
 
-### 4.3 路由
+## 4.3 路由
 
 在`routes.php`中可以使用闭包定义所有的业务逻辑。实际上，大部分应用都会使用控制器来组织路由。
 
-#### 4.3.1 显示视图
+### 4.3.1 显示视图
 
 使用`view`函数从路由中返回一个模板：
 
@@ -103,23 +118,29 @@ Route::get('/', function () {
 });
 ```
 
-#### 4.3.2 用户认证
+### 4.3.2 用户认证
 
 web中用户认证工作是非常乏味的，laravel提供一个`auth`组件让他变得轻松。
 
 可以直接使用Artisan指令做完成`auth`的创建。
 
-	$ php artisan make:auth --views
+```
+$ php artisan make:auth --views
+```
 
 随后只需要将`auth`添加到路由列表。
+
 ```php
 Route::auth();
 ```
-#### 4.3.3 任务控制器
+
+### 4.3.3 任务控制器
 
 接下来建立`TaskController`控制器，来处理任务。默认情况下控制器放置在`app/Http/controllers`目录下。使用下方命令创建：
 
-	$ php artisan make:controller TaskController
+```
+$ php artisan make:controller TaskController
+```
 
 现在添加一些对应控制器的路由，在`app/Http/routes.php`中添加：
 
@@ -128,6 +149,7 @@ Route::get('/tasks', 'TaskController@index');
 Route::post('/task', 'TaskController@store');
 Route::delete('/task/{task}', 'TaskController@destroy');
 ```
+
 **设置所有任务路由需要登录才能访问**
 
 我们希望用户必须登陆到系统才能创建新任务。所以需要限制访问用户，为登陆用户。
@@ -141,19 +163,19 @@ laravel使用中间件来处理这种限制。
     }
 ```
 
-### 4.4 创建布局与视图
+## 4.4 创建布局与视图
 
 布局方案与之前的版本相同。
 
 ![](https://raw.githubusercontent.com/422303771/web/master/ubuntu/laravel/img/basic-overview.png)
 
-#### 4.4.1 定义布局
+### 4.4.1 定义布局
 
 共用模板在`resources/views/layouts/app.blade.php`。
 
 `@yield('content')`为使用blade模板要插入的功能模块。
 
-#### 4.4.2 定义子视图
+### 4.4.2 定义子视图
 
 随后定义`resources/views/tasks/index.blade.php`。它会对应`TaskController`控制器的`index`方法。
 
@@ -165,12 +187,11 @@ public function index(Request $request)
 {
     return view('tasks.index');
 }
-
 ```
 
-### 4.5 添加任务
+## 4.5 添加任务
 
-#### 4.5.1 验证表单输入
+### 4.5.1 验证表单输入
 
 编写`TaskController@store`路由对应的处理方法，处理一个表单请求并创建一个新任务。
 
@@ -183,6 +204,7 @@ public function store(Request $request){
     // Create The Task...
 }
 ```
+
 在控制器中，可以直接使用`ValidatesRequests`类中的`validate`方法。
 
 而不用手动判断验证失败后的重定向，如果验证失败，用户会自动被重定向到来源页面，而错误信息也会存放到一次性`Session`中。
@@ -209,7 +231,8 @@ public function store(Request $request){
     </div>
 @endif
 ```
-#### 4.5.2 创建任务
+
+### 4.5.2 创建任务
 
 验证完成后，要新建一个任务。当任务新建完成，页面会跳转到`/tasks`。
 
@@ -225,7 +248,7 @@ laravel的关联提供了`save`方法，该方法接收一个关联模型实例�
     return redirect('/tasks');
 ```
 
-### 4.6 显示己存在的任务
+## 4.6 显示己存在的任务
 
 现在需要编辑`TaskController@index`传递所有已存在任务到视图。`view`函数接收一个数组作为第二个参数，数组中的每个值都会在视图中作为变数。
 
@@ -240,7 +263,7 @@ public function index(Request $request)
 }
 ```
 
-#### 4.6.1 依赖注入
+### 4.6.1 依赖注入
 
 laravel的服务容器是整个框架中最重要的特性。
 
@@ -293,7 +316,7 @@ use App\Repositories\TaskRepository;
 class TaskController extends Controller{
     /**
      * The task repository instance.
-     * 
+     *
      * @var TaskRepository
      */  
     protected $tasks;
@@ -301,7 +324,7 @@ class TaskController extends Controller{
     /**
      * Create a new controller instance.
      *
-     * @param TaskRepository $tasks 
+     * @param TaskRepository $tasks
      * @return void
      */
     public function __construct(TaskRepository $tasks)
@@ -324,23 +347,23 @@ class TaskController extends Controller{
     }
 ```
 
-#### 4.6.2 显示任务
+### 4.6.2 显示任务
 
 在`tasks/index.blade.php`中以表格形式显示所有任务。Blade中使用`@foreach`处理循环数据。
 
-### 4.7 删除任务
+## 4.7 删除任务
 
-#### 4.7.1 添加删除按钮
+### 4.7.1 添加删除按钮
 
 当一个`DELETE /task`请求被发送到应用，它会触发`TaskController@destroy`方法：
 
 在表单中同样要使用方法欺骗。
 
-#### 4.7.2 路由模型绑定
+### 4.7.2 路由模型绑定
 
 定义`TaskController`的`destroy`方法。但是首先，重新查看路由的定义以及控制器方法。
 
-#### 4.7.3 用户授权
+### 4.7.3 用户授权
 
 现在要将`Task`实例注入到`destroy`方法。然而为了保证当前登录用户是给定任务的用。
 
@@ -354,7 +377,9 @@ laravel使用策略来将授权组织到单个类中，通常，每个策略都�
 
 因此，使用Artisan命令创建一个`TaskPolicy`,生成的文件位于`app/Policies/TaskPolicy.php`:
 
-	$ php artisan make:policy TaskPolicy
+```
+$ php artisan make:policy TaskPolicy
+```
 
 随后将`destroy`方法添加到策略中，该方法会获取一个`user`实例和`task`实例，检查`用户ID`和任务的`user_id`是否相同。
 
@@ -389,6 +414,7 @@ class TaskPolicy{
 最后，需要关联`Task`模型和`TaskPolicy`，通过在`app/Providers/AuthServiceProvider.php`的`policies`属性添加注册实现。
 
 注册后会告知Laravel无论何时尝试授权到`Task`实例时，该使用哪个策略类进行判断：
+
 ```php
 protected $policies = [
     'App\Task' => 'App\Policies\TaskPolicy',
@@ -408,9 +434,7 @@ public function destroy(Request $request, Task $task){
 }
 ```
 
-
-#### 4.7.4 删除任务
-
+### 4.7.4 删除任务
 
 最后在`destroy`方法中实际删除任务。使用Eloquent的`delete`方法从数据库中删除给定的模型实例。
 
