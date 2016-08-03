@@ -167,7 +167,7 @@ laravel使用中间件来处理这种限制。
 
 布局方案与之前的版本相同。
 
-![](https://raw.githubusercontent.com/422303771/web/master/ubuntu/laravel/img/basic-overview.png)
+![](https://raw.githubusercontent.com/422303771/web/master/laravel/img/basic-overview.png)
 
 ### 4.4.1 定义布局
 
@@ -318,7 +318,7 @@ class TaskController extends Controller{
      * The task repository instance.
      *
      * @var TaskRepository
-     */  
+     */
     protected $tasks;
 
     /**

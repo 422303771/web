@@ -169,7 +169,7 @@ Route::get('user/profile',function () {
 })->name('profile');
 ```
 
-![](https://raw.githubusercontent.com/422303771/web/master/ubuntu/laravel/img/laravel_1.png)
+![](https://raw.githubusercontent.com/422303771/web/master/laravel/img/laravel_1.png)
 
 ### 5.1.3.1 路由群组 & 命名路由
 
@@ -183,7 +183,7 @@ Route::group(['as' => 'admin::'], function () {
 });
 ```
 
-![](https://raw.githubusercontent.com/422303771/web/master/ubuntu/laravel/img/laravel_2.png)
+![](https://raw.githubusercontent.com/422303771/web/master/laravel/img/laravel_2.png)
 
 ### 5.1.3.2 为命名路由生成URL
 
