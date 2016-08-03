@@ -31,6 +31,7 @@
 - [安装网易云音乐]
 
 - [安装dropbox]
+
 - [安装爱壁纸HD]
 - [安装Numix Circle 图标与主题]
 - [安装inkscape]
@@ -671,6 +672,14 @@ $ sudo apt-get install gitg
 ```
 
 --------------------------------------------------------------------------------
+
+### 安装atom
+
+```
+$ sudo add-apt-repository ppa:webupd8team/atom
+$ sudo apt-get update
+$ sudo apt-get install atom
+```
 
 --------------------------------------------------------------------------------
 
