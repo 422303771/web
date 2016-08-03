@@ -1,9 +1,28 @@
----
->-
-  详细信息阅读[文档](https://git-scm.com/book/zh/v2/%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E7%9A%84-Git-Git-%E5%AE%88%E6%8A%A4%E8%BF%9B%E7%A8%8B)
+<!--toc-->
 
-  git协议并不常用
----
+- [4.服务器上的Git](#4服务器上的git)
+	- [4.1 协议](#41-协议)
+		- [4.1.1 本地协议](#411-本地协议)
+		- [4.1.2 HTTP协议](#412-http协议)
+		- [4.1.3 SSH协议](#413-ssh协议)
+		- [4.1.4 Git协议](#414-git协议)
+	- [4.2 在服务器上搭建Git](#42-在服务器上搭建git)
+		- [4.2.1 把裸仓库放到服务器上](#421-把裸仓库放到服务器上)
+		- [4.2.2 小型安装](#422-小型安装)
+	- [4.3 生成SSH公钥](#43-生成ssh公钥)
+	- [4.4 配置服务器](#44-配置服务器)
+	- [4.6 Smart HTTP](#46-smart-http)
+	- [4.7 GitWeb](#47-gitweb)
+	- [4.8 GitLab](#48-gitlab)
+	- [4.9 第三方托管的选择](#49-第三方托管的选择)
+
+<!-- tocstop -->
+
+----
+
+详细信息阅读[文档](https://git-scm.com/book/zh/v2/%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E7%9A%84-Git-Git-%E5%AE%88%E6%8A%A4%E8%BF%9B%E7%A8%8B)
+
+- git协议并不常用
 
 # 4.服务器上的Git
 
@@ -285,7 +304,7 @@ $ which git-shell   # make sure git-shell is installed on your system.
 $ sudo vim /etc/shells  # and add the path to git-shell from last command
 ```
 
-现在你可以使用 chsh 
+现在你可以使用 chsh
 
 <username> 命令修改任一系统用户的 shell：</username>
 
