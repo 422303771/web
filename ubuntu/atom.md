@@ -89,6 +89,8 @@ $$\phi_n(\kappa) = \frac{1}{4\pi^2\kappa^2} \int_0^\infty \frac{\sin(\kappa R)}{
 
 ![sp160804_133226](http://i.imgur.com/PzFRo0S.png)
 
+![sp160804_133226](/assets/sp160804_133226.png)
+
 #### PlantUML 渲染图形
 
 [PlantUML](http://zh.plantuml.com/)
@@ -133,6 +135,8 @@ foot: {text:
 
 ![sp160804_133234](http://i.imgur.com/6fP55cx.png)
 
+![sp160804_133234](/assets/sp160804_133234.png)
+
 #### Viz.js 来渲染 dot language 图形.
 
 [dot](https://en.wikipedia.org/wiki/DOT_(graph_description_language))
@@ -149,6 +153,8 @@ graph ethane {
 }
 ```
 ![sp160804_133243](http://i.imgur.com/FVuu5Tw.png)
+
+![sp160804_133243](/assets/sp160804_133243.png)
 
 #### reveal.js 来渲染漂亮的 presentations
 
