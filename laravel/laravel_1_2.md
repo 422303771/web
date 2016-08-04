@@ -1,4 +1,4 @@
-<!--toc-->
+<!-- toc -->
 
 - [laravel 5 学习指南](#laravel-5-学习指南)
 	- [1.部署Laravel Homestead](#1部署laravel-homestead)
@@ -21,7 +21,7 @@
 
 <!-- tocstop -->
 
-----
+ --------------------------------------------------------------------------------
 
 # laravel 5 学习指南
 
@@ -29,11 +29,11 @@
 
 ### 1.1\. 必要软件安装
 
-    软件     |               下载地址
-:--------: | :-------------------------------:
- vagrant   | [地址](https://www.vagrantup.com/)
+软件         | 下载地址
+:--------- | :--------------------------------
+vagrant    | [地址](https://www.vagrantup.com/)
 virtualbox | [地址](https://www.virtualbox.org/)
-   git     |    [地址](https://git-scm.com/)
+git        | [地址](https://git-scm.com/)
 
 composer 在虚拟机中有提供，但为了能正常安装laravel需要自备**梯子**
 
@@ -215,9 +215,9 @@ $ sudo ufw app list
   Nginx HTTPS
 ```
 
-- Nginx Full: This profile opens both port 80 (normal, unencrypted web traffic) and port 443 (TLS/SSL encrypted traffic)
-- Nginx HTTP: This profile opens only port 80 (normal, unencrypted web traffic)
-- Nginx HTTPS: This profile opens only port 443 (TLS/SSL encrypted traffic)
+- Nginx Full: `This profile opens both port 80 (normal, unencrypted web traffic) and port 443 (TLS/SSL encrypted traffic)`
+- Nginx HTTP: `This profile opens only port 80 (normal, unencrypted web traffic)`
+- Nginx HTTPS: `This profile opens only port 443 (TLS/SSL encrypted traffic)`
 
 设置防火墙规则
 
