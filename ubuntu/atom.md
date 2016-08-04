@@ -87,6 +87,8 @@ $$\sum_{m=1}^\infty\sum_{n=1}^\infty\frac{m^2\,n} {3^m\left(m\,3^n+n\,3^m\right)
 
 $$\phi_n(\kappa) = \frac{1}{4\pi^2\kappa^2} \int_0^\infty \frac{\sin(\kappa R)}{\kappa R} \frac{\partial}{\partial R} \left[R^2\frac{\partial D_n(R)}{\partial R}\right]\,dR$$
 
+![sp160804_133226](http://i.imgur.com/PzFRo0S.png)
+
 #### PlantUML 渲染图形
 
 [PlantUML](http://zh.plantuml.com/)
@@ -129,6 +131,8 @@ foot: {text:
 }
 ```
 
+![sp160804_133234](http://i.imgur.com/6fP55cx.png)
+
 #### Viz.js 来渲染 dot language 图形.
 
 [dot](https://en.wikipedia.org/wiki/DOT_(graph_description_language))
@@ -144,6 +148,7 @@ graph ethane {
         C_1 -- H_5 [type=s];
 }
 ```
+![sp160804_133243](http://i.imgur.com/FVuu5Tw.png)
 
 #### reveal.js 来渲染漂亮的 presentations
 
