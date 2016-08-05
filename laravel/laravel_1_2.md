@@ -258,7 +258,9 @@ $ sudo nano /etc/nginx/sites-available/default
 
 - `location ~ \.php$`php支持，需要解除注释。
 
-  `fastcgi_pass 127.0.0.1:9000;`与 `fastcgi_pass unix:/run/php/php7.0-fpm.sock;`选一个否则冲突。
+- `include snippets/fastcgi-php.conf;`取消注释
+
+-  `fastcgi_pass 127.0.0.1:9000;`与 `fastcgi_pass unix:/run/php/php7.0-fpm.sock;`选一个否则冲突。
 
 之后重新读取`nginx`设置，
 
