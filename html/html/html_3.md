@@ -9,7 +9,8 @@
 		- [内部CSS](#内部css)
 		- [外部CSS](#外部css)
 		- [CSS 字体属性](#css-字体属性)
-		- [ID与](#id与)
+		- [ID与class](#id与class)
+			- [ID](#id)
 
 <!-- tocstop -->
 
@@ -119,6 +120,8 @@ p {
 
 <!-- ![sp160807_015840](/assets/sp160807_015840.png) -->
 
+----
+
 ```HTML
 p {
     border: 1px solid powderblue;
@@ -131,6 +134,8 @@ p {
 ![sp160807_015914](http://ooo.0o0.ooo/2016/08/06/57a6259947806.png)
 
 <!-- ![sp160807_015914](/assets/sp160807_015914.png) -->
+
+---
 
 ```HTML
 p {
@@ -148,3 +153,74 @@ p {
 ----
 
 ### ID与class
+
+#### ID
+
+ID的定义方法。
+
+_注意：一个页面中ID的定义是唯一的。_
+
+```css
+#p01 {
+    color: blue;
+}
+```
+在HTML中使用
+
+```HTML
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+#p01 {
+    color: blue;
+}
+</style>
+</head>
+<body>
+
+<p>This is a paragraph.</p>
+<p>This is a paragraph.</p>
+<p id="p01">I am different.</p>
+
+</body>
+</html>
+
+```
+
+----
+
+#### class
+
+class定义方法
+
+```CSS
+p.error {
+    color: red;
+}
+```
+在HTML使用方法，class可以多次使用。
+```HTML
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+p.error {
+    color: red;
+}
+</style>
+</head>
+<body>
+
+<p>This is a paragraph.</p>
+<p>This is a paragraph.</p>
+<p class="error">I am different.</p>
+<p>This is a paragraph.</p>
+<p class="error">I am different too.</p>
+
+</body>
+</html>
+
+```
+
+------
