@@ -8,6 +8,8 @@
 	- [设定字体位置](#设定字体位置)
 	- [字体显示位置](#字体显示位置)
 	- [HTML中的一些符号](#html中的一些符号)
+	- [HTML代码块](#html代码块)
+	- [HTML注释](#html注释)
 
 <!-- tocstop -->
 
@@ -210,3 +212,53 @@ right to left <br>
 ![sp160806_194443](http://ooo.0o0.ooo/2016/08/06/57a5cdf83ba59.png)
 
 <!-- ![sp160806_194443](/assets/sp160806_194443.png) -->
+
+----
+
+## HTML代码块
+
+ - `<kbd></kbd>` 键盘输入
+ - `<var></var>`公式使用，斜体。
+ - `<code></code>`代码，默认是不能保存换行。要结合`<pre>`使用。
+ - `<samp></samp>`显示信息输出。
+
+```HTML
+<!DOCTYPE html>
+<html>
+<body>
+
+<p>Einstein wrote: <var>E</var> = <var>m</var><var>c</var><sup>2</sup>.</p>
+
+<pre>
+<code>
+var x = 5;
+var y = 6;
+document.getElementById("demo").innerHTML = x + y;
+</code>
+<pre>
+
+<samp>
+demo.example.com login: Apr 12 09:10:17
+Linux 2.6.10-grsec+gg3+e+fhs6b+nfs+gr0501+++p3+c4a+gr2b-reslog-v6.189
+</samp>
+
+<kbd>File | Open...</kbd>
+
+</body>
+</html>
+```
+效果：
+
+![sp160806_235013](http://ooo.0o0.ooo/2016/08/06/57a60769827c9.png)
+
+<!-- ![sp160806_235013](/assets/sp160806_235013.png) -->
+
+----
+
+## HTML注释
+
+一般是下面的样子，可以注释多行。
+
+```
+<!-- Write your comments here -->
+```
