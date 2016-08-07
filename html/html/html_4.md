@@ -217,12 +217,15 @@ tr:nth-child(even) {
 
 <!-- ![sp160807_162923](/assets/sp160807_162923.png) -->
 
+
+`rowspan`用法
 ```HTML
 <tr>
 	<th rowspan="2">Telephone:</th>
 	<td>55577854</td>
 </tr>
 ```
+效果：
 
 ![sp160807_162950](http://ooo.0o0.ooo/2016/08/07/57a6f1a5d910f.png)
 
