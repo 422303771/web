@@ -8,6 +8,11 @@
 		- [书签](#书签)
 	- [图片](#图片)
 	- [表格](#表格)
+	- [List](#list)
+		- [`<ul>`标签](#ul标签)
+		- [`<ol>`标签](#ol标签)
+		- [`<dl>`标签](#dl标签)
+		- [`<li>`标签](#li标签)
 
 <!-- tocstop -->
 
@@ -232,3 +237,154 @@ tr:nth-child(even) {
 <!-- ![sp160807_162950](/assets/sp160807_162950.png) -->
 
 ---
+
+## List
+
+### `<ul>`标签
+
+```HTML
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>Unordered List with Disc Bullets</h2>
+
+<ul style="list-style-type:disc">
+  <li>Coffee</li>
+  <li>Tea</li>
+  <li>Milk</li>
+</ul>
+
+<ul style="list-style-type:circle">
+  <li>Coffee</li>
+  <li>Tea</li>
+  <li>Milk</li>
+</ul>
+
+<ul style="list-style-type:square">
+  <li>Coffee</li>
+  <li>Tea</li>
+  <li>Milk</li>
+</ul>
+
+<ul style="list-style-type:none">
+  <li>Coffee</li>
+  <li>Tea</li>
+  <li>Milk</li>
+</ul>
+
+</body>
+</html>
+```
+效果
+
+![sp160807_164054](http://ooo.0o0.ooo/2016/08/07/57a6f440a7c90.png)
+
+<!-- ![sp160807_164054](/assets/sp160807_164054.png) -->
+
+----
+
+`<ul>`标签使用`style`中的`list-style-type`方法，方法如下：
+
+- `disc`实心圆
+- `circle`空心圆
+- `square`方块
+- `none`无
+
+内部元素使用`<li>`标签。
+
+----
+
+### `<ol>`标签
+
+```HTML
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>Ordered List with Numbers</h2>
+
+<ol type="1">
+  <li>Coffee</li>
+  <li>Tea</li>
+  <li>Milk</li>
+</ol>
+
+<ol type="A">
+  <li>Coffee</li>
+  <li>Tea</li>
+  <li>Milk</li>
+</ol>
+
+<ol type="a">
+  <li>Coffee</li>
+  <li>Tea</li>
+  <li>Milk</li>
+</ol>
+
+<ol type="I">
+  <li>Coffee</li>
+  <li>Tea</li>
+  <li>Milk</li>
+</ol>
+
+<ol type="i">
+  <li>Coffee</li>
+  <li>Tea</li>
+  <li>Milk</li>
+</ol>
+
+</body>
+</html>
+```
+效果:
+
+![sp160807_165320](http://ooo.0o0.ooo/2016/08/07/57a6f72c7f75a.png)
+
+<!-- ![sp160807_165320](/assets/sp160807_165320.png) -->
+
+----
+
+`<ol>`中可以使用`type`显示序号，常用方法如下:
+
+- `1`数字序号
+- `A`大写英文字母序号
+- `a`小写英文字母序号
+- `I`大写罗马字母序号
+- `i`小写罗马字母序号
+
+内部元素使用`<li>`标签。
+
+----
+
+### `<dl>`标签
+
+- `<dl>`用来创建一个描述列表，结合`<dt>`与`<dd>`使用。
+- `<dt>`用来创建描述名
+- `<dd>`用来创建描述内容
+
+```HTML
+<dl>
+  <dt>Coffee</dt>
+  <dd>- black hot drink</dd>
+  <dt>Milk</dt>
+  <dd>- white cold drink</dd>
+</dl>
+```
+效果
+
+![sp160807_172307](http://ooo.0o0.ooo/2016/08/07/57a6fe243b1cb.png)
+
+<!-- ![sp160807_172307](/assets/sp160807_172307.png) -->
+
+----
+
+### `<li>`标签
+
+在`<li>`标签中设定`float:left`或者`float:right`使标题横向显示。
+
+![sp160807_171736](http://ooo.0o0.ooo/2016/08/07/57a6fd336cc63.png)
+
+<!-- ![sp160807_171736](/assets/sp160807_171736.png) -->
+
+----
