@@ -33,6 +33,7 @@ $ sudo apt-get install ruby ruby-dev make gcc nodejs
 
 ```
 $ sudo gem install jekyll
+$ sudo gem install bundle
 ```
 
 之后查看jekyll版本
@@ -57,6 +58,7 @@ build后网站文件在`_site`
 
 ```
 $ jekyll server
+$ bundle exec jekyll server
 ```
 
 浏览器输入`localhost:4000`可以查看网站运行情况。
