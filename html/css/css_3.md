@@ -19,13 +19,10 @@
 		- [Font Family](#font-family)
 		- [Font Style](#font-style)
 		- [Font Size](#font-size)
-		- [Set Font Size](#set-font-size)
-			- [Pixels](#pixels)
-			- [Em](#em)
-			- [Use a Combination of Percent and Em](#use-a-combination-of-percent-and-em)
 		- [Font Weight](#font-weight)
 		- [Font Variant](#font-variant)
 		- [CSS3 Fonts](#css3-fonts)
+			- [@font-face](#font-face)
 			- [Bold Text](#bold-text)
 			- [CSS3 Font Descriptors](#css3-font-descriptors)
 
@@ -239,28 +236,207 @@ p.test2 {
 
 ## CSS Fonts
 
+一般字体系列，有相似的外观。
+
+字体系列，同一系列的字体。
+
+![sp160811_143609](http://ooo.0o0.ooo/2016/08/11/57ac1d102b7b0.png)
+
+<!-- ![sp160811_143609](/assets/sp160811_143609.png) -->
+
 ### Font Family
+
+```CSS
+p {
+    font-family: "Times New Roman", Times, serif;
+}
+```
+设置字体
 
 ### Font Style
 
+```CSS
+p.normal {
+    font-style: normal;
+}
+
+p.italic {
+    font-style: italic;
+}
+
+p.oblique {
+    font-style: oblique;
+}
+```
+`normal`无效果、`italic`斜体、`oblique`斜体角度大于前者。
+
 ### Font Size
 
-### Set Font Size
+```CSS
+h1 {
+    font-size: large;
+}
 
-#### Pixels
+h2 {
+    font-size: 30px;
+}
 
-#### Em
+p {
+    font-size: 14%;
+}
+```
 
-#### Use a Combination of Percent and Em
+设置字体大小：
+
+- `xx-small`
+- `x-small`
+- `small`
+- `medium`
+- `large`
+- `x-large`
+- `xx-large`
+- `smaller`
+- `larger`
+- `px`
+- `%`
 
 ### Font Weight
 
+```CSS
+p.normal {
+    font-weight: normal;
+}
+
+p.light {
+    font-weight: lighter;
+}
+
+p.thick {
+    font-weight: bold;
+}
+
+p.thicker {
+    font-weight: bolder;
+}
+```
+![sp160811_145159](http://ooo.0o0.ooo/2016/08/11/57ac20c478d6e.png)
+
+<!-- ![sp160811_145159](/assets/sp160811_145159.png) -->
+
+`normal`与`lighter`一般字体。
+
+`bold`与`bolder`粗体。
+
 ### Font Variant
+
+```CSS
+p.normal {
+    font-variant: normal;
+}
+
+p.small {
+    font-variant: small-caps;
+}
+```
+
+![sp160811_145900](http://ooo.0o0.ooo/2016/08/11/57ac22696e6b5.png)
+
+<!-- ![sp160811_145900](/assets/sp160811_145900.png) -->
+
+字体变化有两种设置方法：
+
+- `normal`为正常情况
+- `small-caps`为大写字母放大，其余字母变为大写。
+
+_注意：对中文无效。_
 
 ### CSS3 Fonts
 
+#### @font-face
+
+大部分浏览器支持`TTF/OTF`、`WOFF`格式的字体。
+
+```CSS
+@font-face {
+   font-family: myFirstFont;
+   src: url(sansation_light.woff);
+}
+
+div {
+   font-family: myFirstFont;
+}
+```
+![sp160811_150645](http://ooo.0o0.ooo/2016/08/11/57ac243e62021.png)
+
+<!-- ![sp160811_150645](/assets/sp160811_150645.png) -->
+
+`src`中定义连接。
+
 #### Bold Text
 
+```HTML
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+@font-face {
+   font-family: myFirstFont;
+   src: url(sansation_light.woff);
+}
+
+@font-face {
+   font-family: myFirstFont;
+   src: url(sansation_bold.woff);
+   font-weight: bold;
+}
+
+div {
+   font-family: myFirstFont;
+}
+</style>
+</head>
+<body>
+
+<div>
+With CSS3, websites can <b>finally</b> use fonts other than the pre-selected "web-safe" fonts.
+</div>
+
+<p><b>Note:</b> Internet Explorer 8 and earlier, do not support the @font-face rule.</p>
+
+</body>
+</html>
+```
+效果：
+
+![sp160811_150645](http://ooo.0o0.ooo/2016/08/11/57ac243e62021.png)
+
+<!-- ![sp160811_150645](/assets/sp160811_150645.png) -->
+
+`@font-face`中指定粗体。
+
 #### CSS3 Font Descriptors
+
+`@font-face`可以设置的属性
+
+- `font-family`设置字体名
+- `src`设定字体连接
+- `font-stretch`设定字体拉伸。
+	- `normal`正常
+	- `condensed`压缩
+	- `ultra-condensed`超高压缩
+	- `extra-condensed`超压缩
+	- `semi-condensed`半压缩
+	- `expanded`扩大
+	- `semi-expanded`半扩大
+	- `extra-expanded`超扩大
+	- `ultra-expanded`超高扩大
+- `font-style`设定斜体
+	- `normal`正常
+	- `italic`一般斜体
+	- `oblique`超级斜体
+- `font-weight`设定粗体
+	- `normal`正常
+	- `bold`超级斜体
+- `unicode-range` 设置字符集范围。
 
 ---
