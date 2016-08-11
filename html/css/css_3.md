@@ -4,7 +4,7 @@
 	- [CSS 文本](#css-文本)
 		- [Text 颜色](#text-颜色)
 		- [Text 位置](#text-位置)
-		- [Text 装饰](#text-装饰)
+		- [Text 文字线](#text-文字线)
 		- [Text 大小写](#text-大小写)
 		- [Text 缩进](#text-缩进)
 		- [Letter 文字间距](#letter-文字间距)
@@ -66,7 +66,7 @@ h3 {
 
 `justify`拉伸，使左右边缘是直的。
 
-### Text 装饰
+### Text 文字线
 
 ```CSS
 h1 {
@@ -83,7 +83,7 @@ h3 {
 ```
 `overline`上划线、`line-through`删除线、`underline`下划线、
 
-`none`无线，可以隐藏连接的下划线。
+`none`没有线，可以隐藏连接的下划线。
 
 ### Text 大小写
 
