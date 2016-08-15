@@ -77,4 +77,60 @@ img {
 
 ## CSS3 按钮
 
+```CSSS
+.button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+```
+![sp160815_145024](http://ooo.0o0.ooo/2016/08/15/57b1667600b41.png)
+
+<!-- ![sp160815_145024](/assets/sp160815_145024.png) -->
+
 ## CSS3 翻页
+
+```CSS
+ul.pagination {
+    display: inline-block;
+    padding: 0;
+    margin: 0;
+}
+
+ul.pagination li {
+		display: inline;
+}
+
+ul.pagination li a {
+    color: black;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+    transition: background-color .3s;
+    border: 1px solid #ddd;
+}
+
+ul.pagination li a.active {
+    background-color: #4CAF50;
+    color: white;
+    border: 1px solid #4CAF50;
+}
+
+ul.pagination li a:hover:not(.active) {
+		background-color: #ddd;
+}
+
+div.center {
+	text-align: center;
+}
+
+```
+
+![sp160815_145230](http://ooo.0o0.ooo/2016/08/15/57b166ed438ad.png)
+
+<!-- ![sp160815_145230](/assets/sp160815_145230.png) -->
