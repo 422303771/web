@@ -1,32 +1,26 @@
 <!-- toc -->
 
- - [javascript 数字](#javascript-数字)
-
-  - [javascript 数字](#javascript-数字-1)
-
-    - [十进制与小数](#十进制与小数)
-    - [十六进制](#十六进制)
-    - [无穷](#无穷)
-    - [NaN](#nan)
-    - [数字可以是一个对象](#数字可以是一个对象)
-
-  - [javascript 数字方法](#javascript-数字方法)
-
-    - [`toString()`](#tostring)
-    - [`toExponential()`](#toexponential)
-    - [`toFixed()`](#tofixed)
-    - [`toPrecision()`](#toprecision)
-    - [`valueOf()`方法](#valueof方法)
-    - [关于数字的全局方法](#关于数字的全局方法)
-    - [数字的属性](#数字的属性)
-
-  - [javascript 运算](#javascript-运算)
-
-    - [`Math.min()`与`Math.max()`](#mathmin与mathmax)
-    - [`Math.random()`](#mathrandom)
-    - [`Math.round()`](#mathround)
-    - [`Math.ceil()`](#mathceil)
-    - [`Math.floor()`](#mathfloor)
+- [javascript 数字](#javascript-数字)
+	- [javascript 数字](#javascript-数字-1)
+		- [十进制与小数](#十进制与小数)
+		- [十六进制](#十六进制)
+		- [无穷](#无穷)
+		- [NaN](#nan)
+		- [数字可以是一个对象](#数字可以是一个对象)
+	- [javascript 数字方法](#javascript-数字方法)
+		- [`toString()`](#tostring)
+		- [`toExponential()`](#toexponential)
+		- [`toFixed()`](#tofixed)
+		- [`toPrecision()`](#toprecision)
+		- [`valueOf()`方法](#valueof方法)
+		- [关于数字的全局方法](#关于数字的全局方法)
+		- [数字的属性](#数字的属性)
+	- [javascript 运算](#javascript-运算)
+		- [`Math.min()`与`Math.max()`](#mathmin与mathmax)
+		- [`Math.random()`](#mathrandom)
+		- [`Math.round()`](#mathround)
+		- [`Math.ceil()`](#mathceil)
+		- [`Math.floor()`](#mathfloor)
 
 <!-- tocstop -->
 
