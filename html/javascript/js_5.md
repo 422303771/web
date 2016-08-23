@@ -8,6 +8,13 @@
 		- [NaN](#nan)
 		- [数字可以是一个对象](#数字可以是一个对象)
 	- [javascript 数字方法](#javascript-数字方法)
+		- [`toString()`](#tostring)
+		- [`toExponential()`](#toexponential)
+		- [`toFixed()`](#tofixed)
+		- [`toPrecision()`](#toprecision)
+		- [`valueOf()`方法](#valueof方法)
+		- [关于数字的全局方法](#关于数字的全局方法)
+		- [数字的属性](#数字的属性)
 	- [javascript 运算](#javascript-运算)
 		- [运算对象](#运算对象)
 		- [`Math.min()`与`Math.max()`](#mathmin与mathmax)
@@ -103,6 +110,82 @@ var y = new Number(123);
 ----
 
 ## javascript 数字方法
+
+### `toString()`
+
+`toString()`返回一个数字作为字符串。
+
+```JS
+var x = 123;
+x.toString();            // returns 123 from variable x
+(123).toString();        // returns 123 from literal 123
+(100 + 23).toString();   // returns 123 from expression 100 + 23
+```
+
+### `toExponential()`
+
+`toExponential()` 用来确定小数点后位数。
+
+```JS
+var x = 9.656;
+x.toExponential(2);     // returns 9.66e+0
+x.toExponential(4);     // returns 9.6560e+0
+x.toExponential(6);     // returns 9.656000e+0
+```
+
+### `toFixed()`
+
+`toFixed()`返回一个字符串，指定小数点后方位数。
+
+```JS
+var x = 9.656;
+x.toFixed(0);           // returns 10
+x.toFixed(2);           // returns 9.66
+x.toFixed(4);           // returns 9.6560
+x.toFixed(6);           // returns 9.656000
+```
+
+### `toPrecision()`
+
+`toPrecision()`返回字符串的设置长度。
+
+```JS
+var x = 9.656;
+x.toPrecision();        // returns 9.656
+x.toPrecision(2);       // returns 9.7
+x.toPrecision(4);       // returns 9.656
+x.toPrecision(6);       // returns 9.65600
+```
+
+### `valueOf()`方法
+
+返回数字。
+
+```JS
+var x = 123;
+x.valueOf();            // returns 123 from variable x
+(123).valueOf();        // returns 123 from literal 123
+(100 + 23).valueOf();   // returns 123 from expression 100 + 23
+```
+
+---
+
+### 关于数字的全局方法
+
+`Number()`方法，只返回数字。
+
+`parseFloat()`方法，可以返回一个浮点数，只返回第一个有效数字。
+
+`parseInt()`方法，返回一个整数，只返回第一个有效数字。
+
+### 数字的属性
+
+`MAX_VALUE`数字的最大值。
+`MIN_VALUE`数字的最小值。
+`POSITIVE_INFINITY`正无穷。
+`NEGATIVE_INFINITY`负无穷。
+`NaN`不是数字。
+
 
 
 ----
