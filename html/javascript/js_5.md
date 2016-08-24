@@ -192,13 +192,28 @@ x.valueOf();            // returns 123 from variable x
 
 筛选给定数组的最小值与最大值
 
+```JS
+Math.min(0, 150, 30, 20, -8, -200);      // returns -200
+
+Math.max(0, 150, 30, 20, -8, -200);      // returns 150
+```
+
 ### `Math.random()`
 
 返回`0`到`1`直接的随机数
 
+```JS
+Math.random();              // returns a random number
+```
+
 ### `Math.round()`
 
 四舍五入
+
+```JS
+Math.round(4.7);            // returns 5
+Math.round(4.4);            // returns 4
+```
 
 ### `Math.ceil()`
 
@@ -206,11 +221,19 @@ x.valueOf();            // returns 123 from variable x
 
 例如`4.1`使用`Math.ceil()`后，值是`5`
 
+```JS
+Math.ceil(4.4);             // returns 5
+```
+
 ### `Math.floor()`
 
 抹去整数后的小数。
 
 例如`4.9`使用`Math.floor()`后，值是`4`
+
+```JS
+Math.floor(4.7);            // returns 4
+```
 
 **其他运算方法，[点这里](http://www.w3schools.com/js/js_math.asp)**
 
