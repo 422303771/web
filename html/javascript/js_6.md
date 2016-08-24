@@ -7,6 +7,8 @@
 		- [转化为容易阅读的字符串](#转化为容易阅读的字符串)
 	- [日期格式](#日期格式)
 	- [日期方法](#日期方法)
+		- [`get`获取`Date`数据](#get获取date数据)
+		- [`set`设置`Date`](#set设置date)
 	- [数组](#数组)
 	- [数组方法](#数组方法)
 	- [数组分类](#数组分类)
@@ -88,6 +90,8 @@ document.getElementById("demo").innerHTML = d.toDateString();
 
 ## 日期方法
 
+### `get`获取`Date`数据
+
 | 方法 | 效果 |
 |--|--|
 | getDate() | Get the day as a number (1-31) |
@@ -116,6 +120,19 @@ var d = new Date();
 var days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 document.getElementById("demo").innerHTML = days[d.getDay()];
 ```
+
+### `set`设置`Date`方法
+
+| 方法 | 效果 |
+|--|--|
+| setDate() | Set the day as a number (1-31) |
+| setFullYear() | Set the year (optionally month and day) |
+| setHours() | Set the hour (0-23) |
+| setMilliseconds() | Set the milliseconds (0-999) |
+| setMinutes() | Set the minutes (0-59) |
+| setMonth() | Set the month (0-11) |
+| setSeconds() | Set the seconds (0-59) |
+| setTime() | Set the time (milliseconds since January 1, 1970) |
 
 
 ----
