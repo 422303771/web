@@ -21,6 +21,18 @@
 			- [方法二](#方法二)
 			- [方法三](#方法三)
 	- [数组方法](#数组方法)
+		- [将数组转换为字符串](#将数组转换为字符串)
+		- [添加或移除数组元素](#添加或移除数组元素)
+			- [移除元素](#移除元素)
+			- [添加元素](#添加元素)
+			- [`shift()`添加元素](#shift添加元素)
+			- [`unshift()`移除元素](#unshift移除元素)
+			- [改变元素内容](#改变元素内容)
+			- [`deleting`删除元素](#deleting删除元素)
+		- [拼接数组，`splice()`方法。](#拼接数组splice方法)
+		- [`concat()`链接多个数组为一个](#concat链接多个数组为一个)
+		- [`slice()`数组切片](#slice数组切片)
+		- [`valueof()`](#valueof)
 	- [数组分类](#数组分类)
 
 <!-- tocstop -->
@@ -350,6 +362,210 @@ _测试时，`object`也会返回`true`,因为在JS中数组被识别为对象�
 ----
 
 ## 数组方法
+
+### 将数组转换为字符串
+
+使用`toString()`方法将数组转换为字符串。
+
+```JS
+var fruits = ["Banana", "Orange", "Apple", "Mango"];
+document.getElementById("demo").innerHTML = fruits.toString();
+```
+
+`join()`与`toString()`相似，不过可以指定，元素间的连接符。
+
+```JS
+var fruits = ["Banana", "Orange","Apple", "Mango"];
+document.getElementById("demo").innerHTML = fruits.join(" * ");
+```
+
+返回的结果为`Banana * Orange * Apple * Mango`
+
+
+### 添加或移除数组元素
+
+#### 移除元素
+
+使用`pop()`方法，将元素移除数组，默认情况为从最后一个元素开始移除。
+
+```JS
+var fruits = ["Banana", "Orange", "Apple", "Mango"];
+fruits.pop();              // Removes the last element ("Mango") from fruits
+```
+
+#### 添加元素
+
+使用`push()`方法，将元素添加到数组，默认情况为将元素添加到最后。
+
+
+#### `shift()`添加元素
+
+使用`shift()`添加元素时，元素被填入`[0]`，即最开始的位置。
+
+```JS
+var fruits = ["Banana", "Orange", "Apple", "Mango"];
+fruits.shift();            // Removes the first element "Banana" from fruits
+```
+
+#### `unshift()`移除元素
+
+使用`unshift()`移除元素时，元素将从首位被移除。
+
+```JS
+var fruits = ["Banana", "Orange", "Apple", "Mango"];
+document.getElementById("demo").innerHTML = fruits;
+
+function myFunction() {
+    fruits.unshift("Lemon");
+    document.getElementById("demo").innerHTML = fruits;
+}
+```
+
+效果为，每点击一次，首元素移除一个。
+
+
+#### 改变元素内容
+
+直接将新的元素写入指定的数据位置。当添加到其他位置时，前方数据可能为空位。
+
+```JS
+var fruits = ["Banana", "Orange", "Apple", "Mango"];
+document.getElementById("demo").innerHTML = fruits;
+
+function myFunction() {
+    fruits[0] = "Kiwi";
+    document.getElementById("demo").innerHTML = fruits;
+}
+```
+
+返回的结果为`Banana`被替换为`Kiwi`。
+
+
+另一种方法，将元素添加到最后位置。
+
+```JS
+var fruits = ["Banana", "Orange", "Apple", "Mango"];
+document.getElementById("demo").innerHTML = fruits;
+
+function myFunction() {
+    fruits[fruits.length] = "Kiwi";
+    document.getElementById("demo").innerHTML = fruits;
+}
+```
+
+返回结果为，`Kiwi`被添加到数组的最后。
+
+#### `deleting`删除元素
+
+使用`deleting`删除元素，会使数组留下空位。
+
+
+### 拼接数组，`splice()`方法。
+
+使用`splice()`方法。
+
+```JS
+var fruits = ["Banana", "Orange", "Apple", "Mango"];
+document.getElementById("demo").innerHTML = fruits;
+function myFunction() {
+    fruits.splice(2, 0, "Lemon", "Kiwi");
+    document.getElementById("demo").innerHTML = fruits;
+}
+```
+
+`2`代表着要插入数组的位置。
+`0`代表要替换后面几位的数据。`0`为不替换，当为`1`是`Apple`被`Lemon`与`Kiwi`替换。
+`Lemon`与`Kiwi`为要插入的数据。
+
+
+使用`splice()`删除数组中元素
+
+```JS
+var fruits = ["Banana", "Orange", "Apple", "Mango"];
+document.getElementById("demo").innerHTML = fruits;
+function myFunction() {
+    fruits.splice(0, 1);
+    document.getElementById("demo").innerHTML = fruits;
+}
+```
+
+效果为，从第一个元素开始逐步删除元素。
+
+`0`为要插入的位置，`1`为覆盖的元素，后方没要添加的元素，因此逐渐删除原数组中元素。
+
+### `concat()`链接多个数组为一个
+
+两个数组合并为一个。
+
+```JS
+var myGirls = ["Cecilie", "Lone"];
+var myBoys = ["Emil", "Tobias", "Linus"];
+var myChildren = myGirls.concat(myBoys);
+
+document.getElementById("demo").innerHTML = myChildren;
+```
+
+效果为，`myGirls`的数据在前，`myBoys`的数据在后，`myChuldren`为新数组名称。
+
+将多个数组合并为一个
+
+```JS
+var arr1 = ["Cecilie", "Lone"];
+var arr2 = ["Emil", "Tobias", "Linus"];
+var arr3 = ["Robin", "Morgan"];
+
+var myChildren = arr1.concat(arr2, arr3);
+
+document.getElementById("demo").innerHTML = myChildren;
+```
+
+新数组`myChildren`的显示顺序为，`arr1`，`arr2`，`arr3`。
+
+
+### `slice()`数组切片
+
+当`slice()`只有一个参数时，截取包括参数位后的全部数组。
+
+```JS
+var fruits = ["Banana", "Orange", "Lemon", "Apple", "Mango"];
+var citrus = fruits.slice(1);
+document.getElementById("demo").innerHTML = citrus;
+```
+返回的结果为`Orange,Lemon,Apple,Mango`。
+
+* `slice()`有两个参数时
+
+当`slice()`有两个参数时，如`slice(1,3)`数组为`["Banana", "Orange", "Lemon", "Apple", "Mango"]`。
+
+那么函数的意思为，从`Orange`开始截取，对于第一个参数`1`,即数组第2个元素。
+
+截取到`Lemon`,对应第二个参数`3`,这里的`3`指数组的第3的元素。
+
+_注意：第一个参数从`0`开始记位，第二个参数从`1`开始记位，这里比较混乱。_
+
+```JS
+var fruits = ["Banana", "Orange", "Lemon", "Apple", "Mango"];
+var citrus = fruits.slice(1,3);
+document.getElementById("demo").innerHTML = fruits + "<br>" + citrus;
+```
+
+### `valueof()`
+
+将数组返回一个对象。
+
+```JS
+var fruits = ["Banana", "Orange", "Apple", "Mango"];
+document.getElementById("demo").innerHTML = fruits.valueOf();
+```
+
+`javascript`本身会将数组转换为字符串。
+
+`valueOF()`将数组转换为对象。
+
+`toString()`将数组换位有`,`的字符串。
+
+
+----
 
 ## 数组分类
 
