@@ -565,6 +565,8 @@ document.getElementById("demo").innerHTML = fruits.valueOf();
 `toString()`将数组换位有`,`的字符串。
 
 
+_全部数组方法见:[Array Methods](http://www.w3schools.com/jsref/jsref_obj_array.asp)。_
+
 ----
 
 ## 数组分类
