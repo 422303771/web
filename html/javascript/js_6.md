@@ -33,7 +33,6 @@
 		- [`concat()`链接多个数组为一个](#concat链接多个数组为一个)
 		- [`slice()`数组切片](#slice数组切片)
 		- [`valueof()`](#valueof)
-	- [数组分类](#数组分类)
 
 <!-- tocstop -->
 
@@ -567,8 +566,6 @@ document.getElementById("demo").innerHTML = fruits.valueOf();
 
 _全部数组方法见:[Array Methods](http://www.w3schools.com/jsref/jsref_obj_array.asp)。_
 
-----
 
-## 数组分类
 
 --------------------------------------------------------------------------------
