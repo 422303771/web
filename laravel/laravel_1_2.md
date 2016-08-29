@@ -173,6 +173,12 @@ _注意：项目名称要与`Homestead.yaml`中设置对应_
 
 安装完成后，在浏览器中输入web.app，就可以看到laravel在正常运行了。
 
+_如果出现`No input file specified`,使用下方命令更新vagrant_
+
+```
+vagrant provision
+```
+
 ### 1.7\. 关机
 
 先使用`exit`推出SSH链接。
