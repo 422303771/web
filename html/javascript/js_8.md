@@ -14,8 +14,13 @@
 		- [switch语句](#switch语句)
 	- [JS 循环语句](#js-循环语句)
 		- [For循环语句](#for循环语句)
+			- [For中声明位置](#for中声明位置)
+			- [`For/in`遍历数组中元素](#forin遍历数组中元素)
 		- [While循环语句](#while循环语句)
+		- [`Do/while`循环语句](#dowhile循环语句)
 	- [JS 循环语句打断与继续](#js-循环语句打断与继续)
+		- [break](#break)
+		- [continue](#continue)
 
 <!-- tocstop -->
 
@@ -142,12 +147,167 @@ document.getElementById("demo").innerHTML = greeting;
 
 ### switch语句
 
+```javascript
+var day;
+switch (new Date().getDay()) {
+    case 0:
+        day = "Sunday";
+        break;
+    case 1:
+        day = "Monday";
+        break;
+    case 2:
+        day = "Tuesday";
+        break;
+    case 3:
+        day = "Wednesday";
+        break;
+    case 4:
+        day = "Thursday";
+        break;
+    case 5:
+        day = "Friday";
+        break;
+    case  6:
+        day = "Saturday";
+}
+document.getElementById("demo").innerHTML = "Today is " + day;
+```
+
+返回当前的`星期`。
+
+_注意：每一个`case`后，都要有一个`break`进行打断。_
+
 --------------------------------------------------------------------------------
 
 ## JS 循环语句
 
+全语言通用，`For`循环语句与`While`循环语句。
+
 ### For循环语句
+
+```javascript
+var cars = ["BMW", "Volvo", "Saab", "Ford", "Fiat", "Audi"];
+var text = "";
+var i;
+for (i = 0; i < cars.length; i++) {
+    text += cars[i] + "<br>";
+}
+document.getElementById("demo").innerHTML = text;
+```
+
+#### For中声明位置
+
+```javascript
+var text = "";
+var i;
+for (i = 0; i < 5; i++) {
+    text += "The number is " + i + "<br>";
+}
+document.getElementById("demo").innerHTML = text;
+```
+
+`i = 0`定义循环基本元素
+
+`i < 5`定义循环条件
+
+`i++`定义一次循环完成后，操作。
+
+#### `For/in`遍历数组中元素
+
+```javascript
+var txt = "";
+var person = {fname:"John", lname:"Doe", age:25};
+var x;
+for (x in person) {
+    txt += person[x] + " ";
+}
+document.getElementById("demo").innerHTML = txt;
+```
+
+返回结果为`John Doe 25`。
+
+
+-----
+
 
 ### While循环语句
 
+```javascript
+function myFunction() {
+    var text = "";
+    var i = 0;
+    while (i < 10) {
+        text += "<br>The number is " + i;
+        i++;
+    }
+    document.getElementById("demo").innerHTML = text;
+}
+```
+
+### `Do/while`循环语句
+
+将`while`中的判断内容放入`Do`中。
+
+```javascript
+function myFunction() {
+    var text = ""
+    var i = 0;
+    do {
+        text += "<br>The number is " + i;
+        i++;
+    }
+    while (i < 10)
+    document.getElementById("demo").innerHTML = text;
+}
+```
+
+`For`与`while`循环本质上市一样的。
+
+--------------------------------------------------------------------------------
+
 ## JS 循环语句打断与继续
+
+### break
+
+打断循环。
+
+```javascript
+var text = "";
+var i;
+for (i = 0; i < 10; i++) {
+    if (i === 3) { break; }
+    text += "The number is " + i + "<br>";
+}
+document.getElementById("demo").innerHTML = text;
+```
+
+返回结果：
+
+![sp160830_233001](http://ooo.0o0.ooo/2016/08/30/57c5a683504d4.png)
+
+<!-- ![sp160830_233001](/assets/sp160830_233001.png) -->
+
+ 当`i`等于`3`时，`for`语句将提前结束。
+
+### continue
+
+打断设定位置的循环，后方循环不受影响。
+
+```javascript
+var text = "";
+var i;
+for (i = 0; i < 10; i++) {
+    if (i === 3) { continue; }
+    text += "The number is " + i + "<br>";
+}
+document.getElementById("demo").innerHTML = text;
+```
+
+返回结果：
+
+![sp160830_233040](http://ooo.0o0.ooo/2016/08/30/57c5a6a655034.png)
+
+<!-- ![sp160830_233040](/assets/sp160830_233040.png) -->
+
+ --------------------------------------------------------------------------------
