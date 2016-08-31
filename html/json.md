@@ -1,1 +1,3 @@
-http://www.w3schools.com/json/default.asp
+# JSON
+
+与在JS部分学习的一致。
