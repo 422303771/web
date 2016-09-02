@@ -11,7 +11,7 @@
 | 📄 | gulp.md | gulp 安装方法 |
 | 📄 | jekyll.md | jelyll 安装 与 使用 |
 | 📄 | sublime.md | sublime text 3 插件 与 问题 |
-| 📄 | tmux.md | tmux 设置 |
-| 📄 | ubuntu.md | Ubuntu 桌面版 安装与设置 |
+| 📄 | tmux.md | tmux 设置|
+| 📄 | ubuntu.md | Ubuntu 桌面版 安装与设置|
 | 📄 | vim.md | vim 安装与设置|
 | 📄 | zsh_plugin.md | zsh 下命令缩写 |
