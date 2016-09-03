@@ -1,25 +1,21 @@
 <!-- toc -->
 
- - [sublime text 3](#sublime-text-3)
-
-  - [插件](#插件)
-
-    - [package control](#package-control)
-    - [AutoFileName](#autofilename)
-    - [BracketHighlighter](#brackethighlighter)
-    - [Color Highlighter](#color-highlighter)
-    - [ConvertToUTF8](#converttoutf8)
-    - [Git](#git)
-    - [JsFormat](#jsformat)
-    - [Laravel Blade Highlighter](#laravel-blade-highlighter)
-    - [MarkdownEditing](#markdownediting)
-    - [Material Theme](#material-theme)
-    - [OmniMarkupPreviewer](#omnimarkuppreviewer)
-    - [Sass](#sass)
-
-  - [问题与解决方案](#问题与解决方案)
-
-    - [问题 1：OmniMarkupPreviewer不能预览](#问题-1omnimarkuppreviewer不能预览)
+- [sublime text 3](#sublime-text-3)
+	- [插件](#插件)
+		- [package control](#package-control)
+		- [AutoFileName](#autofilename)
+		- [BracketHighlighter](#brackethighlighter)
+		- [Color Highlighter](#color-highlighter)
+		- [ConvertToUTF8](#converttoutf8)
+		- [Git](#git)
+		- [JsFormat](#jsformat)
+		- [Laravel Blade Highlighter](#laravel-blade-highlighter)
+		- [MarkdownEditing](#markdownediting)
+		- [Material Theme](#material-theme)
+		- [OmniMarkupPreviewer](#omnimarkuppreviewer)
+		- [Sass](#sass)
+	- [问题与解决方案](#问题与解决方案)
+		- [问题 1：OmniMarkupPreviewer不能预览](#问题-1omnimarkuppreviewer不能预览)
 
 <!-- tocstop -->
 
