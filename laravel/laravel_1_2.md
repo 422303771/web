@@ -13,7 +13,7 @@
 	- [安装nginx + php7 + mysql + redis](#安装nginx-php7-mysql-redis)
 		- [2.1 安装nginx](#21-安装nginx)
 		- [2.2 安装php7.0-fpm](#22-安装php70-fpm)
-		- [2.3 安装MySql](#23-安装mysql)
+		- [2.3 安装MySQL](#23-安装mysql)
 		- [2.4 安装composer](#24-安装composer)
 		- [2.5 安装laravel 5](#25-安装laravel-5)
 			- [2.5.1 方法1](#251-方法1)
@@ -347,7 +347,7 @@ service nginx reload
 
 --------------------------------------------------------------------------------
 
-### 2.3 安装MySql
+### 2.3 安装MySQL
 
 ```
 $ sudo apt-get install mysql-server-5.7 php7.0-mysql
