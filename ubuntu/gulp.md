@@ -1,6 +1,6 @@
 <!--toc-->
 
-- [about gulp](#about-gulp)
+* [about gulp](#about-gulp)
 
 <!-- tocstop -->
 
@@ -29,7 +29,7 @@ sudo apt install npm
 安装gulp
 
 ```
-sudo npm install -g gulp
+npm install --global gulp-cli
 ```
 
 查看node 版本
