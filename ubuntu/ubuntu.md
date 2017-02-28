@@ -660,6 +660,24 @@ $ sudo add-apt-repository ppa:webupd8team/terminix
 $ sudo apt-get update
 $ sudo apt-get install terminix
 ```
+* 设置
+
+在`~.zshrc`中添加
+```
+if [[ $TERMINIX_ID ]]; then
+        source /etc/profile.d/vte.sh
+fi
+```
+在`ubuntu`中需要链接`vte.sh`文件
+```
+sudo ln -s /etc/profile.d/vte-2.91.sh /etc/profile.d/vte.sh
+```
+
+
+替换原有终端
+```
+$ sudo update-alternatives --config x-terminal-emulator
+```
 
 --------------------------------------------------------------------------------
 
