@@ -1,13 +1,13 @@
 <!--toc-->
 
-- [建立多用户的SSH key](#建立多用户的ssh-key)
-	- [1. 生成并添加第一个SSH key](#1-生成并添加第一个ssh-key)
-	- [2. 生成并添加第二个ssh key](#2-生成并添加第二个ssh-key)
-	- [3. 在.ssh/下创建config文件](#3-在ssh下创建config文件)
-	- [4. 测试链接](#4-测试链接)
-	- [5. 对于已经创建或已经clone到本地的](#5-对于已经创建或已经clone到本地的)
-		- [5.1. 打开`.git/config`](#51-打开gitconfig)
-		- [5.2. clone仓库时对应配置host对应的账户](#52-clone仓库时对应配置host对应的账户)
+* [建立多用户的SSH key](#建立多用户的ssh-key)
+	* [1. 生成并添加第一个SSH key](#1-生成并添加第一个ssh-key)
+	* [2. 生成并添加第二个ssh key](#2-生成并添加第二个ssh-key)
+	* [3. 在.ssh/下创建config文件](#3-在ssh下创建config文件)
+	* [4. 测试链接](#4-测试链接)
+	* [5. 对于已经创建或已经clone到本地的](#5-对于已经创建或已经clone到本地的)
+		* [5.1. 打开`.git/config`](#51-打开gitconfig)
+		* [5.2. clone仓库时对应配置host对应的账户](#52-clone仓库时对应配置host对应的账户)
 
 <!-- tocstop -->
 
