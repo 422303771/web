@@ -27,6 +27,7 @@
 		* [安装dropbox](#安装dropbox)
 		* [安装爱壁纸HD](#安装爱壁纸hd)
 		* [安装Numix Circle 图标与主题](#安装numix-circle-图标与主题)
+		* [安装 ultra-flat-icons 图标与 Flatabulous 主题](#安装-ultra-flat-icons-图标与-flatabulous-主题)
 		* [安装inkscape](#安装inkscape)
 		* [安装conky](#安装conky)
 		* [安装JQ、curl](#安装jq-curl)
@@ -462,6 +463,15 @@ $ sudo apt-get install numix-gtk-theme numix-icon-theme-circle
 
 --------------------------------------------------------------------------------
 
+### 安装 ultra-flat-icons 图标与 Flatabulous 主题
+
+```
+sudo add-apt-repository ppa:noobslab/icons
+sudo add-apt-repository ppa:noobslab/themes
+sudo apt-get update
+sudo apt-get install flatabulous-theme ultra-flat-icons
+```
+
 ### 安装inkscape
 
 用于将SVG图片转换为PNG图片
@@ -545,11 +555,11 @@ Android Studio [下载](https://developer.android.com/studio/index.html) [参考
 
 当前下载的版本,安装与配置以当前版本为基准。要使用Android Studio首先要安装JDK。
 
-```
-  软件       |     版本
-```
 
-:------------: | :---------: JDK | 1.8.0_91 Android Studio | 143.2915827
+|软件       |     版本|
+|:------------| :--------- |
+|JDK | 1.8.0_91|
+|Android Studio | 143.2915827|
 
 不知道有没有安装JDK，可以在终端查询
 
@@ -658,13 +668,13 @@ $ sudo apt-get install kicad kicad-locale-zh
 ```
 $ sudo add-apt-repository ppa:webupd8team/terminix
 $ sudo apt-get update
-$ sudo apt-get install terminix
+$ sudo apt-get install tilix
 ```
 * 设置
 
 在`~.zshrc`中添加
 ```
-if [[ $TERMINIX_ID ]]; then
+if [ $TERMINIX_ID ] || [ $VTE_VERSION ]; then
         source /etc/profile.d/vte.sh
 fi
 ```

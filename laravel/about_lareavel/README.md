@@ -2,6 +2,6 @@
 
 ## 文件说明
 
-[01.md](01.md) laravel 路上的那些坑
-[02.md](02.md) laravel 数据迁移时，使用的数据类型
-[03.md](03.md) laravel 其它
+[laravel 路上的那些坑](01.md)
+[laravel 数据迁移时，使用的数据类型](02.md)
+[laravel 数据库与blade视图](03.md)
