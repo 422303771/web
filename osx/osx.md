@@ -32,9 +32,9 @@ defaults write com.apple.finder AppleShowAllFiles -boolean false ; killall Finde
 | win 按键 | mac 按键 |
 |:---------:|:---------:|
 |<kbd>win</kbd>|<kbd>⌘</kbd>|
-|<kbd>Ctrl</kbd>|<kbd>^</kbd>|
-|<kbd>Alt</kbd>|<kbd>⌥</kbd>|
-|<kbd>Shift</kbd>|<kbd>⇧</kbd>|
+|<kbd>ctrl</kbd>|<kbd>^</kbd>|
+|<kbd>alt</kbd>|<kbd>⌥ Option</kbd>|
+|<kbd>Shift</kbd>|<kbd>shhift</kbd>|
 |<kbd>Caps Lock</kbd>|<kbd>⇪</kbd>|
 
 
@@ -42,10 +42,10 @@ defaults write com.apple.finder AppleShowAllFiles -boolean false ; killall Finde
 
 | win 按键 | mac 按键 |
 |:---------:|:---------:|
-|<kbd>win</kbd>|<kbd>⌥</kbd>|
-|<kbd>Ctrl</kbd>|<kbd>⌘</kbd>|
-|<kbd>Alt</kbd>|<kbd>^</kbd>|
-|<kbd>Shift</kbd>|<kbd>⇧</kbd>|
+|<kbd>Alt</kbd>|<kbd>⌥</kbd>| option
+|<kbd>Ctrl</kbd>|<kbd>⌘</kbd>| Command
+|<kbd>Win</kbd>|<kbd>^</kbd>| Control
+|<kbd>Shift</kbd>|<kbd>⇧</kbd>| Caps Lock
 
 
 ### 输入表情
