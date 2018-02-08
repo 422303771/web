@@ -26,8 +26,8 @@
   * [05 Git 工具](/git/git7.md)
   * [06 Git 自定义]((/git/git8_9.md)
   * [07 Git 对SSH KEY]((/git/github_more_key.md)
-
-
+* [gitlab](/gitlab/README.md)
+  * [基础设置](/gitlab/基础设置.md)
 
 
 
